@@ -106,6 +106,8 @@ def retrieve_rag_chunks(query_text):
     else:
         context_chunks = retrieve_docs.invoke({"input": query_text})
     
+    print (f"Got {len(context_chunks)} RAG Chunks")
+
     # Format the retrieved documents (chunks) for the prompt
     formatted_context = format_docs(context_chunks)
     
@@ -167,17 +169,16 @@ def format_markdown(response):
 ##############################################################################
 def get_rag_response(user_input, chat_history):
 
-    #print("Preparing RAG response...")
+    print("Initiating RAG")
 
     rag_chunks = retrieve_rag_chunks(user_input)
-    print ("Got RAG Chunks")
 
     (runnable_chain, formatted_input) = prepare_prompt(user_input, chat_history, rag_chunks)
     # Run the chain using the .invoke() method
     response = runnable_chain.invoke(formatted_input)
 
     # Print the response
-    print("Got an LLM Response")
+    print("Returning LLM Response")
 
     answer = response.content
     return answer
