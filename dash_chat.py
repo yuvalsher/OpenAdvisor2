@@ -4,7 +4,7 @@ import json
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
 
-from rag import initialize_rag, get_rag_response
+from rag import Rag
 
 all_config = {
     "OUI": {
@@ -22,7 +22,8 @@ all_config = {
 ##############################################################################
 class DashChat:
     ##############################################################################
-    def __init__(self):
+    def __init__(self, rag_obj):
+        self.rag_obj = rag_obj
         self.welcome_msg = "שלום, איך אוכל לעזור לך היום?"
         self.user_name = "user"
         self.bot_name = "bot"
@@ -31,7 +32,7 @@ class DashChat:
         # Remove the setup_callbacks() call from here
 
     ##############################################################################
-    def init_layout(self, title, subtitle):
+    def _init_layout(self, title, subtitle):
         return html.Div([
             # Title for the chat app (loaded from configuration)
             html.H1(title, style={'text-align': 'center', 'font-family': 'Arial', 'padding': '10px', 'border-bottom': '2px solid #ccc', 'direction': 'rtl'}),
@@ -90,7 +91,7 @@ class DashChat:
         ])
 
     ##############################################################################
-    def setup_callbacks(self):
+    def _setup_callbacks(self):
         @self.app.callback(
             [Output('chat-history', 'children'),
              Output('hidden-chat-store', 'children'),
@@ -113,7 +114,7 @@ class DashChat:
                     chat_history = chat_history.replace("\'", "\"")
                     chat_history = json.loads(chat_history)
 
-                bot_response = get_rag_response(user_message, chat_history)
+                bot_response = self.rag_obj.get_rag_response(user_message, chat_history)
 
                 full_query = chat_history
                 full_query.append({'sender': self.user_name, 'message': user_message})
@@ -145,11 +146,11 @@ class DashChat:
 
     ##############################################################################
     def init(self, title, subtitle):
-        self.app.layout = self.init_layout(title, subtitle)
+        self.app.layout = self._init_layout(title, subtitle)
 
     ##############################################################################
     def run(self, port):
-        self.setup_callbacks()  # Move this line after setting the layout
+        self._setup_callbacks()  # Move this line after setting the layout
         self.app.run_server(port=port, debug=True)
 
 ##############################################################################
@@ -158,9 +159,10 @@ def main(faculty_code):
     port = int(os.getenv('PORT', 8050))
     config = all_config[faculty_code]
 
-    initialize_rag(faculty_code)
+    rag = Rag()
+    rag.init(faculty_code)
 
-    dash_chat = DashChat()
+    dash_chat = DashChat(rag)
     title = config["title"]
     subtitle = config["description"]
     dash_chat.init(title, subtitle)
