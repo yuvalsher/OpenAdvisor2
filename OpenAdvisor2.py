@@ -17,7 +17,7 @@ all_config = {
 ##############################################################################
 def main(faculty_code):
     # Fetch the port from the environment
-    port = int(os.getenv('PORT', 8050))
+    port = int(os.getenv('PORT', 10000))
     config = all_config[faculty_code]
 
     rag = Rag()
