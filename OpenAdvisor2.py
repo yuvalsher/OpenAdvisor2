@@ -1,3 +1,5 @@
+import logging
+import sys
 import os
 from dash_chat import DashChat
 from rag import Rag
@@ -15,7 +17,30 @@ all_config = {
 }
 
 ##############################################################################
+# Redirect print statements to logging
+class PrintToLogger:
+    def write(self, message):
+        if message.strip():  # Avoid logging empty messages
+            logging.info(message.strip())
+
+    def flush(self):
+        pass
+
+##############################################################################
 def main(faculty_code):
+
+    # Configure logging
+    logging.basicConfig(
+        level=logging.DEBUG,  # Set the logging level
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        handlers=[
+            logging.StreamHandler(sys.stdout),  # Log to standard output
+            logging.FileHandler('app.log')      # Log to a file
+        ]
+    )
+
+    sys.stdout = PrintToLogger()
+    
     # Fetch the port from the environment, default to 10000
     port = int(os.getenv('PORT', 10000))
     config = all_config[faculty_code]

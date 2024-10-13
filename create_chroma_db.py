@@ -28,6 +28,8 @@ KB_PATH = "OpenAdvisor2/kb/json_source"
 ord = 1   
 
 ##############################################################################
+
+##############################################################################
 def save_to_chroma(chunks: list[Document], faculty: str):
     # Clear out the database first.
     chrome_db = f"{CHROMA_PATH}_{faculty}"
