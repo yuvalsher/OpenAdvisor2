@@ -1,5 +1,6 @@
 import re
 import os
+import logging
 from typing import List
 import markdown
 from langchain_core.prompts import PromptTemplate
@@ -41,15 +42,34 @@ class Rag:
 
     ##############################################################################
     def init(self, faculty_code):
-        os.environ["LANGCHAIN_TRACING_V2"] = "true"
-        os.environ["LANGCHAIN_API_KEY"] = "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"
+        self.faculty_code = faculty_code
+        self.embedding_function = OpenAIEmbeddings()
+        
+        # Define the path to the Chroma DB
+        db_path = f"chroma_db_{faculty_code}"
+        
+        # Check if the directory exists
+        if not os.path.exists(db_path):
+            logging.error(f"Chroma DB directory does not exist: {db_path}")
+            raise FileNotFoundError(f"Chroma DB directory not found: {db_path}")
 
-        embedding_function = OpenAIEmbeddings()
-        chroma_path = f"{self.CHROMA_PATH}_{faculty_code}"
-        self.db = Chroma(persist_directory=chroma_path, embedding_function=embedding_function)
+        try:
+            self.vectordb = Chroma(persist_directory=db_path, embedding_function=self.embedding_function)
+            logging.info(f"Successfully opened Chroma DB at {db_path}")
+            
+            # Verify that the DB contains documents
+            collection_size = self.vectordb._collection.count()
+            if collection_size == 0:
+                logging.warning(f"Chroma DB at {db_path} is empty")
+            else:
+                logging.info(f"Chroma DB contains {collection_size} documents")
+
+        except Exception as e:
+            logging.error(f"Failed to open Chroma DB: {str(e)}")
+            raise
 
         self.llm = ChatOpenAI(model="gpt-4o-mini")
-        self.retriever = self.db.as_retriever()
+        self.retriever = self.vectordb.as_retriever()
 
         self.prompt_template = PromptTemplate(
             input_variables=["system", "chat_history", "rag_chunks", "user_input"], 
@@ -131,4 +151,3 @@ class Rag:
     def _format_markdown(self, response):
         formatted_response = markdown.markdown(response.strip())
         return formatted_response
-
