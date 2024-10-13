@@ -13,7 +13,8 @@ from langchain_core.runnables import RunnablePassthrough
 class Rag:
     ##############################################################################
     def __init__(self):
-        self.CHROMA_PATH = "OpenAdvisor2/kb/chroma"
+        #self.CHROMA_PATH = "OpenAdvisor2/kb/chroma"
+        self.CHROMA_PATH = "kb/chroma"
         self.MY_OPENAI_KEY = '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'
         self.system_message = (
             "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. "
