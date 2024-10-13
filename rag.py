@@ -46,7 +46,7 @@ class Rag:
         self.embedding_function = OpenAIEmbeddings()
         
         # Define the path to the Chroma DB
-        db_path = f"chroma_db_{faculty_code}"
+        db_path = f"{self.CHROMA_PATH}_{faculty_code}"
         
         # Check if the directory exists
         if not os.path.exists(db_path):
