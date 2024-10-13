@@ -135,7 +135,6 @@ class DashChat:
         self.app.layout = self._init_layout(title, subtitle)
 
     ##############################################################################
-    def run(self, port):
+    def run(self, host='0.0.0.0', port=10000, debug=False):
         self._setup_callbacks()  # Move this line after setting the layout
-        self.app.run_server(port=port, debug=True)
-
+        self.app.run_server(host=host, port=port, debug=debug)

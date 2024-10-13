@@ -16,7 +16,7 @@ all_config = {
 
 ##############################################################################
 def main(faculty_code):
-    # Fetch the port from the environment
+    # Fetch the port from the environment, default to 10000
     port = int(os.getenv('PORT', 10000))
     config = all_config[faculty_code]
 
@@ -28,7 +28,8 @@ def main(faculty_code):
     subtitle = config["description"]
     dash_chat.init(title, subtitle)
 
-    dash_chat.run(port)
+    # Change this line to bind to all network interfaces
+    dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
     main("CS")
