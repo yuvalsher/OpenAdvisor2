@@ -25,7 +25,7 @@ class PrintToLogger:
 def main(faculty_code):
     # Configure logging
     logging.basicConfig(
-        level=logging.DEBUG,
+        level=logging.INFO,  # Change this to logging.INFO to reduce debug messages
         format='%(asctime)s - %(levelname)s - %(message)s',
         handlers=[
             logging.StreamHandler(sys.stdout),
@@ -33,10 +33,10 @@ def main(faculty_code):
         ]
     )
 
-    # Create a logger that can handle Unicode
-    logger = logging.getLogger()
-    sys.stdout = PrintToLogger(logger)
-    sys.stderr = PrintToLogger(logger, log_level=logging.ERROR)
+    # Disable debug logging for specific modules
+    logging.getLogger('httpx').setLevel(logging.WARNING)
+    logging.getLogger('httpcore').setLevel(logging.WARNING)
+    logging.getLogger('chromadb').setLevel(logging.WARNING)
     
     # Fetch the port from the environment, default to 10000
     port = int(os.getenv('PORT', 10000))
