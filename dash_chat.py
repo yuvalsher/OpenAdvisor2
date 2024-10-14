@@ -10,7 +10,6 @@ class DashChat:
     ##############################################################################
     def __init__(self, rag_obj):
         self.rag_obj = rag_obj
-        self.welcome_msg = "שלום, איך אוכל לעזור לך היום?"
         self.user_name = "user"
         self.bot_name = "bot"
         self.config = {}
@@ -131,10 +130,12 @@ class DashChat:
             return dash.no_update, dash.no_update, dash.no_update
 
     ##############################################################################
-    def init(self, title, subtitle):
+    def init(self, title, subtitle, config):
+        self.config = config
+        self.welcome_msg = config["Chat_Welcome_Message"]
         self.app.layout = self._init_layout(title, subtitle)
 
     ##############################################################################
     def run(self, host='0.0.0.0', port=10000, debug=False):
-        self._setup_callbacks()  # Move this line after setting the layout
+        self._setup_callbacks()
         self.app.run_server(host=host, port=port, debug=debug)

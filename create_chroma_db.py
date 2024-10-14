@@ -11,33 +11,33 @@ import os
 import shutil
 import json
 from uuid import uuid4
+from config import all_config
 
 # Load environment variables. Assumes that project contains .env file with API keys
 load_dotenv()
 #---- Set OpenAI API key 
 # Change environment variable name from "OPENAI_API_KEY" to the name given in 
 # your .env file.
-MY_OPENAI_KEY = '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'
+MY_OPENAI_KEY = all_config["General"]["OPENAI_API_KEY"]
 
 # openai.api_key = os.environ['OPENAI_API_KEY']
 openai.api_key = MY_OPENAI_KEY
-
-CHROMA_PATH = "OpenAdvisor2/kb/chroma"
-KB_PATH = "OpenAdvisor2/kb/json_source"
-
-ord = 1   
-
+ord = 1  
 ##############################################################################
 
 ##############################################################################
 def save_to_chroma(chunks: list[Document], faculty: str):
-    # Clear out the database first.
-    chrome_db = f"{CHROMA_PATH}_{faculty}"
+    # Get the general configuration
+    general_config = all_config["General"]
+
+    # Use the Chroma_Path from the config
+    chrome_db = f"{general_config['Chroma_Path']}_{faculty}"
     if os.path.exists(chrome_db):
         shutil.rmtree(chrome_db)
 
     embeddings = OpenAIEmbeddings(
-        model="text-embedding-3-small"
+        model=general_config["embeddings"],
+        openai_api_key=MY_OPENAI_KEY ###general_config["OPENAI_API_KEY"]
     )
 
     # Create a new DB from the documents.
@@ -45,21 +45,23 @@ def save_to_chroma(chunks: list[Document], faculty: str):
         chunks, embeddings, persist_directory=chrome_db
     )
 
-    #db.persist()
     print(f"Saved {len(chunks)} chunks to {chrome_db}.")
 
 ##############################################################################
 def load_json_file(filename, type, documents):
     global ord
-    # Load crawled_data.json
-    filename = os.path.join(KB_PATH, filename)
+    # Get the general configuration
+    general_config = all_config["General"]
 
-    # if the file does not exist - exists the function
-    if not os.path.exists(filename):
-        print(f"File {filename} does not exist.")
+    # Use the DB_Path from the config
+    full_path = os.path.join(general_config["DB_Path"], filename)
+
+    # if the file does not exist - exits the function
+    if not os.path.exists(full_path):
+        print(f"File {full_path} does not exist.")
         return
     
-    with open(filename, "r", encoding='utf-8') as f:
+    with open(full_path, "r", encoding='utf-8') as f:
         data = json.load(f)
 
     local_counter = 0
@@ -117,7 +119,6 @@ def create_kb_db(faculty_list):
         if (faculty != "OUI"):
             load_json_file(f"{faculty}_courses.json", "Courses", documents)
 
-        #uuids = [str(uuid4()) for _ in range(len(documents))]
         save_to_chroma(documents, faculty)
         print(f"Created Chroma DB for {faculty}.")
 

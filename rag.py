@@ -6,31 +6,17 @@ import markdown
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain_openai import OpenAIEmbeddings
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough
 
 class Rag:
     ##############################################################################
     def __init__(self):
-        # Get the directory of the current script
-        script_dir = os.path.dirname(os.path.abspath(__file__))
-        # Set CHROMA_PATH relative to the script directory
-        self.CHROMA_PATH = os.path.join(script_dir, "kb", "chroma")
-        self.MY_OPENAI_KEY = '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'
-        self.system_message = (
-            "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. "
-            "Your primary role is to assist OUI students and prospective students by answering their questions related to studying at OUI. "
-            "Use the following pieces of retrieved context to answer the question. "
-            "If you don't know the answer, say that you don't know. "
-            "Each piece of context include its source url. Always provide the sources of all the pieces of information you provide. "
-            "\n\n---\n\n"
-        )
         self.db = None
         self.llm = None
         self.retriever = None
         self.prompt_template = None
-        self.prompt_template_text="""
+        self.prompt_template_text = """
     {system}
 
     Chat History:
@@ -44,12 +30,15 @@ class Rag:
     """
 
     ##############################################################################
-    def init(self, faculty_code):
+    def init(self, faculty_code, config):
         self.faculty_code = faculty_code
-        self.embedding_function = OpenAIEmbeddings()
+        self.config = config
+        
+        # Use the system message from the config
+        self.system_message = config["Rag_System_message"]
         
         # Define the path to the Chroma DB
-        db_path = f"{self.CHROMA_PATH}_{faculty_code}"
+        db_path = f"{config['Chroma_Path']}_{faculty_code}"
         
         # Check if the directory exists
         if not os.path.exists(db_path):
@@ -57,6 +46,13 @@ class Rag:
             raise FileNotFoundError(f"Chroma DB directory not found: {db_path}")
 
         try:
+            # Initialize the embedding function with the API key
+            self.embedding_function = OpenAIEmbeddings(
+                model=config["embeddings"],
+                openai_api_key=config["OPENAI_API_KEY"]
+            )
+            
+            # Initialize Chroma with the embedding function
             self.vectordb = Chroma(persist_directory=db_path, embedding_function=self.embedding_function)
             logging.info(f"Successfully opened Chroma DB at {db_path}")
             
@@ -71,7 +67,8 @@ class Rag:
             logging.error(f"Failed to open Chroma DB: {str(e)}")
             raise
 
-        self.llm = ChatOpenAI(model="gpt-4o-mini")
+        # Initialize ChatOpenAI with the API key
+        self.llm = ChatOpenAI(model=config["llm_model"], openai_api_key=config["OPENAI_API_KEY"])
         self.retriever = self.vectordb.as_retriever()
 
         self.prompt_template = PromptTemplate(
@@ -98,7 +95,7 @@ class Rag:
         if not course_numbers:
             return None
         if len(course_numbers) == 1:
-            return {"course_number": course_numbers[0]}
+            return {"course_number": {"$eq": course_numbers[0]}}
         else:
             return {"course_number": {"$in": course_numbers}}
 
@@ -121,27 +118,41 @@ class Rag:
     ##############################################################################
     def _retrieve_rag_chunks(self, query_text):
         def format_doc(doc):
-            content = doc.page_content
-            source = doc.metadata["source"]
+            content = doc['document']
+            source = doc['metadata'].get('source', 'Unknown')
             return f"{content}\nSource: {source}"
 
         def format_docs(docs):
             return "\n\n---\n\n".join(format_doc(doc) for doc in docs)
-        
-        retrieve_docs = (lambda x: x["input"]) | self.retriever
 
         course_numbers = self._extract_course_numbers(query_text)
         print("Found course Numbers:", course_numbers)
+
+        # Get the embedding for the query text
+        query_embedding = self.vectordb._embedding_function.embed_query(query_text)
+
         if course_numbers:
             metadata_filter = self._build_metadata_filter(course_numbers)
-            context_chunks = retrieve_docs.invoke({"input": query_text, "filter": metadata_filter})
+            results = self.vectordb._collection.query(
+                query_embeddings=[query_embedding],
+                n_results=4,
+                where=metadata_filter
+            )
         else:
-            context_chunks = retrieve_docs.invoke({"input": query_text})
-        
-        print(f"Got {len(context_chunks)} RAG Chunks")
+            results = self.vectordb._collection.query(
+                query_embeddings=[query_embedding],
+                n_results=4
+            )
 
-        formatted_context = format_docs(context_chunks)
-        
+        context_chunks = results['documents'][0]
+        metadatas = results['metadatas'][0]
+
+        print(f"Got {len(context_chunks)} RAG Chunks")
+        for chunk, metadata in zip(context_chunks, metadatas):
+            print(f"Chunk metadata: {metadata}")
+
+        formatted_docs = [{'document': doc, 'metadata': meta} for doc, meta in zip(context_chunks, metadatas)]
+        formatted_context = format_docs(formatted_docs)
         return formatted_context
 
     ##############################################################################
