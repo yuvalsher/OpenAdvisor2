@@ -115,7 +115,7 @@ def create_kb_db(faculty_list):
         print(f"\nCreating Chroma DB for {faculty}...")
         documents = []
         load_json_file(f"crawled_data_{faculty}.json", "web-text", documents)
-        load_json_file(f"youtube_transcripts_{faculty}.json", "YouTube", documents)
+        #load_json_file(f"youtube_transcripts_{faculty}.json", "YouTube", documents)
         if (faculty != "OUI"):
             load_json_file(f"{faculty}_courses.json", "Courses", documents)
 

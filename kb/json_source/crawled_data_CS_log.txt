@@ -1,0 +1,10 @@
+
+
+Starting crawling for CS...
+
+
+Found the following YouTube links:
+https://www.youtube.com/watch?v=rnHixxhRWig - Transcript found, length: 7191, title: 1 ןוטרס.
+https://www.youtube.com/watch?v=o4mgsfGHJy8 - Transcript found, length: 11104, title: א קלח 2 ןוטרס.
+https://www.youtube.com/watch?v=Y2JB5eKB7-Q - Transcript found, length: 4974, title: ב קלח 2 ןוטרס.
+https://www.youtube.com/watch?v=fPrq1sHu8ug - Transcript found, length: 4808, title: 3 ןוטרס.
