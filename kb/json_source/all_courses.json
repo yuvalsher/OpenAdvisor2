@@ -1,0 +1,1840 @@
+[
+    {
+        "course_url": "http://www.openu.ac.il/courses/20402.htm",
+        "course_id": "20402",
+        "course_name": "מוליכים למחצה",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה",
+                "אלקטרוניקה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "יסודות הפיסיקה",
+            "20406",
+            "20474",
+            "20492",
+            "20437",
+            "20470",
+            "20490",
+            "20470",
+            "20480",
+            "20483",
+            "20482",
+            "אלקטרוניקה א",
+            "פרקים בפיסיקה מודרנית"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "2 או הקורס תרמודינמיקה (﻿20217) שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20403.htm",
+        "course_id": "20403",
+        "course_name": "התקני מוליכים למחצה ומיקרואלקטרוניקה",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה",
+                "אלקטרוניקה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "20402",
+            "20406",
+            "20474",
+            "20492",
+            "20437",
+            "20470",
+            "20490",
+            "20470",
+            "20480",
+            "20483",
+            "20482",
+            "אלקטרוניקה א",
+            "פרקים בפיסיקה מודרנית"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "2 או הקורס תרמודינמיקה (﻿20217) שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20404.htm",
+        "course_id": "20404",
+        "course_name": "כימיה אי-אורגנית",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "20437",
+            "20470",
+            "20490",
+            "20470",
+            "20480"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20405.htm",
+        "course_id": "20405",
+        "course_name": "מעבדה בביוכימיה של חלבונים",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי החיים"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 לא חל על הסטודנטים שלמדו עד סמסטר 2022ב כולל לפחות שניים מהקורסים התא-מבנה ופעילות (﻿20452 או 20214), גנטיקה א (﻿20495), ביוכימיה א (﻿20204), עולם החיידקים (﻿20237), ביוכימיה ב (﻿20247). או שלמדו כבר אחד מקורסי המעבדה: מעבדה בביולוגיה של התא (﻿20236), מעבדה בביולוגיה מולקולרית (﻿20460), מעבדה באימונולוגיה (﻿20459), מעבדה בביוטכנולוגיה: תהליכים מיקרוביאליים (﻿20457) עד וכולל סמסטר 2023א."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20406.htm",
+        "course_id": "20406",
+        "course_name": "חשבון דיפרנציאלי ואינטגרלי א",
+        "credits": "להשלמת הרקע הדרוש לקורס ולחזרה, מכיל ספר הקורס נספח קצר בתורת הקבוצות ונספח מקיף בטריגונומטריה. נושאי רקע אחרים נסקרים בפרק הראשון של הספר. עם זאת, מומלץ לסטודנטים לרענן את הרקע של לימודי המתמטיקה בתיכון (﻿ברמה של 4 יחידות לימוד ומעלה) על-ידי עיון בספרות המקובלת או על ידי השתתפות בקורס מתמטיקה קדם אקדמית (﻿95003), שאינו מקנה נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 חדו\"א – קיצור של חשבון דיפרנציאלי ואינטגרלי."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20407.htm",
+        "course_id": "20407",
+        "course_name": "מבני נתונים ומבוא לאלגוריתמים",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "יסודות התכנות בשפת פייתון) 6,",
+            "20476",
+            "20474",
+            "אלגברה לינארית 1",
+            "אלגברה ליניארית לתלמידי מדעים",
+            "20425",
+            "מבוא לסטטיסטיקה ולהסתברות למדעים"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או שני הקורסים מבוא למדעי המחשב ושפת Java א (﻿20453, 3 נ\"ז) ומבוא למדעי המחשב ושפת Java ב (﻿20454, 3 נ\"ז). מומלץ ללמוד את הקורס מבני נתונים ומבוא לאלגוריתמים (﻿20407) בסמוך ללימוד קורס המבוא.",
+            "3 או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "4 הקורס נקרא בעבר אלגברה לינארית לתלמידי מדעי הטבע.",
+            "5 דרושה בשלות מתמטית הנקנית על ידי לימוד הקורסים המתמטיים.",
+            "6 או יסודות התכנות בשפת Java שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20409.htm",
+        "course_id": "20409",
+        "course_name": "מעבדה בפיסיקה ב",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "יסודות הפיסיקה",
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "פרקים בפיסיקה מודרנית",
+            "מכניקה",
+            "חשמל ומגנטיות",
+            "אטומים מולקולות ותכונות החומר",
+            "גלים ואופטיקה",
+            "20418"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20410.htm",
+        "course_id": "20410",
+        "course_name": "ביולוגיה התפתחותית",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [
+            "החולייתנים",
+            "שנתי",
+            "סמסטריאלי"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20411.htm",
+        "course_id": "20411",
+        "course_name": "פיזיולוגיה של מערכות באדם",
+        "credits": "6 נקודות זכות ברמה מתקדמת",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2     תכנית הלימודים במדעי החיים עברה שינויים וכתוצאה מכך שונו תנאי הקבלה לקורס. סטודנטים שהחלו לימודיהם במדעי החיים לפני סמסטר א2002 יכולים לפנות לייעוץ."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20412.htm",
+        "course_id": "20412",
+        "course_name": "אקולוגיה",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "20437",
+            "20470",
+            "עולם הכימיה",
+            "20495",
+            "מבוא לסטטיסטיקה ולהסתברות למדעים"
+        ],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או הקורס גנטיקה (﻿20275), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20413.htm",
+        "course_id": "20413",
+        "course_name": "תורת המספרים האלמנטרית",
+        "credits": "ידע קודם דרוש: בשלות מתמטית הנקנית על ידי צבירה של כ-15 נקודות זכות במתמטיקה.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 הקורס יוצע ללימוד בפעם האחרונה בסמסטר ב2023."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20415.htm",
+        "course_id": "20415",
+        "course_name": "נושאים בהתנהגות בעלי חיים",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [
+            "ביולוגיה כללית א",
+            "ביולוגיה כללית ב",
+            "החולייתנים"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20416.htm",
+        "course_id": "20416",
+        "course_name": "תורת ההסתברות",
+        "credits": "עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 6 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20474",
+            "+ חשבון אינפיניטסימלי 2",
+            "20406",
+            "20423"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או השלשה חשבון אינפיניטסימלי 1 (﻿20474) + השלמות בחשבון אינטגרלי + חשבון דיפרנציאלי ואינטגרלי ב, או הצמד חשבון אינפיניטסימלי 1 (﻿20106, שאינו מוצע עוד) + חשבון דיפרנציאלי ואינטגרלי ב, או השלשה חשבון אינפיניטסימלי 1 (﻿20106, שאינו מוצע עוד) + חשבון אינפיניטסימלי 2 (﻿20212, שאינו מוצע עוד) + חשבון אינפיניטסימלי 3."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20417.htm",
+        "course_id": "20417",
+        "course_name": "אלגוריתמים",
+        "credits": "1 עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 4 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "תורת הקבוצות, קומבינטוריקה ותורת הגרפים."
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "2 בעבר נקרא הקורס אלגברה ליניארית לתלמידי מדעי הטבע.",
+            "3 למי שלמדו את הקורס מבני נתונים ולא למדו את הקורס מבני נתונים ומבוא לאלגוריתמים מומלץ להתייעץ עם מרכז/ת הקורס אלגוריתמים לפני ההרשמה אליו."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20418.htm",
+        "course_id": "20418",
+        "course_name": "מעבדה ביסודות הפיסיקה",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20420.htm",
+        "course_id": "20420",
+        "course_name": "ארגון המחשב ותכנותו",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "מערכות ספרתיות"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1החל מסמסטר ב2009 הקורס אינו מוצע עוד להוראה ובמקומו מוצע הקורס ארגון המחשב.",
+            "2     או שני הקורסים מבוא למדעי המחשב ושפת Java א (﻿20453, 3 נ\"ז) ומבוא למדעי המחשב ושפת Java ב (﻿20454, 3 נ\"ז), או הקורס  מבוא למדעי המחשב (﻿20427), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20421.htm",
+        "course_id": "20421",
+        "course_name": "מעבדה במטאורולוגיה: מדידות, תצפיות וניתוח סינופטי",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ",
+                "מטאורולוגיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20422.htm",
+        "course_id": "20422",
+        "course_name": "מכניקה אנליטית",
+        "credits": "1 עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 3 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20406",
+            "20474",
+            "20492",
+            "מכניקה",
+            "חשמל ומגנטיות",
+            "אלגברה לינארית 1",
+            "20430",
+            "מבוא למשוואות דיפרנציאליות רגילות",
+            "משוואות דיפרנציאליות רגילות 1",
+            "20423"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "2 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "3 בעבר נקרא הקורס אלגברה לינארית לתלמידי מדעי הטבע.",
+            "4 או הצמד חשבון אינפיניטסימלי 2 (﻿20212, שאינו מוצע עוד) + חשבון אינפיניטסימלי 3, למי שלמדו את חשבון אינפיניטסימלי 1 (﻿20106, שאינו מוצע עוד; או הקורס חשבון אינפיניטסימלי 3, למי שלמדו את חשבון אינפיניטסימלי 1 + חשבון אינפיניטסימלי 2 (﻿20475+20474 או 20212+20106)."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20423.htm",
+        "course_id": "20423",
+        "course_name": "חשבון דיפרנציאלי ואינטגרלי ב",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20406",
+            "20474",
+            "20492"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או הצמד חשבון אינפיניטסימלי 1  (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד. אפשר ללמוד את הקורס במקביל לקורס השלמות בחשבון אינטגרלי (﻿20492).",
+            "3 חדו\"א – קיצור של חשבון דיפרנציאלי ואינטגרלי."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20425.htm",
+        "course_id": "20425",
+        "course_name": "הסתברות ומבוא לסטטיסטיקה למדעי המחשב",
+        "credits": "1 להשלכות על צבירת נ\"ז בשל חפיפה עם קורס(﻿ים) אחר(﻿ים), ראו פירוט החפיפה. עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 4 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20474",
+            "20475",
+            "20406"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "2 או צמד הקורסים חשבון אינפיניטסימלי 1 (﻿20474) + השלמות בחשבון אינטגרלי, או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד. אפשר ללמוד את הקורס הסתברות לתלמידי מדעי המחשב במקביל לקורס השלמות בחשבון אינטגרלי או במקביל לקורס חשבון אינפיניטסימלי 2 (﻿20475)."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20426.htm",
+        "course_id": "20426",
+        "course_name": "השלמות בהסתברות",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20427.htm",
+        "course_id": "20427",
+        "course_name": "מבוא למדעי המחשב",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "אנגלית"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "1הוראת הקורס הופסקה בסוף סמסטר ב2007."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20428.htm",
+        "course_id": "20428",
+        "course_name": "עיונים בחינוך מתמטי",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעים - כללי"
+            ]
+        ],
+        "required_dependencies": [
+            "פסיכולוגיה בחינוך",
+            "פילוסופיה של המדע",
+            "שיטות מחקר במדעי החברה: עקרונות המחקר וסגנונותיו"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1לסטודנטים הלומדים לקראת תואר במדעים בהדגשת מתמטיקה, ובפרט לאלה מביניהם העוסקים או המתכוונים לעסוק בהוראה, מומלץ לשבץ את הקורס הזה בתכנית לימודיהם, אך אין הוא פוטר מן הדרישות הנוגעות להיקף הלימודים במתמטיקה ובמדעי המחשב."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20430.htm",
+        "course_id": "20430",
+        "course_name": "אלגברה לינארית לתלמידי מדעים",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "מתמטיקה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20432.htm",
+        "course_id": "20432",
+        "course_name": "מבוא לפיסיקה חישובית",
+        "credits": "תנאי קבלה: 37 נקודות זכות עבור קורסים קודמים בפיסיקה. ידע קודם דרוש: הקורסים מבוא למדעי המחשב ושפת Java (﻿או שני הקורסים מבוא למדעי המחשב ושפת Java א + מבוא למדעי המחשב ושפת Java ב), או יסודות התכנות בשפת פייתון1 או תכנות וניתוח נתונים בשפת פייתון1 משוואות דיפרנציאליות רגילות 1 או מבוא למשוואות דיפרנציאליות רגילות , אלגברה לינארית 1 או אלגברה לינארית לתלמידי מדעים.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20433.htm",
+        "course_id": "20433",
+        "course_name": "מבני נתונים",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "תכנות וניתוח נתונים בשפת פייתון",
+            "20476",
+            "נושאים במתמטיקה לתלמידי מדעי החברה: פרקים בתורת הקבוצות, בלוגיקה ובאלגברה לינארית",
+            "20406",
+            "מבוא לסטטיסטיקה ולהסתברות לתלמידי מדעים",
+            "מבוא לסטטיסטיקה לתלמידי מדעי החברה א",
+            "20425"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או שני הקורסים מבוא למדעי המחשב ושפת Java א (﻿20453, 3 נ\"ז) ומבוא למדעי המחשב ושפת Java ב (﻿20454, 3 נ\"ז).",
+            "מומלץ ללמוד את הקורס מבני נתונים (﻿20433) בסמוך ללימוד קורס המבוא.",
+            "3 או הקורס חשבון דיפרנציאלי לתלמידי כלכלה וניהול (﻿10142), למי שלומד לתואר בכלכלה ובמדעי המחשב – מערכות ויישומים.",
+            "4 דרושה בשלות מתמטית הנקנית על ידי לימוד הקורסים המתמטיים.",
+            "5 או יסודות התכנות בשפת Java שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20434.htm",
+        "course_id": "20434",
+        "course_name": "מבוא לגיאופיסיקה",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ",
+                "גיאולוגיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "יסודות הפיסיקה",
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "מבוא למדע כדור-הארץ",
+            "צפונות כדור-הארץ"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20436.htm",
+        "course_id": "20436",
+        "course_name": "עקרונות פיתוח מערכות מידע",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "מערכות בסיסי-נתונים"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20437.htm",
+        "course_id": "20437",
+        "course_name": "כימיה כללית",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "עולם הכימיה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20439.htm",
+        "course_id": "20439",
+        "course_name": "מעבדה בכימיה אורגנית",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20440.htm",
+        "course_id": "20440",
+        "course_name": "אוטומטים ושפות פורמליות",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "20476",
+            "20474",
+            "אלגברה לינארית 1",
+            "אלגברה ליניארית לתלמידי מדעים"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או שני הקורסים מבוא למדעי המחשב ושפת Java א (﻿20453, 3 נ\"ז) ומבוא למדעי המחשב ושפת Java ב (﻿20454, 3 נ\"ז).",
+            "3 או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "4 בעבר נקרא הקורס אלגברה לינארית לתלמידי מדעי הטבע."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20441.htm",
+        "course_id": "20441",
+        "course_name": "מבוא למדעי המחשב ושפת Java",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20442.htm",
+        "course_id": "20442",
+        "course_name": "הנדסת תוכנה: הפשטה ועיצוב מונחה עצמים",
+        "credits": "3 נקודות זכות ברמה רגילה + 3 ברמה מתקדמת",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20407",
+            "20433"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20443.htm",
+        "course_id": "20443",
+        "course_name": "עולם החשמל והאלקטרוניקה",
+        "credits": "",
+        "classification": [],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20445.htm",
+        "course_id": "20445",
+        "course_name": "הכרת המערכת האקולוגית של מפרץ אילת",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים, ובכללם הקורסים ביולוגיה כללית א, ביולוגיה כללית ב, כימיה כללית1 (﻿או כימיה כללית א + כימיה כללית ב לביולוגים, או כימיה כללית א + כימיה כללית ב), אקולוגיה, אוקיינוגרפיה, לפחות קורס מעבדה אחד, וכן עמידה בדרישות האנגלית. ידע קודם מומלץ: הקורס החולייתנים. ההרשמה לקורס מותנית באישור של ועדת קבלה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי הטבע והחיים - כללי"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ",
+                "אוקיינוגרפיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1או הקורסים כימיה כללית (﻿20477, 20487), שאינם מוצעים עוד.",
+            "2מבין הקורסים הבאים: 20445, 20447, 20448, 20464."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20446.htm",
+        "course_id": "20446",
+        "course_name": "התנהגות בעלי חיים ימיים",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים, ובכללם הקורסים ביולוגיה כללית א, ביולוגיה כללית ב, יסודות הפיסיקה לביולוגים א, יסודות הפיסיקה לביולוגים ב, אקולוגיה, נושאים בהתנהגות בעלי חיים, לפחות קורס מעבדה אחד, וכן עמידה בדרישות האנגלית. ההרשמה לקורס מותנית באישור של ועדת קבלה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 מבין הקורסים הבאים: 20445, 20446, 20447, 20464, 20646."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20447.htm",
+        "course_id": "20447",
+        "course_name": "ביוגיאוכימיה של שונית האלמוגים",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים, ובכללם הקורס אוקיינוגרפיה, לפחות קורס מעבדה אחד, וכן עמידה בדרישות האנגלית. ידע קודם דרוש: הקורסים יסודות הפיסיקה א, ביולוגיה כללית א, ביולוגיה כללית ב, אחד מבין הקורסים עולם הכימיה, כימיה כללית1 (﻿או כימיה כללית א + כימיה כללית ב לביולוגים, או כימיה כללית א + כימיה כללית ב) וכן אחד מבין הקורסים מבוא למדע כדור-הארץ או צפונות כדור-הארץ. ההרשמה לקורס מותנית באישור של ועדת קבלה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי הטבע והחיים - כללי"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ",
+                "אוקיינוגרפיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1או הקורסים כימיה כללית (﻿20477, 20487), שאינם מוצעים עוד.",
+            "2מבין הקורסים הבאים: 20445, 20447, 20448, 20464."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20448.htm",
+        "course_id": "20448",
+        "course_name": "שיטות מחקר באוקיינוגרפיה",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים, ובכללם הקורס אוקיינוגרפיה, לפחות קורס מעבדה אחד, וכן עמידה בדרישות האנגלית. ידע קודם דרוש: הקורסים יסודות הפיסיקה א, ביולוגיה כללית א, ביולוגיה כללית ב, אחד מבין הקורסים עולם הכימיה, כימיה כללית1 (﻿או כימיה כללית א + כימיה כללית ב לביולוגים, או כימיה כללית א + כימיה כללית ב), וכן אחד מבין הקורסים מבוא למדע כדור-הארץ, צפונות כדור-הארץ. ההרשמה לקורס מותנית באישור של ועדת קבלה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ",
+                "אוקיינוגרפיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1או הקורסים כימיה כללית (﻿20477, 20487), שאינם מוצעים עוד.",
+            "2מבין הקורסים הבאים: 20445, 20447, 20448, 20464."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20450.htm",
+        "course_id": "20450",
+        "course_name": "סדנה בדגי ים-סוף",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים, ובכללם הקורסים ביולוגיה כללית א, ביולוגיה כללית ב, החולייתנים, אקולוגיה, לפחות קורס מעבדה אחד, וכן עמידה בדרישות האנגלית. ההרשמה לקורס מותנית באישור של ועדת קבלה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 מבין הקורסים הבאים: 20466, 20450, 20451, 20445, 20447, 20464."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20452.htm",
+        "course_id": "20452",
+        "course_name": "התא: מבנה ופעילות",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "סטודנטים שלמדו  בעבר את הקורס 20214 שאינו נלמד עוד, פטורים מלימוד קורס זה.",
+            "בעבר נקרא הקורס התא: מבנה ופעילות (﻿מתכונת סמסטריאלית)."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20453.htm",
+        "course_id": "20453",
+        "course_name": "מבוא למדעי המחשב ושפת Java א",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20454.htm",
+        "course_id": "20454",
+        "course_name": "מבוא למדעי המחשב ושפת Java ב",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20453",
+            "מתמטיקה"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20455.htm",
+        "course_id": "20455",
+        "course_name": "עקרונות הביוטכנולוגיה",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או הקורס גנטיקה (﻿20275), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20456.htm",
+        "course_id": "20456",
+        "course_name": "כימיה אורגנית",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "20437",
+            "20470",
+            "20490",
+            "20470",
+            "20480"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20457.htm",
+        "course_id": "20457",
+        "course_name": "מעבדה בביוטכנולוגיה:תהליכים מיקרוביאליים",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 לא חל על הסטודנטים שלמדו עד סמסטר 2022ב כולל לפחות שניים מהקורסים התא-מבנה ופעילות (﻿20452 או 20214), גנטיקה א (﻿20495), ביוכימיה א (﻿20204), עולם החיידקים (﻿20237), ביוכימיה ב (﻿20247). או שלמדו כבר אחד מקורסי המעבדה: מעבדה בביולוגיה של התא (﻿20236), מעבדה בביוכימיה של חלבונים (﻿20405), מעבדה בביולוגיה מולקולרית (﻿20460), מעבדה באימונולוגיה (﻿20459), עד וכולל סמסטר 2023א."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20458.htm",
+        "course_id": "20458",
+        "course_name": "מעבדה: כימיה בפעולה",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1"
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20459.htm",
+        "course_id": "20459",
+        "course_name": "מעבדה באימונולוגיה",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 לא חל על הסטודנטים שלמדו עד סמסטר 2022ב כולל לפחות שניים מהקורסים התא-מבנה ופעילות (﻿20452 או 20214), גנטיקה א (﻿20495), ביוכימיה א (﻿20204), עולם החיידקים (﻿20237), ביוכימיה ב (﻿20247). או שלמדו כבר אחד מקורסי המעבדה: מעבדה בביולוגיה של התא (﻿20236), מעבדה בביוכימיה של חלבונים (﻿20405), מעבדה בביולוגיה מולקולרית (﻿20460), מעבדה בביוטכנולוגיה: תהליכים מיקרוביאליים (﻿20457) עד וכולל סמסטר 2023א."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20460.htm",
+        "course_id": "20460",
+        "course_name": "מעבדה בביולוגיה מולקולרית",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 לא חל על הסטודנטים שלמדו עד סמסטר 2022ב כולל לפחות שניים מהקורסים התא-מבנה ופעילות (﻿20452 או 20214), גנטיקה א (﻿20495), ביוכימיה א (﻿20204), עולם החיידקים (﻿20237), ביוכימיה ב (﻿20247). או שלמדו כבר אחד מקורסי המעבדה: מעבדה בביולוגיה של התא (﻿20236), מעבדה בביוכימיה של חלבונים (﻿20405), מעבדה באימונולוגיה (﻿20459), מעבדה בביוטכנולוגיה: תהליכים מיקרוביאליים (﻿20457) עד וכולל סמסטר 2023א."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20461.htm",
+        "course_id": "20461",
+        "course_name": "מעבדה בפיזיולוגיה של בעלי חיים",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 אפשר ללמוד את הקורס מעבדה בפיזיולוגיה של בעלי חיים (﻿20461) ואת הקורס העיוני פיזיולוגיה של מערכות באדם (﻿20556) בו-זמנית, באישור מרכז/ת ההוראה של קורס המעבדה. לא יינתן ציון על  קורס המעבדה לפני קבלת הציון על הקורס העיוני.",
+            "2 או הקורסים יסודות הפיסיקה א (﻿20113) + יסודות הפיסיקה ב (﻿20114), או הקורס יסודות הפיסיקה (﻿20125)."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20462.htm",
+        "course_id": "20462",
+        "course_name": "אנליזה נומרית 1",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ],
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "20453",
+            "יסודות התכנות בשפת פייתון",
+            "אלגברה לינארית 1",
+            "20430",
+            "20474",
+            "20475",
+            "20406",
+            "20423"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1   או יסודות התכנות בשפת Java שאינו מוצע עוד",
+            "2  הקורס נקרא בעבר אלגברה לינארית לתלמידי מדעי הטבע.",
+            "3 או אחד מבין הצמדים  חשבון אינפיניטסימלי 1 (﻿20106) + חשבון אינפיניטסימלי 2 (﻿20212), שאינם מוצעים עוד, או חשבון אינפיניטסימלי 1 (﻿20106, שאינו מוצע עוד) + חשבון דיפרנציאלי ואינטגרלי ב."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20463.htm",
+        "course_id": "20463",
+        "course_name": "מעבדה בכימיה אי-אורגנית",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20464.htm",
+        "course_id": "20464",
+        "course_name": "ביולוגיה של עטלפי מדבר",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים במדעים בממוצע ציונים 82, לפחות, ובכללם הקורסים ביולוגיה כללית א, ביולוגיה כללית ב, אקולוגיה, אחד מהקורסים נושאים בהתנהגות בעלי חיים, פיזיולוגיה של מערכות באדם, וכן עמידה בדרישת האנגלית ובדרישות ההדרכה הביבליוגרפית בספרייה. ההרשמה מותנית באישור מרכז ההוראה באוניברסיטה הפתוחה ובאישור מרכז הקורס באוניברסיטת בן-גוריון בנגב.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 ראו קורסים של המכון הבין-אוניברסיטאי באילת."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20465.htm",
+        "course_id": "20465",
+        "course_name": "מעבדה בתכנות מערכות",
+        "credits": "עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 3 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או שני הקורסים מבוא למדעי המחשב ושפת Java א (﻿20453, 3 נ\"ז) ומבוא למדעי המחשב ושפת Java ב (﻿20454, 3 נ\"ז)."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20466.htm",
+        "course_id": "20466",
+        "course_name": "לוגיקה למדעי המחשב",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ],
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "מתמטיקה",
+            "20476",
+            "",
+            "מדעי המחשב"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20467.htm",
+        "course_id": "20467",
+        "course_name": "ניהול והערכת פרויקטים עתירי טכנולוגיה",
+        "credits": "ידע קודם דרוש: 30 נקודות זכות קודמות במדעים ובכללן הקורס מבוא לסטטיסטיקה ולהסתברות לתלמידי מדעים.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי הטבע והחיים - כללי"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20468.htm",
+        "course_id": "20468",
+        "course_name": "גנטיקה של האדם: היבטים רפואיים ואתיים (﻿גנטיקה ללא-ביולוגים)",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעים - כללי"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20469.htm",
+        "course_id": "20469",
+        "course_name": "תמסורת גלים ואנטנות",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה",
+                "אלקטרוניקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20470.htm",
+        "course_id": "20470",
+        "course_name": "כימיה כללית א",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "עולם הכימיה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20471.htm",
+        "course_id": "20471",
+        "course_name": "ארגון המחשב",
+        "credits": "2 עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 3 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [
+            "20441",
+            "20453",
+            "20454",
+            "20465",
+            "20407",
+            "20433"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20472.htm",
+        "course_id": "20472",
+        "course_name": "תולדות המתמטיקה: מיוון העתיקה ועד זמנו של אוילר",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20474",
+            "20406"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 למי שמעוניין לבחור בקורס זה ואין לו הידע הקודם הדרוש, מומלץ לפנות ליועץ למתמטיקה.",
+            "2 או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20474.htm",
+        "course_id": "20474",
+        "course_name": "חשבון אינפיניטסימלי 1",
+        "credits": "עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 6 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "אשנב למתמטיקה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "1 הקורס החליף את הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד. אין חפיפה מלאה בין שני הקורסים: הנושאים אקסיומות המספרים הממשיים וגבולות של סדרות כלולים בקורס 20474 ולא בקורס 20106, ונושא האינטגרל כלול בקורס 20106 ולא בקורס 20474."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20475.htm",
+        "course_id": "20475",
+        "course_name": "חשבון אינפיניטסימלי 2",
+        "credits": "עד סמסטר ג2021 (﻿כולל) הקנה קורס זה 6 נקודות זכות.",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20474"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "1 הקורס החליף את הקורס חשבון אינפיניטסימלי 2 (﻿20212), שאינו מוצע עוד. אין חפיפה מלאה בין שני הקורסים: הנושאים ביחידות 1, 2, 7 כלולים בקורס 20475 ולא בקורס 20212, ונושא הסדרות כלול בקורס 20212 ולא בקורס 20475.",
+            "2 ולא הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד.",
+            "3 אינפי – קיצור של חשבון אינפיניטסימלי."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20476.htm",
+        "course_id": "20476",
+        "course_name": "מתמטיקה בדידה: תורת הקבוצות, קומבינטוריקה ותורת הגרפים",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "אשנב למתמטיקה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20477.htm",
+        "course_id": "20477",
+        "course_name": "כימיה כללית (מתכונת שנתית, סתיו)",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "עולם הכימיה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20478.htm",
+        "course_id": "20478",
+        "course_name": "יסודות התכנות בשפת Java",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי המחשב"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "1 הקורס אינו מוכר ללומדים בתכניות לתארים במדעי המחשב.",
+            "2 בהתאם לתכנית הלימודים המבוקשת. מומלץ להיעזר ביועצים למדעי הקוגניציה או למדעי המחשב."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20480.htm",
+        "course_id": "20480",
+        "course_name": "כימיה כללית ב",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "20470"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20482.htm",
+        "course_id": "20482",
+        "course_name": "תרמודינמיקה לפיסיקאים",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "פיסיקה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20483.htm",
+        "course_id": "20483",
+        "course_name": "תרמודינמיקה",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "יסודות הפיסיקה",
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "20406",
+            "20474",
+            "20492",
+            "20437",
+            "20470",
+            "אטומים מולקולות ותכונות החומר"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20485.htm",
+        "course_id": "20485",
+        "course_name": "ביוכימיה א לכימאים",
+        "credits": "3 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או כימיה כללית (﻿20477 + 20487) שאינם מוצעים עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20487.htm",
+        "course_id": "20487",
+        "course_name": "כימיה כללית (﻿מתכונת שנתית אביב)",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [
+            "עולם הכימיה"
+        ],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20488.htm",
+        "course_id": "20488",
+        "course_name": "עולם החשמל והאלקטרוניקה א",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה",
+                "אלקטרוניקה"
+            ]
+        ],
+        "required_dependencies": [
+            "יסודות הפיסיקה",
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "20406",
+            "20474",
+            "20492"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20489.htm",
+        "course_id": "20489",
+        "course_name": "עולם החשמל והאלקטרוניקה ב",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "פיסיקה",
+                "אלקטרוניקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20488"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20490.htm",
+        "course_id": "20490",
+        "course_name": "כימיה כללית ב לביולוגים",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "20470"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "2 סטודנטים שלמדו את הקורס כימיה כללית א (﻿20470) יוכלו להירשם לקורס כימיה כללית ב לביולוגים (﻿20490) ללא תשלום. מי שיבקשו לחזור פעם נוספת על הקורס כימיה כללית ב לביולוגים (﻿20490) יחויבו בתשלום."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20491.htm",
+        "course_id": "20491",
+        "course_name": "קריאה ביקורתית של מאמרים ותכנון מחקר",
+        "credits": "תנאי קבלה: 72 נקודות זכות עבור קורסים קודמים במדעים, ובכללם לפחות 50 נקודות זכות עבור קורסים במדעי החיים (﻿כולל הקורסים ביולוגיה כללית א +ביולוגיה כללית ב), וכן עמידה בדרישות האנגלית ובדרישות ההדרכה הביבליוגרפית בספרייה.",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20492.htm",
+        "course_id": "20492",
+        "course_name": "השלמות בחשבון אינטגרלי",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מתמטיקה"
+            ]
+        ],
+        "required_dependencies": [
+            "20474"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "1 בשל ההיקף המצומצם של הקורס יהיה שכר הלימוד מופחת (﻿כ-50% משכר לימוד לקורס). לפרטי תשלום ראו שכר לימוד לקורסים ספציפיים."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20493.htm",
+        "course_id": "20493",
+        "course_name": "מבוא לאוקיינוגרפיה",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי כדור-הארץ"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20494.htm",
+        "course_id": "20494",
+        "course_name": "עולם הצמחים",
+        "credits": "6 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20495.htm",
+        "course_id": "20495",
+        "course_name": "גנטיקה א",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": [
+            "החל מסמסטר א2017 הוחלף הקורס גנטיקה (﻿20275), שאינו מוצע עוד, בשני הקורסים: גנטיקה א (﻿4 נ\"ז רגילות) וגנטיקה ב (﻿2 נ\"ז רגילות + 2 נ\"ז מתקדמות). סטודנטים שתכנית הלימודים שלהם מחייבת את הקורס גנטיקה (﻿20275), שאינו מוצע עוד (﻿מדעי החיים בהדגשת הביוטכנולוגיה, מדעי החיים בהדגשה תאית-מולקולרית, מדעי החיים עם צבר קורסים של קדם-רפואה והשילוב של מדעי החיים ומדעי המחשב) יחויבו ללמוד את הקורסים גנטיקה א וגנטיקה ב. בשאר התכניות במדעי החיים, הקורסים גנטיקה א וגנטיקה ב יהיו קורסי בחירה."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20496.htm",
+        "course_id": "20496",
+        "course_name": "מעבדת שדה: ביולוגיה של הזנבן הערבי",
+        "credits": "2 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע והחיים",
+                "מדעי החיים"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I",
+        "text": [],
+        "footnotes": []
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20497.htm",
+        "course_id": "20497",
+        "course_name": "פרקים בכימיה פיסיקלית",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "כימיה"
+            ]
+        ],
+        "required_dependencies": [
+            "יישומי המחשב ויסודות התכנות למדעים",
+            "יסודות הפיסיקה א",
+            "יסודות הפיסיקה ב",
+            "20437",
+            "20470",
+            "20406",
+            "20474",
+            "20492",
+            "20483"
+        ],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": [
+            "1 או הצמד חשבון אינפיניטסימלי 1 (﻿20474) + חשבון אינפיניטסימלי 2 (﻿20475), או הקורס חשבון אינפיניטסימלי 1 (﻿20106), שאינו מוצע עוד."
+        ]
+    },
+    {
+        "course_url": "http://www.openu.ac.il/courses/20498.htm",
+        "course_id": "20498",
+        "course_name": "מבוא לגיאוכימיה",
+        "credits": "4 נקודות זכות ברמה רגילה",
+        "classification": [
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי כדור-הארץ",
+                "גיאולוגיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי כדור-הארץ",
+                "אוקיינוגרפיה"
+            ],
+            [
+                "מדעים",
+                "מדעי הטבע",
+                "מדעי כדור-הארץ",
+                "מטאורולוגיה"
+            ]
+        ],
+        "required_dependencies": [],
+        "recommended_dependencies": [],
+        "overlap": "",
+        "text": [],
+        "footnotes": []
+    }
+]

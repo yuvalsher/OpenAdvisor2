@@ -1,7 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-import config
+from config import all_config
 import json
+import os
+
 
 # Function to extract course data from a course page
 ##############################################################################
@@ -70,8 +72,7 @@ def extract_course_data(course_url):
             "course_id": "",
             "course_name": "",
             "credits": "",
-            "primary_classification": "",
-            "secondary_classification": [],
+            "classification": [],
             "required_dependencies": [],
             "recommended_dependencies": [],
             "overlap": "",
@@ -88,6 +89,8 @@ def extract_course_data(course_url):
             print('No content found')
             return None
         
+        classifications = []
+
         # Loop over the children of the content tag.
         for child in content.children:
 
@@ -111,10 +114,12 @@ def extract_course_data(course_url):
                     course_data['credits'] = clean_text(child_text)
                     continue
                 elif child_text.startswith('שיוך:'):
-                    course_data['primary_classification'] = clean_text(child_text.replace('שיוך:', ''))
+                    classifications.append(clean_text(child_text.replace('שיוך:', '')))
+                    #course_data['primary_classification'] = clean_text(child_text.replace('שיוך:', ''))
                     continue
                 elif child_text.startswith('שיוך נוסף:'):
-                    course_data['secondary_classification'].append(clean_text(child_text.replace('שיוך נוסף:', '')))
+                    classifications.append(clean_text(child_text.replace('שיוך נוסף:', '')))
+                    #course_data['secondary_classification'].append(clean_text(child_text.replace('שיוך נוסף:', '')))
                     continue
                 elif child_text.startswith('ידע קודם מומלץ'):
                     recommended_courses = child.find_all('a')
@@ -134,8 +139,13 @@ def extract_course_data(course_url):
                         course_data['footnotes'].append(clean_text(child_text))
                     continue
 
-            # now handle remaining text elements.
-            course_data['text'].append(clean_text(child.get_text()))
+        if classifications:
+            for classification in classifications:
+                # split classification text by " / "
+                hierarchy = []
+                for part in classification.split(' / '):
+                    hierarchy.append(part)                
+                course_data['classification'].append(hierarchy)
 
         return course_data
     
@@ -146,24 +156,40 @@ def extract_course_data(course_url):
         return None
 
 ##############################################################################
+def fix_dependencies(course_dependencies, course_names):
+    for i in range(len(course_dependencies)):
+        name = course_dependencies[i]
+        if name in course_names:
+            id = course_names[name]
+            course_dependencies[i] = id
+
+##############################################################################
 # Main function to extract course data for the range and save to JSON
 ##############################################################################
 def extract_all_course_data():
     print('Extracting course data...')
     base_url = "http://www.openu.ac.il/courses/{}.htm"
     courses_data = []
+    course_names = {}
 
-    for course_number in range(20100, 21000):
+    for course_number in range(10000, 40000):
         course_url = base_url.format(course_number)
         course_data = extract_course_data(course_url)
         if course_data:
+            course_names[course_data['course_name']] = course_data['course_id']
             print(f"Course Number: {course_number}, found")
             courses_data.append(course_data)
         else:
             print(f"Course Number: {course_number}")
     
-    with open(config.UPLOAD_FILES_FOLDER + '\\cs_courses.json', 'w', encoding='utf-8') as json_file:
+    # replace course dependencies from course names to course numbers
+    for course in courses_data:
+        fix_dependencies(course['required_dependencies'], course_names)
+        fix_dependencies(course['recommended_dependencies'], course_names)
+    
+    filename = os.path.join(all_config['General']['DB_Path'], 'all_courses.json')
+    with open(filename, 'w', encoding='utf-8') as json_file:
         json.dump(courses_data, json_file, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    extract_course_data()
+    extract_all_course_data()
