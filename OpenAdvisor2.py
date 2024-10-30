@@ -3,6 +3,7 @@ import sys
 import os
 from dash_chat import DashChat
 from rag import Rag
+from CoursesWithTools import CoursesWithTools
 from config import all_config
 
 
@@ -43,10 +44,15 @@ def main(faculty_code):
     text_config = all_config[faculty_code]
     general_config = all_config["General"]
 
-    rag = Rag(faculty_code, general_config)
-    rag.init()
+    llm_obj = None
+    if (faculty_code == "Courses"):
+        llm_obj = CoursesWithTools(faculty_code, general_config)
+    else:
+        llm_obj = Rag(faculty_code, general_config)
 
-    dash_chat = DashChat(rag)
+    llm_obj.init()
+
+    dash_chat = DashChat(llm_obj)
     title = text_config["title"]
     subtitle = text_config["description"]
     dash_chat.init(title, subtitle, general_config)
@@ -55,4 +61,5 @@ def main(faculty_code):
     dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    main("CS")
+    #main("CS")
+    main("Courses")
