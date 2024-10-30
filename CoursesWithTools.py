@@ -9,24 +9,8 @@ from langchain_core.tools import Tool, StructuredTool
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 
-
-@tool("GetCourseNameFromID")
-def get_course_name_from_id(self, course_id: str) -> str:
-    """Get the course name from the course ID. Input should be a course id string"""
-    print(f"In Tool: Getting course name for {course_id}")
-    return self.course_by_id[course_id]['course_name']
-
-tools = [
-            Tool(
-                name="GetCourseNameFromID",  # Name of the tool
-                func=get_course_name_from_id,  # Function to execute
-                description="Get the course name from the course ID."  # Description of the tool
-            ),
-        ]       
-
-
 ##############################################################################
-##############################################################################
+###### CoursesWithTools class  
 ##############################################################################
 class CoursesWithTools(AbstractLlm):
 
@@ -57,24 +41,8 @@ class CoursesWithTools(AbstractLlm):
 
     ##############################################################################
     def _init_agent(self):
-        # Pull the prompt template from the hub
-        self.hub_prompt = hub.pull("hwchase17/openai-tools-agent")
 
-        self.build_agent()
-
-    ##############################################################################
-    def init(self):
-        # Initialize a ChatOpenAI model
-        self.llm = ChatOpenAI(model=self.config["llm_model"])
-
-        # Initialize the agent
-        self._init_agent()
-
-        # Initialize the data
-        self._init_data()
-
-    ##############################################################################
-    def build_agent(self):
+        ##############################################################################
         @tool("GetCourseNameFromID")
         def get_course_name_from_id(course_id: str) -> str:
             """Get the course name from the course ID.
@@ -85,7 +53,75 @@ class CoursesWithTools(AbstractLlm):
             print(f"In Tool: Getting course name for {course_id}")
             return self.course_by_id[course_id]['course_name']
         
-        tools = [get_course_name_from_id]
+        ##############################################################################
+        @tool("GetCourseCreditsFromID")
+        def get_course_credits_from_id(course_id: str) -> str:
+            """Get the course credits from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course credits for {course_id}")
+            return self.course_by_id[course_id]['credits']
+        
+        ##############################################################################
+        @tool("GetCourseUrlFromID")
+        def get_course_url_from_id(course_id: str) -> str:
+            """Get the course url from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course url for {course_id}")
+            return self.course_by_id[course_id]['course_url']
+        
+        ##############################################################################
+        @tool("GetCourseClassificationsFromID")
+        def get_course_classifications_from_id(course_id: str) -> str:
+            """Get the course classifications from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course classifications for {course_id}")
+            return self.course_by_id[course_id]['classification']
+        
+        ##############################################################################
+        @tool("GetCourseDependenciesFromID")
+        def get_course_dependencies_from_id(course_id: str) -> str:
+            """Get the course dependencies from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course dependencies for {course_id}")
+            deps = []
+            deps.append(self.course_by_id[course_id]['required_dependencies'])
+            deps.append(self.course_by_id[course_id]['recommended_dependencies'])
+            return deps
+        
+        ##############################################################################
+        @tool("GetCourseSemestersFromID")
+        def get_course_semesters_from_id(course_id: str) -> str:
+            """Get the course semesters from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course semesters for {course_id}")
+            return self.course_by_id[course_id]['semesters']
+        
+        tools = [
+                    get_course_name_from_id, 
+                    get_course_url_from_id, 
+                    get_course_credits_from_id, 
+                    get_course_classifications_from_id,
+                    get_course_dependencies_from_id,
+                    get_course_semesters_from_id
+                ]
+
+        # Pull the prompt template from the hub
+        self.hub_prompt = hub.pull("hwchase17/openai-tools-agent")
 
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
@@ -103,6 +139,17 @@ class CoursesWithTools(AbstractLlm):
         )
 
         self.agent = agent_executor
+
+    ##############################################################################
+    def init(self):
+        # Initialize a ChatOpenAI model
+        self.llm = ChatOpenAI(model=self.config["llm_model"])
+
+        # Initialize the agent
+        self._init_agent()
+
+        # Initialize the data
+        self._init_data()
 
     ##############################################################################
     def do_query(self, user_input: str, chat_history: list[dict]) -> str:
