@@ -8,10 +8,12 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough
+from AbstractLlm import AbstractLlm
 
-class Rag:
+class Rag(AbstractLlm):
     ##############################################################################
-    def __init__(self):
+    def __init__(self, faculty_code, config):
+        super().__init__(faculty_code, config)
         self.db = None
         self.llm = None
         self.retriever = None
@@ -30,15 +32,12 @@ class Rag:
     """
 
     ##############################################################################
-    def init(self, faculty_code, config):
-        self.faculty_code = faculty_code
-        self.config = config
-        
+    def init(self):
         # Use the system message from the config
-        self.system_message = config["Rag_System_message"]
+        self.system_message = self.config["Rag_System_message"]
         
         # Define the path to the Chroma DB
-        db_path = f"{config['Chroma_Path']}_{faculty_code}"
+        db_path = f"{self.config['Chroma_Path']}_{self.faculty_code}"
         
         # Check if the directory exists
         if not os.path.exists(db_path):
@@ -48,8 +47,8 @@ class Rag:
         try:
             # Initialize the embedding function with the API key
             self.embedding_function = OpenAIEmbeddings(
-                model=config["embeddings"],
-                openai_api_key=config["OPENAI_API_KEY"]
+                model=self.config["embeddings"],
+                openai_api_key=self.config["OPENAI_API_KEY"]
             )
             
             # Initialize Chroma with the embedding function
@@ -68,7 +67,7 @@ class Rag:
             raise
 
         # Initialize ChatOpenAI with the API key
-        self.llm = ChatOpenAI(model=config["llm_model"], openai_api_key=config["OPENAI_API_KEY"])
+        self.llm = ChatOpenAI(model=self.config["llm_model"], openai_api_key=self.config["OPENAI_API_KEY"])
         self.retriever = self.vectordb.as_retriever()
 
         self.prompt_template = PromptTemplate(
@@ -76,7 +75,7 @@ class Rag:
             template=self.prompt_template_text)
 
     ##############################################################################
-    def get_rag_response(self, user_input, chat_history):
+    def do_query(self, user_input: str, chat_history: list[dict]) -> str:
         print("Initiating RAG")
         rag_chunks = self._retrieve_rag_chunks(user_input)
         (runnable_chain, formatted_input) = self._prepare_prompt(user_input, chat_history, rag_chunks)

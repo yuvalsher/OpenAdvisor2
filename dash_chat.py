@@ -2,14 +2,15 @@ import dash
 import json
 from dash import dcc, html
 from dash.dependencies import Input, Output, State
+from AbstractLlm import AbstractLlm
 
 ##############################################################################
 ##############################################################################
 ##############################################################################
 class DashChat:
     ##############################################################################
-    def __init__(self, rag_obj):
-        self.rag_obj = rag_obj
+    def __init__(self, llm_obj: AbstractLlm):
+        self.llm_obj = llm_obj
         self.user_name = "user"
         self.bot_name = "bot"
         self.config = {}
@@ -99,8 +100,10 @@ class DashChat:
                     chat_history = chat_history.replace("\'", "\"")
                     chat_history = json.loads(chat_history)
 
-                bot_response = self.rag_obj.get_rag_response(user_message, chat_history)
+                # Get the response from the LLM object
+                bot_response = self.llm_obj.do_query(user_message, chat_history)
 
+                # Add the user message and the bot response to the chat history
                 full_query = chat_history
                 full_query.append({'sender': self.user_name, 'message': user_message})
                 full_query.append({'sender': self.bot_name, 'message': bot_response})

@@ -43,8 +43,8 @@ def main(faculty_code):
     text_config = all_config[faculty_code]
     general_config = all_config["General"]
 
-    rag = Rag()
-    rag.init(faculty_code, general_config)
+    rag = Rag(faculty_code, general_config)
+    rag.init()
 
     dash_chat = DashChat(rag)
     title = text_config["title"]
