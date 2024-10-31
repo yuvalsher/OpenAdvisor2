@@ -4,8 +4,10 @@ import os
 import json
 from langchain.agents import tool, AgentExecutor, create_tool_calling_agent
 from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
 from langchain import hub
 from langchain_core.tools import Tool, StructuredTool
+from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 
@@ -20,7 +22,7 @@ class CoursesWithTools(AbstractLlm):
         self.course_data = []
         self.course_by_id = {}
         self.course_by_name = {}
-
+        self.memory = None
     ##############################################################################
     def _init_data(self):
         # Use the DB_Path from the config
@@ -123,23 +125,43 @@ class CoursesWithTools(AbstractLlm):
             return self.course_by_id[course_id]['semesters']
         
         ##############################################################################
+        @tool("GetCourseDescriptionFromID")
+        def get_course_description_from_id(course_id: str) -> str:
+            """Get the course description from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            print(f"In Tool: Getting course description for {course_id}")
+            return self.course_by_id[course_id]['text']
+        
+        ##############################################################################
         tools = [
                     get_course_name_from_id, 
                     get_course_url_from_id, 
                     get_course_credits_from_id, 
                     get_course_classifications_from_id,
                     get_course_dependencies_from_id,
-                    get_course_semesters_from_id
+                    get_course_semesters_from_id,
+                    get_course_description_from_id
                 ]
 
         # Pull the prompt template from the hub
         self.prompt_template = hub.pull("hwchase17/openai-tools-agent")
 
+        # ConversationBufferMemory stores the conversation history, allowing the agent to maintain context across interactions
+        self.memory = ConversationBufferMemory(
+            memory_key="chat_history", 
+            return_messages=True
+        )
+
+        self.memory.chat_memory.add_message(SystemMessage(content=system_instructions))
+
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
             llm=self.llm,
             tools=tools,
-            prompt=self.prompt_template
+            prompt=self.prompt_template,
         )
 
         # Create the agent executor
@@ -147,6 +169,7 @@ class CoursesWithTools(AbstractLlm):
             agent=agent,
             tools=tools,
             verbose=True,
+            memory=self.memory,
             handle_parsing_errors=True,
         )
 
@@ -164,6 +187,7 @@ class CoursesWithTools(AbstractLlm):
         self._init_data()
 
     ##############################################################################
+    """
     def _format_chat_history(self, chat_history: list[dict]) -> list[dict]:
         formatted_history = []
         for entry in chat_history:
@@ -172,12 +196,23 @@ class CoursesWithTools(AbstractLlm):
                 "content": entry["message"]
             })
         return formatted_history 
+    """
 
     ##############################################################################
     def do_query(self, user_input: str, chat_history: list[dict]) -> str:
-        formatted_chat_history = self._format_chat_history(chat_history)
-        response = self.agent.invoke({"input": user_input, "chat_history": formatted_chat_history})
+        # Ignore Dash chat history - use memory instead.
+        #formatted_chat_history = self._format_chat_history(chat_history)
+        #response = self.agent.invoke({"input": user_input, "chat_history": formatted_chat_history})
+
+        # Add the user's message to the conversation memory
+        self.memory.chat_memory.add_message(HumanMessage(content=user_input))
+
+        response = self.agent.invoke({"input": user_input})
         print(f"Agent Response: {response}")
+
+        # Add the agent's response to the conversation memory
+        self.memory.chat_memory.add_message(AIMessage(content=response["output"]))
+
         return response['output']
 
 ##############################################################################
