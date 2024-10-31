@@ -12,7 +12,7 @@ class DashChat:
     def __init__(self, llm_obj: AbstractLlm):
         self.llm_obj = llm_obj
         self.user_name = "user"
-        self.bot_name = "bot"
+        self.bot_name = "assistant" #"bot"
         self.config = {}
         self.app = dash.Dash(__name__)
         # Remove the setup_callbacks() call from here
@@ -89,13 +89,15 @@ class DashChat:
             prevent_initial_call=True
         )
         def update_chat(n_clicks, chat_history_children, user_message, chat_history):
+            msg_sender = 'sender'
+            msg_text = 'message'
             ctx = dash.callback_context
             triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
             if triggered_id == 'send-button' and user_message:
                 print("User Message:", user_message[::-1])
                 if chat_history is None:
-                    chat_history = [{'sender': self.bot_name, 'message': self.welcome_msg}]
+                    chat_history = [{msg_sender: self.bot_name, msg_text: self.welcome_msg}]
                 else:
                     chat_history = chat_history.replace("\'", "\"")
                     chat_history = json.loads(chat_history)
@@ -105,8 +107,8 @@ class DashChat:
 
                 # Add the user message and the bot response to the chat history
                 full_query = chat_history
-                full_query.append({'sender': self.user_name, 'message': user_message})
-                full_query.append({'sender': self.bot_name, 'message': bot_response})
+                full_query.append({msg_sender: self.user_name, msg_text: user_message})
+                full_query.append({msg_sender: self.bot_name, msg_text: bot_response})
 
                 chat_layout = []
                 for entry in full_query:
@@ -117,12 +119,12 @@ class DashChat:
                         'border-radius': '10px', 
                         'margin': '5px 0'
                     }
-                    if entry['sender'] == self.bot_name:
+                    if entry[msg_sender] == self.bot_name:
                         style.update({'color': 'green', 'background-color': '#e8f5e9'})
                     else:
                         style.update({'color': 'blue', 'background-color': '#e0f7fa'})
                     
-                    chat_layout.append(html.Div(children=[dcc.Markdown(entry['message'], style=style)]))
+                    chat_layout.append(html.Div(children=[dcc.Markdown(entry[msg_text], style=style)]))
 
                 return chat_layout, json.dumps(full_query), ''  # Clear input field
             

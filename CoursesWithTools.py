@@ -41,6 +41,17 @@ class CoursesWithTools(AbstractLlm):
 
     ##############################################################################
     def _init_agent(self):
+        system_instructions = """You are an AI model serving as an academic advisor for the Open University of Israel (OUI). 
+                                 The language of the OUI is Hebrew.
+                                 You use tools to provide answers in a concise manner. 
+                                 The name of the OUI in Hebrew is האוניברסיטה הפתוחה. 
+                                 The tools give you access to a database of OUI courses.
+                                 You can use these tools to answer questions about the courses.
+                                 Each course has a unique id, a unique name, and several other details.
+                                 Courses have a list of available semesters in which they are offered, for example '2025א' is the first semester of 2025, 
+                                 '2025ב' is the second semester of 2025, and '2025ג' is the third semester of 2025.
+                                 Each course has one of more classifications ("סיווגים"), which is typically the name of the department that offers the course, followed by the name of the faculty.
+                                 """
 
         ##############################################################################
         @tool("GetCourseNameFromID")
@@ -111,6 +122,7 @@ class CoursesWithTools(AbstractLlm):
             print(f"In Tool: Getting course semesters for {course_id}")
             return self.course_by_id[course_id]['semesters']
         
+        ##############################################################################
         tools = [
                     get_course_name_from_id, 
                     get_course_url_from_id, 
@@ -121,13 +133,13 @@ class CoursesWithTools(AbstractLlm):
                 ]
 
         # Pull the prompt template from the hub
-        self.hub_prompt = hub.pull("hwchase17/openai-tools-agent")
+        self.prompt_template = hub.pull("hwchase17/openai-tools-agent")
 
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
             llm=self.llm,
             tools=tools,
-            prompt=self.hub_prompt,
+            prompt=self.prompt_template
         )
 
         # Create the agent executor
@@ -152,9 +164,19 @@ class CoursesWithTools(AbstractLlm):
         self._init_data()
 
     ##############################################################################
-    def do_query(self, user_input: str, chat_history: list[dict]) -> str:
+    def _format_chat_history(self, chat_history: list[dict]) -> list[dict]:
+        formatted_history = []
+        for entry in chat_history:
+            formatted_history.append({
+                "role": entry["sender"],
+                "content": entry["message"]
+            })
+        return formatted_history 
 
-        response = self.agent.invoke({"input": user_input })
+    ##############################################################################
+    def do_query(self, user_input: str, chat_history: list[dict]) -> str:
+        formatted_chat_history = self._format_chat_history(chat_history)
+        response = self.agent.invoke({"input": user_input, "chat_history": formatted_chat_history})
         print(f"Agent Response: {response}")
         return response['output']
 
