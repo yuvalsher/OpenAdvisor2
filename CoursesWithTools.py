@@ -63,6 +63,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course name for {course_id}")
             return self.course_by_id[course_id]['course_name']
         
@@ -74,6 +79,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course credits for {course_id}")
             return self.course_by_id[course_id]['credits']
         
@@ -85,6 +95,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course url for {course_id}")
             return self.course_by_id[course_id]['course_url']
         
@@ -96,6 +111,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course classifications for {course_id}")
             return self.course_by_id[course_id]['classification']
         
@@ -107,6 +127,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course dependencies for {course_id}")
             deps = []
             deps.append(self.course_by_id[course_id]['required_dependencies'])
@@ -121,6 +146,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course semesters for {course_id}")
             return self.course_by_id[course_id]['semesters']
         
@@ -132,6 +162,11 @@ class CoursesWithTools(AbstractLlm):
             Args:
                 course_id: The ID of the course to look up
             """
+
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+            
             print(f"In Tool: Getting course description for {course_id}")
             return self.course_by_id[course_id]['text']
         
