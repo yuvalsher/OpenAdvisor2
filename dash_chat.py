@@ -88,30 +88,33 @@ class DashChat:
              State('hidden-chat-store', 'children')],
             prevent_initial_call=True
         )
-        def update_chat(n_clicks, chat_history_children, user_message, chat_history):
-            msg_sender = 'sender'
-            msg_text = 'message'
+        def update_chat(n_clicks, chat_history_children, user_message, chat_history_json):
+            msg_sender = 'role' #'sender'
+            msg_text = 'content' #'message'
             ctx = dash.callback_context
             triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
             if triggered_id == 'send-button' and user_message:
                 print("User Message:", user_message[::-1])
-                if chat_history is None:
+                if chat_history_json is None:
                     chat_history = [{msg_sender: self.bot_name, msg_text: self.welcome_msg}]
                 else:
-                    chat_history = chat_history.replace("\'", "\"")
-                    chat_history = json.loads(chat_history)
+                    fixed_json = chat_history_json.replace("\'", "\"")
+                    try:    
+                        chat_history = json.loads(fixed_json)
+                    except json.JSONDecodeError as e:
+                        print(f"Error parsing JSON: {e}")
+                        return dash.no_update, dash.no_update, dash.no_update
 
                 # Get the response from the LLM object
                 bot_response = self.llm_obj.do_query(user_message, chat_history)
 
                 # Add the user message and the bot response to the chat history
-                full_query = chat_history
-                full_query.append({msg_sender: self.user_name, msg_text: user_message})
-                full_query.append({msg_sender: self.bot_name, msg_text: bot_response})
+                chat_history.append({msg_sender: self.user_name, msg_text: user_message})
+                chat_history.append({msg_sender: self.bot_name, msg_text: bot_response})
 
                 chat_layout = []
-                for entry in full_query:
+                for entry in chat_history:
                     style = {
                         'text-align': 'right', 
                         'direction': 'rtl', 
@@ -126,7 +129,7 @@ class DashChat:
                     
                     chat_layout.append(html.Div(children=[dcc.Markdown(entry[msg_text], style=style)]))
 
-                return chat_layout, json.dumps(full_query), ''  # Clear input field
+                return chat_layout, json.dumps(chat_history), ''  # Clear input field
             
             elif triggered_id == 'chat-history':
                 # Scroll to bottom logic

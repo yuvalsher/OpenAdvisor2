@@ -68,8 +68,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course name for {course_id}")
-            return self.course_by_id[course_id]['course_name']
+            result = self.course_by_id[course_id]['course_name']
+            print(f"In Tool: Getting course name for {course_id}: {result}")
+            return result
         
         ##############################################################################
         @tool("GetCourseCreditsFromID")
@@ -84,8 +85,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course credits for {course_id}")
-            return self.course_by_id[course_id]['credits']
+            result = self.course_by_id[course_id]['credits']
+            print(f"In Tool: Getting course credits for {course_id}: {result}")
+            return result
         
         ##############################################################################
         @tool("GetCourseUrlFromID")
@@ -100,8 +102,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course url for {course_id}")
-            return self.course_by_id[course_id]['course_url']
+            result = self.course_by_id[course_id]['course_url']
+            print(f"In Tool: Getting course url for {course_id}: {result}")
+            return result
         
         ##############################################################################
         @tool("GetCourseClassificationsFromID")
@@ -116,8 +119,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course classifications for {course_id}")
-            return self.course_by_id[course_id]['classification']
+            result = self.course_by_id[course_id]['classification']
+            print(f"In Tool: Getting course classifications for {course_id}: {result}")
+            return result
         
         ##############################################################################
         @tool("GetCourseDependenciesFromID")
@@ -132,10 +136,10 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course dependencies for {course_id}")
             deps = []
             deps.append(self.course_by_id[course_id]['required_dependencies'])
             deps.append(self.course_by_id[course_id]['recommended_dependencies'])
+            print(f"In Tool: Getting course dependencies for {course_id}: {deps}")
             return deps
         
         ##############################################################################
@@ -151,8 +155,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course semesters for {course_id}")
-            return self.course_by_id[course_id]['semesters']
+            result = self.course_by_id[course_id]['semesters']
+            print(f"In Tool: Getting course semesters for {course_id}: {result}")
+            return result
         
         ##############################################################################
         @tool("GetCourseDescriptionFromID")
@@ -167,8 +172,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            print(f"In Tool: Getting course description for {course_id}")
-            return self.course_by_id[course_id]['text']
+            result = self.course_by_id[course_id]['text']
+            print(f"In Tool: Getting course description for {course_id}: {result}")
+            return result
         
         ##############################################################################
         tools = [
