@@ -11,8 +11,6 @@ class DashChat:
     ##############################################################################
     def __init__(self, llm_obj: AbstractLlm):
         self.llm_obj = llm_obj
-        self.user_name = "user"
-        self.bot_name = "assistant" #"bot"
         self.config = {}
         self.app = dash.Dash(__name__)
         # Remove the setup_callbacks() call from here
@@ -89,8 +87,8 @@ class DashChat:
             prevent_initial_call=True
         )
         def update_chat(n_clicks, chat_history_children, user_message, chat_history_json):
-            msg_sender = 'role' #'sender'
-            msg_text = 'content' #'message'
+            msg_sender = self.config["msg_sender_field"]
+            msg_text = self.config["msg_text_field"]
             ctx = dash.callback_context
             triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
@@ -141,6 +139,8 @@ class DashChat:
     def init(self, title, subtitle, config):
         self.config = config
         self.welcome_msg = config["Chat_Welcome_Message"]
+        self.user_name = config["user_name"]
+        self.bot_name = config["bot_name"]
         self.app.layout = self._init_layout(title, subtitle)
 
     ##############################################################################

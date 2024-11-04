@@ -14,9 +14,13 @@ all_config = {
         "Chroma_Path": os.path.join(script_dir, "kb", "chroma"),
         "DB_Path": os.path.join(script_dir, "kb", "json_source"),
         "Rag_System_message": "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. ",
-        "Chat_Welcome_Message": "שלום, איך אוכל לעזור לך היום?",
+        "Chat_Welcome_Message": "שלום, אני עוזר וירטואלי של האוניברסיטה הפתוחה. כיצד אוכל לעזור לך?",
         "OPENAI_API_KEY": OPENAI_API_KEY,
-        "GOOGLE_API_KEY": GOOGLE_API_KEY
+        "GOOGLE_API_KEY": GOOGLE_API_KEY,
+        "msg_sender_field": "role",
+        "msg_text_field": "content",
+        "user_name": "user",
+        "bot_name": "assistant"
     },
     "OUI": {
         "title": "האוניברסיטה הפתוחה - ייעוץ כללי",

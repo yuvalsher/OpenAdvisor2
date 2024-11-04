@@ -18,6 +18,9 @@ class Rag(AbstractLlm):
         self.llm = None
         self.retriever = None
         self.prompt_template = None
+        self.msg_sender_field = self.config["msg_sender_field"]
+        self.msg_text_field   = self.config["msg_text_field"]
+
         self.prompt_template_text = """
     {system}
 
@@ -100,12 +103,12 @@ class Rag(AbstractLlm):
 
     ##############################################################################
     def _prepare_prompt(self, user_input, chat_history, rag_chunks):
-        def format_history(history):
-            return "\n".join([f"{msg['sender'].capitalize()}: {msg['message']}" for msg in history])
+        def _format_history(history):
+            return "\n".join([f"{msg[self.msg_sender_field].capitalize()}: {msg[self.msg_text_field]}" for msg in history])
 
         formatted_input = {
             "system": self.system_message,
-            "chat_history": format_history(chat_history),
+            "chat_history": _format_history(chat_history),
             "rag_chunks": rag_chunks,
             "user_input": user_input
         }
