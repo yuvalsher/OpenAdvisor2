@@ -13,7 +13,7 @@ class DashChat:
         self.llm_obj = llm_obj
         self.config = {}
         self.app = dash.Dash(__name__)
-        # Remove the setup_callbacks() call from here
+        self.chat_history = []
 
     ##############################################################################
     def _init_layout(self, title, subtitle):
@@ -94,25 +94,18 @@ class DashChat:
 
             if triggered_id == 'send-button' and user_message:
                 print("User Message:", user_message[::-1])
-                if chat_history_json is None:
-                    chat_history = [{msg_sender: self.bot_name, msg_text: self.welcome_msg}]
-                else:
-                    fixed_json = chat_history_json.replace("\'", "\"")
-                    try:    
-                        chat_history = json.loads(fixed_json)
-                    except json.JSONDecodeError as e:
-                        print(f"Error parsing JSON: {e}")
-                        return dash.no_update, dash.no_update, dash.no_update
+                if not self.chat_history:
+                    self.chat_history = [{msg_sender: self.bot_name, msg_text: self.welcome_msg}]
 
                 # Get the response from the LLM object
-                bot_response = self.llm_obj.do_query(user_message, chat_history)
+                bot_response = self.llm_obj.do_query(user_message, self.chat_history)
 
                 # Add the user message and the bot response to the chat history
-                chat_history.append({msg_sender: self.user_name, msg_text: user_message})
-                chat_history.append({msg_sender: self.bot_name, msg_text: bot_response})
+                self.chat_history.append({msg_sender: self.user_name, msg_text: user_message})
+                self.chat_history.append({msg_sender: self.bot_name, msg_text: bot_response})
 
                 chat_layout = []
-                for entry in chat_history:
+                for entry in self.chat_history:
                     style = {
                         'text-align': 'right', 
                         'direction': 'rtl', 
@@ -127,7 +120,7 @@ class DashChat:
                     
                     chat_layout.append(html.Div(children=[dcc.Markdown(entry[msg_text], style=style)]))
 
-                return chat_layout, json.dumps(chat_history), ''  # Clear input field
+                return chat_layout, json.dumps(self.chat_history), ''  # Clear input field
             
             elif triggered_id == 'chat-history':
                 # Scroll to bottom logic

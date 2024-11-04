@@ -245,14 +245,14 @@ class CoursesWithTools(AbstractLlm):
         #formatted_chat_history = self._format_chat_history(chat_history)
         #response = self.agent.invoke({"input": user_input, "chat_history": formatted_chat_history})
 
-        # Add the user's message to the conversation memory
-        self.memory.chat_memory.add_message(HumanMessage(content=user_input))
+        # Add the user's message to the conversation memory - agent.invoke() already does that
+        #self.memory.chat_memory.add_message(HumanMessage(content=user_input))
 
         response = self.agent.invoke({"input": user_input})
         print(f"Agent Response: {response}")
 
-        # Add the agent's response to the conversation memory
-        self.memory.chat_memory.add_message(AIMessage(content=response["output"]))
+        # Add the agent's response to the conversation memory - agent.invoke() already does that
+        #self.memory.chat_memory.add_message(AIMessage(content=response["output"]))
 
         return response['output']
 
