@@ -4,6 +4,7 @@ from config import all_config
 import json
 import os
 
+bad_courses = []
 
 # Function to extract course data from a course page
 ##############################################################################
@@ -85,6 +86,52 @@ def get_semesters(course_id):
 
 
 ##############################################################################
+def get_overlap_courses(course_id, url):
+    dup_url = f"https://www3.openu.ac.il/ouweb/owal/chofef.list?kurs_p=00000&machlaka_akademit_p=000&daf_p=0&sug_p=I&p_search={course_id}"
+    response = requests.get(dup_url)
+    if response.status_code != 200:
+        return None
+    
+    soup = BeautifulSoup(response.content, 'html.parser')
+    
+    duplicates = []
+    try:
+        items = soup.find_all('td', {'width': '13%'})
+        if not items:
+            return None
+        
+        for item in items:
+            duplicates.append(item.get_text().strip())
+
+        # remove course_id from the list
+        duplicates.remove(course_id)
+        return duplicates
+
+    except Exception as e:
+        # Print exception
+        print(f"Error parsing course duplicates: {dup_url}")
+        print(e)     
+        return None
+
+
+##############################################################################
+# The course URL should be formatted like: https://www.openu.ac.il/courses/12345.htm
+# extract the course number
+def extract_course_number_from_course_url(course_url):
+    return course_url.split('/')[-1].split('.')[0]
+
+def extract_course_number_from_dependency_line(element):
+    course_numbers = []
+    condition = element.find_all('a')
+    for course in condition:
+        # if the course element contains an 'href' attribute
+        if course.get('href'):
+            course_number = extract_course_number_from_course_url(course['href'])
+            course_numbers.append(course_number)
+    return course_numbers
+
+
+##############################################################################
 def extract_course_data(course_url):
     response = requests.get(course_url)
     if response.status_code != 200:
@@ -100,9 +147,14 @@ def extract_course_data(course_url):
             "course_name": "",
             "credits": "",
             "classification": [],
-            "required_dependencies": [],
-            "recommended_dependencies": [],
-            "overlap": "",
+            "condition_text": "",
+            "condition_courses": [],
+            "required_deps_text": "",
+            "required_deps_courses": [],
+            "recommended_deps_text": "",
+            "recommended_deps_courses": [],
+            "overlap_url": "",
+            "overlap_courses": [],
             "text": [],
             "footnotes": []
         }
@@ -126,7 +178,8 @@ def extract_course_data(course_url):
             return None
         
         classifications = []
-
+        course_id2 = None
+        course_name2 = None
         # Loop over the children of the content tag.
         for child in content.children:
 
@@ -155,31 +208,34 @@ def extract_course_data(course_url):
                     else:
                         course_data['course_id'], course_data['course_name'] = title_text.split(' ', 1)
                     continue
-                elif 'נקודות זכות' in child_text:
+                elif child_text.startswith('נקודות זכות'):
                     course_data['credits'] = clean_text(child_text)
                     continue
                 elif child_text.startswith('שיוך:'):
                     classifications.append(clean_text(child_text.replace('שיוך:', '')))
-                    #course_data['primary_classification'] = clean_text(child_text.replace('שיוך:', ''))
                     continue
                 elif child_text.startswith('שיוך נוסף:'):
                     classifications.append(clean_text(child_text.replace('שיוך נוסף:', '')))
-                    #course_data['secondary_classification'].append(clean_text(child_text.replace('שיוך נוסף:', '')))
                     continue
                 elif child_text.startswith('ידע קודם מומלץ'):
-                    recommended_courses = child.find_all('a')
-                    for course in recommended_courses:
-                        course_data['recommended_dependencies'].append(clean_text(course.get_text()))
+                    course_data['recommended_deps_text'] = clean_text(child_text.replace('ידע קודם מומלץ:', ''))
+                    course_data['recommended_deps_courses'] = extract_course_number_from_dependency_line(child)
                     continue
                 elif child_text.startswith('ידע קודם דרוש'):
-                    required_dependencies = child.find_all('a')
-                    for course in required_dependencies:
-                        course_data['required_dependencies'].append(clean_text(course.get_text()))
+                    course_data['required_deps_text'] = clean_text(child_text.replace('ידע קודם דרוש:', ''))
+                    course_data['required_deps_courses'] = extract_course_number_from_dependency_line(child)
+                    continue
+                elif child_text.startswith('תנאי קבלה'):
+                    if course_data['condition_text']:
+                        # Ignore if condition text already exists - it will be in the full text
+                        continue
+                    course_data['condition_text'] = clean_text(child_text.replace('תנאי קבלה:', ''))
+                    course_data['condition_courses'] = extract_course_number_from_dependency_line(child)
                     continue
                 elif child_class and ('textheara' in child_class or 'footnotetext' in child_class):
                     a_tag = child.find('a', {'id': 'hofefim'})
                     if a_tag:
-                        course_data['overlap'] = a_tag['href'] 
+                        course_data['overlap_url'] = a_tag['href'] 
                     else:
                         course_data['footnotes'].append(clean_text(child_text))
                     continue
@@ -203,34 +259,28 @@ def extract_course_data(course_url):
                     hierarchy.append(part)                
                 course_data['classification'].append(hierarchy)
 
-        # Find the link to the semesters page
-#        semesters = soup.find('a', {'id': 'semesters'})
-#        if semesters:
-#            slink = semesters['href']
-            sems = get_semesters(course_data['course_id'])
-            if (sems):
-                course_data['semesters'] = sems
+        sems = get_semesters(course_data['course_id'])
+        if (sems):
+            course_data['semesters'] = sems
+
+        if 'overlap_url' in course_data:
+            overlap_url = course_data['overlap_url']
+            if overlap_url:
+                course_data['overlap_courses'] = get_overlap_courses(course_data['course_id'], overlap_url)
 
         return course_data
     
     except Exception as e:
         # Print exception
-        print(f"Error parsing course: {course_url}")
-        print(e)     
+        msg = f"Error parsing course: {course_url}: {e}"
+        print(msg)
+        bad_courses.append(msg)
         return None
-
-##############################################################################
-def fix_dependencies(course_dependencies, course_names):
-    for i in range(len(course_dependencies)):
-        name = course_dependencies[i]
-        if name in course_names:
-            id = course_names[name]
-            course_dependencies[i] = id
 
 ##############################################################################
 # Main function to extract course data for the range and save to JSON
 ##############################################################################
-def extract_all_course_data(from_id, to_id):
+def extract_all_course_data(from_id, to_id, is_test=False):
     print('Extracting course data...')
     base_url = "http://www.openu.ac.il/courses/{}.htm"
     courses_data = []
@@ -246,15 +296,22 @@ def extract_all_course_data(from_id, to_id):
         else:
             print(f"Course Number: {course_number}")
     
-    # replace course dependencies from course names to course numbers
-    for course in courses_data:
-        fix_dependencies(course['required_dependencies'], course_names)
-        fix_dependencies(course['recommended_dependencies'], course_names)
-    
-    filename = os.path.join(all_config['General']['DB_Path'], 'all_courses.json')
+    if not is_test:
+        filename = os.path.join(all_config['General']['DB_Path'], 'all_courses.json')
+    else:
+        filename = os.path.join(all_config['General']['DB_Path'], 'all_courses_test.json')
+
     with open(filename, 'w', encoding='utf-8') as json_file:
         json.dump(courses_data, json_file, ensure_ascii=False, indent=4)
 
+    print("Bad courses:")
+    for msg in bad_courses:
+        print(msg)
+
+
+
+
+
 if __name__ == "__main__":
-    extract_all_course_data(20991, 20993)
-#    extract_all_course_data(10000, 40000)
+#    extract_all_course_data(10582, 20200, True)
+    extract_all_course_data(10100, 34000)
