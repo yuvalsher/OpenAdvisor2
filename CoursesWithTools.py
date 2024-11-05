@@ -61,11 +61,11 @@ class CoursesWithTools(AbstractLlm):
             In case of an overlap, the details of the overlapping courses are given by the 'overlap_url' tool.
             If the user asks specifically about overlaps, the overlap url should be given.
             == Dependencies ==
-            Some courses have dependencies, which are courses that must be taken before the current course.
+            Some courses have dependencies, which are courses that must be taken before the current course. This is called "תנאי קבלה" or "ידע קודם" or "קורסי קדם".
             There are three types of dependencies: required dependencies, recommended dependencies, and condition dependencies.
-            Condition dependencies are conditions (such as courses that must be taken before the current course), without which registration in the current course will fail.
-            Required dependencies are courses that should be taken before the current course.
-            Recommended dependencies are courses that are recommended to be taken before the current course.
+            Condition dependencies ("תנאי קבלה") are conditions (such as courses that must be taken before the current course), without which registration in the current course will fail.
+            Required dependencies ("ידע קודם דרוש") are courses that should be taken before the current course.
+            Recommended dependencies ("ידע קודם מומלץ") are courses that are recommended to be taken before the current course.
             Each type of dependency has two tools: one that returns the text of the dependency, and one that returns the list of courses that are dependencies.
             Sometimes dependent courses have overlaps, so only a subset of them must be taken.
             """
@@ -236,6 +236,25 @@ class CoursesWithTools(AbstractLlm):
             return result
 
         ##############################################################################
+        @tool("GetAllDependenciesCoursesFromID")
+        def get_all_dependencies_courses_from_id(course_id: str) -> str:
+            """Get the all the dependencies courses (condition, required and recommended) from the course ID.
+            
+            Args:
+                course_id: The ID of the course to look up
+            """
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found\n")
+                return None
+            
+            deps = []   
+            deps.extend(self.course_by_id[course_id]['condition_courses'])
+            deps.extend(self.course_by_id[course_id]['required_deps_courses'])
+            deps.extend(self.course_by_id[course_id]['recommended_deps_courses'])
+            print(f"In Tool: Getting all dependencies courses for {course_id}: {deps}\n")
+            return deps
+
+        ##############################################################################
         @tool("GetCourseSemestersFromID")
         def get_course_semesters_from_id(course_id: str) -> str:
             """Get the course semesters from the course ID.
@@ -321,6 +340,7 @@ class CoursesWithTools(AbstractLlm):
                     get_course_required_dependencies_courses_from_id,
                     get_course_recommended_dependencies_text_from_id,
                     get_course_recommended_dependencies_courses_from_id,
+                    get_all_dependencies_courses_from_id,
                     get_course_semesters_from_id,
                     get_course_description_from_id,
                     get_course_overlap_url_from_id,
