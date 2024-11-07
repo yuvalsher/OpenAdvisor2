@@ -167,3 +167,35 @@ class Rag(AbstractLlm):
     def _format_markdown(self, response):
         formatted_response = markdown.markdown(response.strip())
         return formatted_response
+
+    ##############################################################################
+    def retrieve_rag_chunks_for_tool(self, query_text):
+
+        def format_doc(doc):
+            content = doc['document']
+            id = doc['metadata'].get('course_number', 'Unknown')
+            return f"{id}, "
+#            return f"Course ID: {id}\n{content}\n"
+
+        def format_docs(docs):
+            return ", ".join(format_doc(doc) for doc in docs)
+
+        # Get the embedding for the query text
+        query_embedding = self.vectordb._embedding_function.embed_query(query_text)
+
+        results = self.vectordb._collection.query(
+            query_embeddings=[query_embedding],
+            n_results=10
+        )
+
+        context_chunks = results['documents'][0]
+        metadatas = results['metadatas'][0]
+
+        print(f"Got {len(context_chunks)} RAG Chunks")
+        for chunk, metadata in zip(context_chunks, metadatas):
+            print(f"Chunk metadata: {metadata}")
+
+        formatted_docs = [{'document': doc, 'metadata': meta} for doc, meta in zip(context_chunks, metadatas)]
+        formatted_context = format_docs(formatted_docs)
+        return formatted_context
+

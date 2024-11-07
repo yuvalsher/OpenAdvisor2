@@ -41,9 +41,15 @@ def save_to_chroma(chunks: list[Document], faculty: str):
     )
 
     # Create a new DB from the documents.
-    db = Chroma.from_documents(
-        chunks, embeddings, persist_directory=chrome_db
-    )
+    batch_size = 300  # Adjust based on document size and token count
+    for i in range(0, len(chunks), batch_size):
+        print(f"Processing batch from {i} to {i + batch_size}")
+        batch = chunks[i:i + batch_size]
+        Chroma.from_documents(batch, embeddings, persist_directory=chrome_db)
+
+#    db = Chroma.from_documents(
+#        chunks, embeddings, persist_directory=chrome_db
+#    )
 
     print(f"Saved {len(chunks)} chunks to {chrome_db}.")
 
@@ -101,12 +107,12 @@ def add_list(name, list):
 def prepare_course_content(item):
     content  =  "שם הקורס: " + item["course_name"] + "\n"
     content +=  "מספר הקורס: " + item["course_id"] + "\n"
-    content +=  "נקודות זכות: " + item["credits"] + "\n"
-    classification = item["classification"]
-    for c in classification:
-        content += add_list("שיוך: ", c)
-    content += add_list("קדם נדרש: ", item["required_dependencies"])
-    content += add_list("קדם מומלץ: ", item["recommended_dependencies"])
+    # content +=  "נקודות זכות: " + item["credits"] + "\n"
+    # classification = item["classification"]
+    # for c in classification:
+    #     content += add_list("שיוך: ", c)
+    # content += add_list("קדם נדרש: ", item["required_dependencies"])
+    # content += add_list("קדם מומלץ: ", item["recommended_dependencies"])
     content += add_list("פרטים: ", item["text"])
     return content
 
@@ -122,6 +128,15 @@ def create_kb_db(faculty_list):
 
         save_to_chroma(documents, faculty)
         print(f"Created Chroma DB for {faculty}.")
+
+##############################################################################
+def create_courses_db():
+    print(f"\nCreating Chroma DB for all courses...")
+    documents = []
+    load_json_file("all_courses.json", "Courses", documents)
+
+    save_to_chroma(documents, "Courses")
+    print(f"Created Chroma DB for all courses.")
 
 ##############################################################################
 def course_stats():
@@ -190,4 +205,5 @@ def course_stats():
 ##############################################################################
 if __name__ == "__main__":
     #create_kb_db(["CS", "OUI"])
-    course_stats()
+    create_courses_db()
+    #course_stats()

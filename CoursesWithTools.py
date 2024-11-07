@@ -10,6 +10,7 @@ from langchain_core.tools import Tool, StructuredTool
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
+from rag import Rag
 
 ##############################################################################
 ###### CoursesWithTools class  
@@ -23,6 +24,8 @@ class CoursesWithTools(AbstractLlm):
         self.course_by_id = {}
         self.course_by_name = {}
         self.memory = None
+        self.rag = Rag("Courses", config)
+
     ##############################################################################
     def _init_data(self):
         # Use the DB_Path from the config
@@ -41,6 +44,8 @@ class CoursesWithTools(AbstractLlm):
             self.course_by_id[course['course_id']] = course
             self.course_by_name[course['course_name']] = course
 
+        self.rag.init()
+
     ##############################################################################
     def _init_agent(self):
         system_instructions = """
@@ -49,7 +54,8 @@ class CoursesWithTools(AbstractLlm):
             You use tools to provide answers in a concise manner. 
             The name of the OUI in Hebrew is האוניברסיטה הפתוחה. 
             The tools give you access to a database of OUI courses. You can use these tools to answer questions about the courses.
-            Each course has a unique id (or course number), a unique name, and several other details.
+            Each course has a unique id (or course number), a unique name, and several other details. 
+            There are specific tools for getting most of the course important details, and also a tool to get the course overview, which contains all these details and many more.
             == Semesters ==
             Courses have a list of available semesters in which they are offered, for example '2025א' is the first semester of 2025, 
             '2025ב' is the second semester of 2025, and '2025ג' is the third semester (summer semester) of 2025.
@@ -71,6 +77,23 @@ class CoursesWithTools(AbstractLlm):
             """
 
         ##############################################################################
+        @tool("GetCourseIDFromName")
+        def get_course_id_from_name(course_name: str) -> str:
+            """Get the course ID from the course name.
+            
+            Args:
+                course_name: The name of the course to look up
+            """
+
+            if course_name not in self.course_by_name:
+                print(f"In Tool: Course {course_name[::-1]} not found")
+                return None
+            
+            result = self.course_by_name[course_name]['course_id']
+            print(f"In Tool: Getting course ID for {course_name[::-1]}: {result}\n")
+            return result
+        
+        ##############################################################################
         @tool("GetCourseNameFromID")
         def get_course_name_from_id(course_id: str) -> str:
             """Get the course name from the course ID.
@@ -84,7 +107,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['course_name']
-            print(f"In Tool: Getting course name for {course_id}: {result}\n")
+            print(f"In Tool: Getting course name for {course_id}: {result[::-1]}\n")
             return result
         
         ##############################################################################
@@ -101,7 +124,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['credits']
-            print(f"In Tool: Getting course credits for {course_id}: {result}\n")
+            print(f"In Tool: Getting course credits for {course_id}: {result[::-1]}\n")
             return result
         
         ##############################################################################
@@ -135,7 +158,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['classification']
-            print(f"In Tool: Getting course classifications for {course_id}: {result}")
+            print(f"In Tool: Getting course classifications for {course_id}: {result[::-1]}")
             return result
         
         ##############################################################################
@@ -184,7 +207,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['required_deps_text']
-            print(f"In Tool: Getting required dependencies text for {course_id}: {result}\n")
+            print(f"In Tool: Getting required dependencies text for {course_id}: {result[::-1]}\n")
             return result
 
         ##############################################################################
@@ -216,7 +239,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['recommended_deps_text']
-            print(f"In Tool: Getting recommended dependencies text for {course_id}: {result}\n")
+            print(f"In Tool: Getting recommended dependencies text for {course_id}: {result[::-1]}\n")
             return result
 
         ##############################################################################
@@ -272,9 +295,9 @@ class CoursesWithTools(AbstractLlm):
             return result
         
         ##############################################################################
-        @tool("GetCourseDescriptionFromID")
-        def get_course_description_from_id(course_id: str) -> str:
-            """Get the course description from the course ID.
+        @tool("GetCourseOverviewFromID")
+        def get_course_overview_from_id(course_id: str) -> str:
+            """Get the course overview from the course ID. 
             
             Args:
                 course_id: The ID of the course to look up
@@ -285,7 +308,7 @@ class CoursesWithTools(AbstractLlm):
                 return None
             
             result = self.course_by_id[course_id]['text']
-            print(f"In Tool: Getting course description for {course_id}: {result}\n")
+            print(f"In Tool: Getting course overview for {course_id}: {result[::-1]}\n")
             return result
         
         ##############################################################################
@@ -329,7 +352,21 @@ class CoursesWithTools(AbstractLlm):
             return result
         
         ##############################################################################
+        @tool("GetSimilarCourses")
+        def get_similar_courses(query_text: str) -> str:
+            """Get the similar courses to the query text by using an embeddings vector search.
+            
+            Args:
+                query_text: The text to look up
+            """
+
+            result = self.rag.retrieve_rag_chunks_for_tool(query_text)
+            print(f"In Tool: Getting similar courses for {query_text}: {result}\n")
+            return result
+            
+        ##############################################################################
         tools = [
+                    get_course_id_from_name, 
                     get_course_name_from_id, 
                     get_course_url_from_id, 
                     get_course_credits_from_id, 
@@ -342,9 +379,10 @@ class CoursesWithTools(AbstractLlm):
                     get_course_recommended_dependencies_courses_from_id,
                     get_all_dependencies_courses_from_id,
                     get_course_semesters_from_id,
-                    get_course_description_from_id,
+                    get_course_overview_from_id,
                     get_course_overlap_url_from_id,
-                    get_course_overlap_courses_from_id
+                    get_course_overlap_courses_from_id,
+                    get_similar_courses
                 ]
 
         # Pull the prompt template from the hub
