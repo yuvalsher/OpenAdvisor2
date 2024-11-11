@@ -46,7 +46,9 @@ def main(faculty_code):
 
     llm_obj = None
     if (faculty_code == "Courses"):
+        #llm_obj = Rag(faculty_code, general_config)
         llm_obj = CoursesWithTools(faculty_code, general_config)
+        #llm_obj = CoursesWithTools("CS", general_config)
     else:
         llm_obj = Rag(faculty_code, general_config)
 

@@ -5,7 +5,7 @@ from typing import List
 import markdown
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import OpenAIEmbeddings
-from langchain_community.vectorstores import Chroma
+from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough
 from AbstractLlm import AbstractLlm
@@ -148,10 +148,13 @@ class Rag(AbstractLlm):
 
         context_chunks = results['documents'][0]
         metadatas = results['metadatas'][0]
+        # Get the similarity scores - lower distances mean more similar documents
+        # Chroma returns L2 distances between embeddings, ranging from 0 (identical) to 2 (completely different)
+        distances = results['distances'][0]
 
         print(f"Got {len(context_chunks)} RAG Chunks")
-        for chunk, metadata in zip(context_chunks, metadatas):
-            print(f"Chunk metadata: {metadata}")
+        for chunk, metadata, distance in zip(context_chunks, metadatas, distances):
+            print(f"Chunk metadata: {metadata}, Distance: {distance}")
 
         formatted_docs = [{'document': doc, 'metadata': meta} for doc, meta in zip(context_chunks, metadatas)]
         formatted_context = format_docs(formatted_docs)
@@ -185,15 +188,18 @@ class Rag(AbstractLlm):
 
         results = self.vectordb._collection.query(
             query_embeddings=[query_embedding],
-            n_results=10
+            n_results=4
         )
 
         context_chunks = results['documents'][0]
         metadatas = results['metadatas'][0]
+        # Get the similarity scores - lower distances mean more similar documents
+        # Chroma returns L2 distances between embeddings, ranging from 0 (identical) to 2 (completely different)
+        distances = results['distances'][0]
 
         print(f"Got {len(context_chunks)} RAG Chunks")
-        for chunk, metadata in zip(context_chunks, metadatas):
-            print(f"Chunk metadata: {metadata}")
+        for chunk, metadata, distance in zip(context_chunks, metadatas, distances):
+            print(f"Chunk metadata: {metadata}, Distance: {distance}")
 
         formatted_docs = [{'document': doc, 'metadata': meta} for doc, meta in zip(context_chunks, metadatas)]
         formatted_context = format_docs(formatted_docs)

@@ -1,40 +1,52 @@
 import os
+from dotenv import load_dotenv, dotenv_values
 
-# Get the directory of the current script
-script_dir = os.path.dirname(os.path.abspath(__file__))
+# Function to load environment variables and return the configuration
+def get_all_config():
+    # Load environment variables from .env file
+    load_dotenv()
+    env_vars = dotenv_values()
 
-# Get the OpenAI API key from environment variables or use the default
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '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')
-GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY', 'AIzaSyAkvi4mxoMZgTb8yDM3bWc8rfjtLrcCwwo')
+    # Get the directory of the current script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
 
-all_config = {
-    "General": {
-        "embeddings": "text-embedding-3-small",
-        "llm_model": "gpt-4o-mini",
-        "Chroma_Path": os.path.join(script_dir, "kb", "chroma"),
-        "DB_Path": os.path.join(script_dir, "kb", "json_source"),
-        "Rag_System_message": "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. ",
-        "Chat_Welcome_Message": "שלום, אני עוזר וירטואלי של האוניברסיטה הפתוחה. כיצד אוכל לעזור לך?",
-        "OPENAI_API_KEY": OPENAI_API_KEY,
-        "GOOGLE_API_KEY": GOOGLE_API_KEY,
-        "msg_sender_field": "role",
-        "msg_text_field": "content",
-        "user_name": "user",
-        "bot_name": "assistant"
-    },
-    "OUI": {
-        "title": "האוניברסיטה הפתוחה - ייעוץ כללי",
-        "description": "אני בוט הייעוץ הכללי של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על הלימודים באוניברסיטה הפתוחה שאינן ספציפיות לתוכנית לימודים כזו או אחרת."
-    },
-    "CS": {
-        "title": "האוניברסיטה הפתוחה - ייעוץ למדעי המחשב",
-        "description": "אני בוט הייעוץ של הפקולטה למדעי המחשב של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על הלימודים בפקולטה."
-    },
-    "Courses": {
-        "title": "האוניברסיטה הפתוחה - מידע על קורסים",
-        "description": "אני בוט הייעוץ של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על קורסים באוניברסיטה הפתוחה."
+    all_config = {
+        "General": {
+            "embeddings": "text-embedding-3-small",
+            "llm_model": "gpt-4o-mini",
+            "Chroma_Path": os.path.join(script_dir, "kb", "chroma"),
+            "DB_Path": os.path.join(script_dir, "kb", "json_source"),
+            "Rag_System_message": "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. ",
+            "Chat_Welcome_Message": "שלום, אני עוזר וירטואלי של האוניברסיטה הפתוחה. כיצד אוכל לעזור לך?",
+            "OPENAI_API_KEY": os.getenv('OPENAI_API_KEY'),
+            "ANTHROPIC_API_KEY": os.getenv('ANTHROPIC_API_KEY'),
+            "GOOGLE_API_KEY": os.getenv('GOOGLE_API_KEY'),
+            "GOOGLE_CSE_ID": os.getenv('GOOGLE_CSE_ID'),
+            "LANGCHAIN_API_KEY": os.getenv('LANGCHAIN_API_KEY'),
+            "AI21_API_KEY": os.getenv('AI21_API_KEY'),
+            "msg_sender_field": "role",
+            "msg_text_field": "content",
+            "user_name": "user",
+            "bot_name": "assistant"
+        },
+        "OUI": {
+            "title": "האוניברסיטה הפתוחה - ייעוץ כללי",
+            "description": "אני בוט הייעוץ הכללי של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על הלימודים באוניברסיטה הפתוחה שאינן ספציפיות לתוכנית לימודים כזו או אחרת."
+        },
+        "CS": {
+            "title": "האוניברסיטה הפתוחה - ייעוץ למדעי המחשב",
+            "description": "אני בוט הייעוץ של הפקולטה למדעי המחשב של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על הלימודים בפקולטה."
+        },
+        "Courses": {
+            "title": "האוניברסיטה הפתוחה - מידע על קורסים",
+            "description": "אני בוט הייעוץ של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על קורסים באוניברסיטה הפתוחה."
+        }
     }
-}
+
+    return all_config
+
+# Initialize the configuration
+all_config = get_all_config()
 
 all_crawl_config = {
     "OUI": {

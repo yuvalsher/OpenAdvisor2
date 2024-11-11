@@ -54,7 +54,19 @@ def save_to_chroma(chunks: list[Document], faculty: str):
     print(f"Saved {len(chunks)} chunks to {chrome_db}.")
 
 ##############################################################################
-def load_json_file(filename, type, documents):
+def check_classification(c, classifications):
+    if not c:
+        return False
+    for c1 in c:
+        if not c1 or len(c1) < 2:
+            continue
+        if c1[1] in classifications:
+            return True
+        
+    return False
+
+##############################################################################
+def load_json_file(filename, type, documents, classifications=None):
     global ord
     # Get the general configuration
     general_config = all_config["General"]
@@ -78,6 +90,9 @@ def load_json_file(filename, type, documents):
             content = item["summary"]
             md["source"] = item["url"]
         else:
+            if classifications and not check_classification(item["classification"], classifications):
+                continue
+
             content = prepare_course_content(item)
             md["source"] = item["course_url"]
             md["course_number"] = item["course_id"]
@@ -124,7 +139,11 @@ def create_kb_db(faculty_list):
         load_json_file(f"crawled_data_{faculty}.json", "web-text", documents)
         #load_json_file(f"youtube_transcripts_{faculty}.json", "YouTube", documents)
         if (faculty != "OUI"):
-            load_json_file(f"{faculty}_courses.json", "Courses", documents)
+            classifications = None
+            if (faculty == "CS"):
+                classifications = ["מדעי המחשב", "מדעי המחשב תואר שני", "הנדסת תוכנה", "למידת מכונה וניתוח נתוני עתק"]
+            #load_json_file(f"{faculty}_courses.json", "Courses", documents, classification)
+            load_json_file(f"all_courses.json", "Courses", documents, classifications)
 
         save_to_chroma(documents, faculty)
         print(f"Created Chroma DB for {faculty}.")

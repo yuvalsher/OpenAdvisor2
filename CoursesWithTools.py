@@ -24,7 +24,6 @@ class CoursesWithTools(AbstractLlm):
         self.course_by_id = {}
         self.course_by_name = {}
         self.memory = None
-        self.rag = Rag("Courses", config)
 
     ##############################################################################
     def _init_data(self):
@@ -43,8 +42,6 @@ class CoursesWithTools(AbstractLlm):
         for course in self.course_data:
             self.course_by_id[course['course_id']] = course
             self.course_by_name[course['course_name']] = course
-
-        self.rag.init()
 
     ##############################################################################
     def _init_agent(self):
@@ -74,6 +71,9 @@ class CoursesWithTools(AbstractLlm):
             Recommended dependencies ("ידע קודם מומלץ") are courses that are recommended to be taken before the current course.
             Each type of dependency has two tools: one that returns the text of the dependency, and one that returns the list of courses that are dependencies.
             Sometimes dependent courses have overlaps, so only a subset of them must be taken.
+            == Similarity check ==
+            The tool GetSimilarCourses uses an embeddings vector search to find courses that are similar to the search text. 
+            It returns a fixed number of results, so some of them may not be relevant. Each result must be checked for its details to verify it is indeed relevant to the query.
             """
 
         ##############################################################################
@@ -418,6 +418,9 @@ class CoursesWithTools(AbstractLlm):
     def init(self):
         # Initialize a ChatOpenAI model
         self.llm = ChatOpenAI(model=self.config["llm_model"])
+
+        self.rag = Rag(self.faculty_code, self.config)
+        self.rag.init()
 
         # Initialize the agent
         self._init_agent()
