@@ -23,7 +23,7 @@ class PrintToLogger:
         pass
 
 ##############################################################################
-def main(faculty_code):
+def main(type, faculty_code):
     # Configure logging
     logging.basicConfig(
         level=logging.INFO,  # Change this to logging.INFO to reduce debug messages
@@ -45,10 +45,8 @@ def main(faculty_code):
     general_config = all_config["General"]
 
     llm_obj = None
-    if (faculty_code == "Courses"):
-        #llm_obj = Rag(faculty_code, general_config)
+    if (type == "Tools"):
         llm_obj = CoursesWithTools(faculty_code, general_config)
-        #llm_obj = CoursesWithTools("CS", general_config)
     else:
         llm_obj = Rag(faculty_code, general_config)
 
@@ -63,5 +61,5 @@ def main(faculty_code):
     dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    #main("CS")
-    main("Courses")
+    main("Tools", "CS")
+    #main("RAG", "Courses")
