@@ -12,7 +12,7 @@ from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 from rag import Rag
 from typing import Callable
-from toolz import curry
+#from toolz import curry
 
 
 ##############################################################################
@@ -97,7 +97,7 @@ class CoursesWithTools(AbstractLlm):
             
             return result
             
-        @curry
+        #@curry
         def create_tool_2(course_id: str, info: str) -> str:
             """Get the course classifications from the course ID.
          
@@ -365,7 +365,9 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found\n")
                 return None
             
-            result = self.course_by_id[course_id]['text']
+            all_text = self.course_by_id[course_id]['text']
+            # concatenate all_text from an array of strings to a single string
+            result = ' '.join(all_text)
             print(f"In Tool: Getting course overview for {course_id}: {result[::-1]}\n")
             return result
         
@@ -410,21 +412,36 @@ class CoursesWithTools(AbstractLlm):
             return result
         
         ##############################################################################
-        @tool("GetSimilarCourses")
-        def get_similar_courses(query_text: str) -> str:
+        @tool("GetSimilarCoursesByText")
+        def get_similar_courses_by_text(query_text: str) -> str:
             """Find courses with similar content to the query text by using an embeddings vector search.
 .            
             Args:
-                query_text: The text to look up
+                query_text: A subject or topic to search for in the course overview
             """
 
             result = self.rag.retrieve_rag_chunks_for_tool(query_text)
             print(f"In Tool: Getting similar courses for {query_text}: {result}\n")
             return result
             
+       ##############################################################################
+        @tool("GetSimilarCoursesByID")
+        def get_similar_courses_by_id(course_id: str) -> str:
+            """Find courses with similar content to the overview of the input course, by using an embeddings vector search.
+.            
+            Args:
+                course_id: The course ID of the input course
+            """
+
+            overview = get_course_overview_from_id(course_id)
+            result = self.rag.retrieve_rag_chunks_for_tool(overview)
+            print(f"In Tool: Getting similar courses for {course_id}: {result}\n")
+            return result
+            
         ##############################################################################
         tools = [
                     get_course_id_from_name, 
+                    #create_tool_1,
                     get_course_name_from_id, 
                     get_course_url_from_id, 
                     get_course_credits_from_id, 
@@ -440,7 +457,8 @@ class CoursesWithTools(AbstractLlm):
                     get_course_overview_from_id,
                     get_course_overlap_url_from_id,
                     get_course_overlap_courses_from_id,
-                    get_similar_courses
+                    get_similar_courses_by_id,
+                    get_similar_courses_by_text,
                 ]
 
         # Pull the prompt template from the hub
