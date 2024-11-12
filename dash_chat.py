@@ -17,6 +17,7 @@ class DashChat:
 
     ##############################################################################
     def _init_layout(self, title, subtitle):
+        subtitle += "\nהקש 'נקה' לאיפוס היסטוריית השיחה."
         return html.Div([
             # Title for the chat app (loaded from configuration)
             html.H1(title, style={'text-align': 'center', 'font-family': 'Arial', 'padding': '10px', 'border-bottom': '2px solid #ccc', 'direction': 'rtl'}),
@@ -93,6 +94,12 @@ class DashChat:
             triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
 
             if triggered_id == 'send-button' and user_message:
+                if user_message == "reset" or user_message == "נקה":
+                    print("Resetting chat history")
+                    self.chat_history = []
+                    self.llm_obj.reset_chat_history()
+                    return [], [], ''
+
                 print("User Message:", user_message[::-1])
                 if not self.chat_history:
                     self.chat_history = [{msg_sender: self.bot_name, msg_text: self.welcome_msg}]
@@ -140,3 +147,8 @@ class DashChat:
     def run(self, host='0.0.0.0', port=10000, debug=False):
         self._setup_callbacks()
         self.app.run_server(host=host, port=port, debug=debug)
+
+
+if __name__ == "__main__":
+    from OpenAdvisor2 import main
+    main("Tools", "CS")
