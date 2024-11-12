@@ -354,8 +354,8 @@ class CoursesWithTools(AbstractLlm):
         ##############################################################################
         @tool("GetSimilarCourses")
         def get_similar_courses(query_text: str) -> str:
-            """Get the similar courses to the query text by using an embeddings vector search.
-            
+            """Find courses with similar content to the query text by using an embeddings vector search.
+.            
             Args:
                 query_text: The text to look up
             """
