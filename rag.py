@@ -88,6 +88,10 @@ class Rag(AbstractLlm):
         return answer
 
     ##############################################################################
+    def reset_chat_history(self):
+        pass
+
+    ##############################################################################
     def _extract_course_numbers(self, query):
         course_number_pattern = r'\b\d{5}\b'
         return re.findall(course_number_pattern, query)

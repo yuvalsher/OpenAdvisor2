@@ -20,8 +20,6 @@ class AbstractLlm:
         pass
 
     ##############################################################################
-    # Prepare and send the query to the LLM.
-    # Return the updated chat history
-#    def run_query(self, user_input: str) -> list[dict]:
-#        chat_history.append({msg_sender: self.user_name, msg_text: user_message})
-#        chat_history.append({msg_sender: self.bot_name, msg_text: bot_response})
+    @abstractmethod
+    def reset_chat_history(self):
+        pass
