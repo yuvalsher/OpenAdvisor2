@@ -27,28 +27,7 @@ class CoursesWithTools(AbstractLlm):
         self.course_by_id = {}
         self.course_by_name = {}
         self.memory = None
-
-    ##############################################################################
-    def _init_data(self):
-        # Use the DB_Path from the config
-        full_path = os.path.join(self.config["DB_Path"], "all_courses.json")
-
-        # if the file does not exist - throw exception
-        if not os.path.exists(full_path):
-            print(f"File {full_path} does not exist.")
-            raise FileNotFoundError(f"File {full_path} does not exist.")
-            return
-        
-        with open(full_path, "r", encoding='utf-8') as f:
-            self.course_data = json.load(f)
-
-        for course in self.course_data:
-            self.course_by_id[course['course_id']] = course
-            self.course_by_name[course['course_name']] = course
-
-    ##############################################################################
-    def _init_agent(self):
-        system_instructions = """
+        self.system_instructions = """
             You are an AI model serving as an academic advisor for the Open University of Israel (OUI). 
             The language of the OUI is Hebrew.
             You use tools to provide answers in a concise manner. 
@@ -78,6 +57,28 @@ class CoursesWithTools(AbstractLlm):
             The tool GetSimilarCourses uses an embeddings vector search to find courses that are similar to the search text. 
             It returns a fixed number of results, so some of them may not be relevant. Each result must be checked for its details to verify it is indeed relevant to the query.
             """
+
+
+    ##############################################################################
+    def _init_data(self):
+        # Use the DB_Path from the config
+        full_path = os.path.join(self.config["DB_Path"], "all_courses.json")
+
+        # if the file does not exist - throw exception
+        if not os.path.exists(full_path):
+            print(f"File {full_path} does not exist.")
+            raise FileNotFoundError(f"File {full_path} does not exist.")
+            return
+        
+        with open(full_path, "r", encoding='utf-8') as f:
+            self.course_data = json.load(f)
+
+        for course in self.course_data:
+            self.course_by_id[course['course_id']] = course
+            self.course_by_name[course['course_name']] = course
+
+    ##############################################################################
+    def _init_agent(self):
 
         ##############################################################################
         def create_tool_1(course_id: str, info: str) -> str:
@@ -470,7 +471,7 @@ class CoursesWithTools(AbstractLlm):
             return_messages=True
         )
 
-        self.memory.chat_memory.add_message(SystemMessage(content=system_instructions))
+        self.memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
 
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
@@ -533,15 +534,24 @@ class CoursesWithTools(AbstractLlm):
 
         return response['output']
 
+    ##############################################################################
+    def reset_chat_history(self):
+        self.memory.clear()
+        self.memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
+
+
 ##############################################################################
 if __name__ == "__main__":
-    from config import all_config
+    from OpenAdvisor2 import main
+    main("Tools", "CS")
+    
+    # from config import all_config
 
-    llm = CoursesWithTools("Courses", all_config["General"])
-    llm.init()
+    # llm = CoursesWithTools("Courses", all_config["General"])
+    # llm.init()
 
-    # Test the agent with sample queries
-    response = llm.do_query("What is the name of the course with ID 20905?", [])
-    print(f"Agent Response: {response}")
+    # # Test the agent with sample queries
+    # response = llm.do_query("What is the name of the course with ID 20905?", [])
+    # print(f"Agent Response: {response}")
 
 
