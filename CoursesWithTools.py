@@ -11,6 +11,9 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 from rag import Rag
+from typing import Callable
+from toolz import curry
+
 
 ##############################################################################
 ###### CoursesWithTools class  
@@ -75,6 +78,61 @@ class CoursesWithTools(AbstractLlm):
             The tool GetSimilarCourses uses an embeddings vector search to find courses that are similar to the search text. 
             It returns a fixed number of results, so some of them may not be relevant. Each result must be checked for its details to verify it is indeed relevant to the query.
             """
+
+        ##############################################################################
+        def create_tool_1(course_id: str, info: str) -> str:
+            """Get course information from the course ID.
+         
+            Args:
+                course_id: The ID of the course to look up
+                info: the label of the requested information, such as: 'course_name', 'course_url', 'condition_url', etc.
+            """
+            
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+                
+            result = self.course_by_id[course_id][info]
+            print(f"not sure this works {course_id} {info}: {result[::-1]}")
+            
+            return result
+            
+        @curry
+        def create_tool_2(course_id: str, info: str) -> str:
+            """Get the course classifications from the course ID.
+         
+            Args:
+                course_id: The ID of the course to look up
+            """
+            
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+                
+            def get_info() -> str:
+                result = self.course_by_id[course_id][info]
+                print(f"not sure this works {course_id} {info}: {result[::-1]}")
+                return result
+                
+            return get_info
+        
+        def create_tool_3(course_id: str) -> Callable[[str], str]:
+            """Get the course classifications from the course ID.
+         
+            Args:
+                course_id: The ID of the course to look up
+            """
+            
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found")
+                return None
+                
+            def get_info(info: str) -> str:
+                result = self.course_by_id[course_id][info]
+                print(f"not sure this works {course_id} {info}: {result[::-1]}")
+                return result
+                
+            return get_info
 
         ##############################################################################
         @tool("GetCourseIDFromName")
@@ -160,7 +218,7 @@ class CoursesWithTools(AbstractLlm):
             result = self.course_by_id[course_id]['classification']
             print(f"In Tool: Getting course classifications for {course_id}: {result[::-1]}")
             return result
-        
+
         ##############################################################################
         @tool("GetCourseConditionDependenciesTextFromID")
         def get_course_condition_dependencies_text_from_id(course_id: str) -> str:
