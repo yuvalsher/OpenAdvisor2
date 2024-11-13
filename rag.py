@@ -78,23 +78,52 @@ class Rag(AbstractLlm):
             template=self.prompt_template_text)
 
     ##############################################################################
-    def do_query(self, user_input: str, chat_history: list[dict]) -> str:
-        print("Initiating RAG")
-        rag_chunks = self._retrieve_rag_chunks(user_input)
-        (runnable_chain, formatted_input) = self._prepare_prompt(user_input, chat_history, rag_chunks)
-        response = runnable_chain.invoke(formatted_input)
-        print("Returning LLM Response")
-        answer = response.content
-        return answer
+    def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None) -> tuple[str, str]:
+        """
+        Process a query using RAG.
+        
+        Args:
+            user_input: The user's query
+            chat_history: The chat history used to maintain conversation context
+            client_id: The client's unique identifier (not used in RAG but required for interface)
+            
+        Returns:
+            tuple: (response_text, client_id)
+        """
+        response = self._do_rag_query(user_input, chat_history)
+        return response, client_id
 
     ##############################################################################
-    def reset_chat_history(self):
-        pass
+    def reset_chat_history(self, client_id: str):
+        """
+        Reset chat history for a specific client.
+        Note: RAG doesn't maintain persistent chat history, 
+        but uses the history provided in each query.
+        
+        Args:
+            client_id: The client's unique identifier
+        """
+        pass  # RAG uses chat history from parameters, no need to reset
 
     ##############################################################################
     def _extract_course_numbers(self, query):
         course_number_pattern = r'\b\d{5}\b'
         return re.findall(course_number_pattern, query)
+
+    ##############################################################################
+    def _do_rag_query(self, user_input: str, chat_history: list[dict] = None) -> str:
+        # Get RAG chunks
+        rag_chunks = self._retrieve_rag_chunks(user_input)
+        
+        # Prepare the prompt with chat history
+        runnable_chain, formatted_input = self._prepare_prompt(user_input, chat_history or [], rag_chunks)
+        
+        # Get the response
+        response = runnable_chain.invoke(formatted_input)
+        
+        # Format the response
+        formatted_response = self._format_response(response.content)
+        return formatted_response
 
     ##############################################################################
     def _build_metadata_filter(self, course_numbers):
