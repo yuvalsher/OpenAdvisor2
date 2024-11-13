@@ -11,7 +11,8 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 from rag import Rag
-from typing import Callable
+from typing import Callable, Dict
+from uuid import uuid4
 #from toolz import curry
 
 
@@ -26,7 +27,7 @@ class CoursesWithTools(AbstractLlm):
         self.course_data = []
         self.course_by_id = {}
         self.course_by_name = {}
-        self.memory = None
+        self.memories: Dict[str, ConversationBufferMemory] = {}
         self.system_instructions = """
             You are an expert academic advisor for the Open University of Israel (האוניברסיטה הפתוחה). 
             The primary language of communication is Hebrew.
@@ -93,7 +94,26 @@ class CoursesWithTools(AbstractLlm):
             self.course_by_name[course['course_name']] = course
 
     ##############################################################################
-    def _init_agent(self):
+    def _create_new_memory(self, client_id: str = None) -> str:
+        """Create a new memory instance for a client and return its ID."""
+        if client_id is None:
+            client_id = str(uuid4())
+        memory = ConversationBufferMemory(
+            memory_key="chat_history",
+            return_messages=True
+        )
+        memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
+        self.memories[client_id] = memory
+        return client_id
+
+    def _get_or_create_memory(self, client_id: str) -> ConversationBufferMemory:
+        """Get existing memory for client_id or create new if doesn't exist."""
+        if client_id not in self.memories:
+            self._create_new_memory(client_id)
+        return self.memories[client_id]
+
+    ##############################################################################
+    def _init_agent(self, client_id: str = None):
 
         ##############################################################################
         def create_tool_1(course_id: str, info: str) -> str:
@@ -480,13 +500,10 @@ class CoursesWithTools(AbstractLlm):
         # Pull the prompt template from the hub
         self.prompt_template = hub.pull("hwchase17/openai-tools-agent")
 
-        # ConversationBufferMemory stores the conversation history, allowing the agent to maintain context across interactions
-        self.memory = ConversationBufferMemory(
-            memory_key="chat_history", 
-            return_messages=True
-        )
+        if client_id is None:
+            client_id = self._create_new_memory()
 
-        self.memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
+        memory = self._get_or_create_memory(client_id)
 
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
@@ -495,16 +512,16 @@ class CoursesWithTools(AbstractLlm):
             prompt=self.prompt_template,
         )
 
-        # Create the agent executor
+        # Create the agent executor with client-specific memory
         agent_executor = AgentExecutor.from_agent_and_tools(
             agent=agent,
             tools=tools,
             verbose=True,
-            memory=self.memory,
+            memory=memory,
             handle_parsing_errors=True,
         )
 
-        self.agent = agent_executor
+        return agent_executor, client_id
 
     ##############################################################################
     def init(self):
@@ -514,11 +531,10 @@ class CoursesWithTools(AbstractLlm):
         self.rag = Rag(self.faculty_code, self.config)
         self.rag.init()
 
-        # Initialize the agent
-        self._init_agent()
-
         # Initialize the data
         self._init_data()
+
+        # Remove agent initialization from here as it will be done per client
 
     ##############################################################################
     """
@@ -533,26 +549,31 @@ class CoursesWithTools(AbstractLlm):
     """
 
     ##############################################################################
-    def do_query(self, user_input: str, chat_history: list[dict]) -> str:
-        # Ignore Dash chat history - use memory instead.
-        #formatted_chat_history = self._format_chat_history(chat_history)
-        #response = self.agent.invoke({"input": user_input, "chat_history": formatted_chat_history})
-
-        # Add the user's message to the conversation memory - agent.invoke() already does that
-        #self.memory.chat_memory.add_message(HumanMessage(content=user_input))
-
-        response = self.agent.invoke({"input": user_input})
-        print(f"Agent Response: {response}")
-
-        # Add the agent's response to the conversation memory - agent.invoke() already does that
-        #self.memory.chat_memory.add_message(AIMessage(content=response["output"]))
-
-        return response['output']
+    def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None) -> tuple[str, str]:
+        """
+        Process a query from a client.
+        
+        Args:
+            user_input: The user's query
+            chat_history: The chat history (ignored as we use memory)
+            client_id: The client's unique identifier
+            
+        Returns:
+            tuple: (response_text, client_id)
+        """
+        agent, client_id = self._init_agent(client_id)
+        response = agent.invoke({"input": user_input})
+        print(f"Agent Response for client {client_id}: {response}")
+        return response['output'], client_id
 
     ##############################################################################
-    def reset_chat_history(self):
-        self.memory.clear()
-        self.memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
+    def reset_chat_history(self, client_id: str):
+        """Reset chat history for a specific client."""
+        if client_id in self.memories:
+            self.memories[client_id].clear()
+            self.memories[client_id].chat_memory.add_message(
+                SystemMessage(content=self.system_instructions)
+            )
 
 
 ##############################################################################
