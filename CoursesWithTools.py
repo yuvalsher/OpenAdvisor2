@@ -11,7 +11,7 @@ from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
 from pydantic import BaseModel, Field
 from AbstractLlm import AbstractLlm
 from rag import Rag
-from typing import Callable, Dict
+from typing import Callable, Dict, Type, List, Optional
 from uuid import uuid4
 #from toolz import curry
 
@@ -28,9 +28,11 @@ class CoursesWithTools(AbstractLlm):
         self.course_by_id = {}
         self.course_by_name = {}
         self.memories: Dict[str, ConversationBufferMemory] = {}
+        
         self.system_instructions = """
-            You are an expert academic advisor for the Open University of Israel (האוניברסיטה הפתוחה). 
-            The primary language of communication is Hebrew.
+            You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
+            Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
+            The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
             
             **Role and Tools:**
             - Utilize various tools to provide concise and accurate answers.
@@ -116,61 +118,6 @@ class CoursesWithTools(AbstractLlm):
     def _init_agent(self, client_id: str = None):
 
         ##############################################################################
-        def create_tool_1(course_id: str, info: str) -> str:
-            """Get course information from the course ID.
-         
-            Args:
-                course_id: The ID of the course to look up
-                info: the label of the requested information, such as: 'course_name', 'course_url', 'condition_url', etc.
-            """
-            
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found")
-                return None
-                
-            result = self.course_by_id[course_id][info]
-            print(f"not sure this works {course_id} {info}: {result[::-1]}")
-            
-            return result
-            
-        #@curry
-        def create_tool_2(course_id: str, info: str) -> str:
-            """Get the course classifications from the course ID.
-         
-            Args:
-                course_id: The ID of the course to look up
-            """
-            
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found")
-                return None
-                
-            def get_info() -> str:
-                result = self.course_by_id[course_id][info]
-                print(f"not sure this works {course_id} {info}: {result[::-1]}")
-                return result
-                
-            return get_info
-        
-        def create_tool_3(course_id: str) -> Callable[[str], str]:
-            """Get the course classifications from the course ID.
-         
-            Args:
-                course_id: The ID of the course to look up
-            """
-            
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found")
-                return None
-                
-            def get_info(info: str) -> str:
-                result = self.course_by_id[course_id][info]
-                print(f"not sure this works {course_id} {info}: {result[::-1]}")
-                return result
-                
-            return get_info
-
-        ##############################################################################
         @tool("GetCourseIDFromName")
         def get_course_id_from_name(course_name: str) -> str:
             """Get the course ID from the course name.
@@ -205,9 +152,29 @@ class CoursesWithTools(AbstractLlm):
             return result
         
         ##############################################################################
-        @tool("GetCourseCreditsFromID")
-        def get_course_credits_from_id(course_id: str) -> str:
-            """Get the course credits from the course ID.
+        class CourseDetails(BaseModel):
+            course_url: str
+            course_id: str
+            course_name: str
+            credits: Optional[str] = Field(default="")
+            classification: List[List[str]]
+            condition_text: Optional[str] = Field(default="")
+            condition_courses: List[str]
+            required_deps_text: Optional[str] = Field(default="")
+            required_deps_courses: List[str]
+            recommended_deps_text: Optional[str] = Field(default="")
+            recommended_deps_courses: List[str]
+            overlap: List[str]
+            text: List[str]
+            footnotes: List[str]
+            discontinued: bool
+            overlap_url: str
+            semesters: List[str]
+            overlap_courses: List[str]
+
+        @tool("GetCourseDetailsFromID")
+        def get_course_details_from_id(course_id: str) -> CourseDetails:
+            """Get the course details from the course ID.
             
             Args:
                 course_id: The ID of the course to look up
@@ -217,140 +184,157 @@ class CoursesWithTools(AbstractLlm):
                 print(f"In Tool: Course {course_id} not found")
                 return None
             
-            result = self.course_by_id[course_id]['credits']
-            print(f"In Tool: Getting course credits for {course_id}: {result[::-1]}\n")
+            result = self.course_by_id[course_id]
+            print(f"In Tool: Getting course details for {course_id}: {result['course_name'][::-1]}\n")
             return result
         
-        ##############################################################################
-        @tool("GetCourseUrlFromID")
-        def get_course_url_from_id(course_id: str) -> str:
-            """Get the course url from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseCreditsFromID")
+        # def get_course_credits_from_id(course_id: str) -> str:
+        #     """Get the course credits from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found")
-                return None
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found")
+        #         return None
             
-            result = self.course_by_id[course_id]['course_url']
-            print(f"In Tool: Getting course url for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['credits']
+        #     print(f"In Tool: Getting course credits for {course_id}: {result[::-1]}\n")
+        #     return result
         
-        ##############################################################################
-        @tool("GetCourseClassificationsFromID")
-        def get_course_classifications_from_id(course_id: str) -> str:
-            """Get the course classifications from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseUrlFromID")
+        # def get_course_url_from_id(course_id: str) -> str:
+        #     """Get the course url from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found")
-                return None
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found")
+        #         return None
             
-            result = self.course_by_id[course_id]['classification']
-            print(f"In Tool: Getting course classifications for {course_id}: {result[::-1]}")
-            return result
+        #     result = self.course_by_id[course_id]['course_url']
+        #     print(f"In Tool: Getting course url for {course_id}: {result}\n")
+        #     return result
+        
+        # ##############################################################################
+        # @tool("GetCourseClassificationsFromID")
+        # def get_course_classifications_from_id(course_id: str) -> str:
+        #     """Get the course classifications from the course ID.
+            
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-        ##############################################################################
-        @tool("GetCourseConditionDependenciesTextFromID")
-        def get_course_condition_dependencies_text_from_id(course_id: str) -> str:
-            """Get the course condition dependencies text from the course ID.
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found")
+        #         return None
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     result = self.course_by_id[course_id]['classification']
+        #     print(f"In Tool: Getting course classifications for {course_id}: {result[::-1]}")
+        #     return result
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        # ##############################################################################
+        # @tool("GetCourseConditionDependenciesTextFromID")
+        # def get_course_condition_dependencies_text_from_id(course_id: str) -> str:
+        #     """Get the course condition dependencies text from the course ID.
             
-            result = self.course_by_id[course_id]['condition_text']
-            print(f"In Tool: Getting condition dependencies text for {course_id}: {result}\n")
-            return result
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-        ##############################################################################
-        @tool("GetCourseConditionDependenciesCoursesFromID")
-        def get_course_condition_dependencies_courses_from_id(course_id: str) -> str:
-            """Get the course condition dependencies courses from the course ID.
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            Args:
-                course_id: The ID of the course to look up
-            """
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
-            
-            result = self.course_by_id[course_id]['condition_courses']
-            print(f"In Tool: Getting condition dependencies courses for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['condition_text']
+        #     print(f"In Tool: Getting condition dependencies text for {course_id}: {result}\n")
+        #     return result
 
-        ##############################################################################
-        @tool("GetCourseRequiredDependenciesTextFromID")
-        def get_course_required_dependencies_text_from_id(course_id: str) -> str:
-            """Get the course required dependencies text from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseConditionDependenciesCoursesFromID")
+        # def get_course_condition_dependencies_courses_from_id(course_id: str) -> str:
+        #     """Get the course condition dependencies courses from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            result = self.course_by_id[course_id]['required_deps_text']
-            print(f"In Tool: Getting required dependencies text for {course_id}: {result[::-1]}\n")
-            return result
+        #     result = self.course_by_id[course_id]['condition_courses']
+        #     print(f"In Tool: Getting condition dependencies courses for {course_id}: {result}\n")
+        #     return result
 
-        ##############################################################################
-        @tool("GetCourseRequiredDependenciesCoursesFromID")
-        def get_course_required_dependencies_courses_from_id(course_id: str) -> str:
-            """Get the course required dependencies courses from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseRequiredDependenciesTextFromID")
+        # def get_course_required_dependencies_text_from_id(course_id: str) -> str:
+        #     """Get the course required dependencies text from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            result = self.course_by_id[course_id]['required_deps_courses']
-            print(f"In Tool: Getting required dependencies courses for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['required_deps_text']
+        #     print(f"In Tool: Getting required dependencies text for {course_id}: {result[::-1]}\n")
+        #     return result
 
-        ##############################################################################
-        @tool("GetCourseRecommendedDependenciesTextFromID")
-        def get_course_recommended_dependencies_text_from_id(course_id: str) -> str:
-            """Get the course recommended dependencies text from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseRequiredDependenciesCoursesFromID")
+        # def get_course_required_dependencies_courses_from_id(course_id: str) -> str:
+        #     """Get the course required dependencies courses from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            result = self.course_by_id[course_id]['recommended_deps_text']
-            print(f"In Tool: Getting recommended dependencies text for {course_id}: {result[::-1]}\n")
-            return result
+        #     result = self.course_by_id[course_id]['required_deps_courses']
+        #     print(f"In Tool: Getting required dependencies courses for {course_id}: {result}\n")
+        #     return result
 
-        ##############################################################################
-        @tool("GetCourseRecommendedDependenciesCoursesFromID")
-        def get_course_recommended_dependencies_courses_from_id(course_id: str) -> str:
-            """Get the course recommended dependencies courses from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseRecommendedDependenciesTextFromID")
+        # def get_course_recommended_dependencies_text_from_id(course_id: str) -> str:
+        #     """Get the course recommended dependencies text from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            result = self.course_by_id[course_id]['recommended_deps_courses']
-            print(f"In Tool: Getting recommended dependencies courses for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['recommended_deps_text']
+        #     print(f"In Tool: Getting recommended dependencies text for {course_id}: {result[::-1]}\n")
+        #     return result
+
+        # ##############################################################################
+        # @tool("GetCourseRecommendedDependenciesCoursesFromID")
+        # def get_course_recommended_dependencies_courses_from_id(course_id: str) -> str:
+        #     """Get the course recommended dependencies courses from the course ID.
+            
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
+            
+        #     result = self.course_by_id[course_id]['recommended_deps_courses']
+        #     print(f"In Tool: Getting recommended dependencies courses for {course_id}: {result}\n")
+        #     return result
 
         ##############################################################################
         @tool("GetAllDependenciesCoursesFromID")
@@ -371,22 +355,22 @@ class CoursesWithTools(AbstractLlm):
             print(f"In Tool: Getting all dependencies courses for {course_id}: {deps}\n")
             return deps
 
-        ##############################################################################
-        @tool("GetCourseSemestersFromID")
-        def get_course_semesters_from_id(course_id: str) -> str:
-            """Get the course semesters from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseSemestersFromID")
+        # def get_course_semesters_from_id(course_id: str) -> str:
+        #     """Get the course semesters from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            result = self.course_by_id[course_id]['semesters']
-            print(f"In Tool: Getting course semesters for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['semesters']
+        #     print(f"In Tool: Getting course semesters for {course_id}: {result}\n")
+        #     return result
         
         ##############################################################################
         @tool("GetCourseOverviewFromID")
@@ -407,45 +391,45 @@ class CoursesWithTools(AbstractLlm):
             print(f"In Tool: Getting course overview for {course_id}: {result[::-1]}\n")
             return result
         
-        ##############################################################################
-        @tool("GetCourseOverlapUrlFromID")
-        def get_course_overlap_url_from_id(course_id: str) -> str:
-            """Get the course overlap url from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseOverlapUrlFromID")
+        # def get_course_overlap_url_from_id(course_id: str) -> str:
+        #     """Get the course overlap url from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            if 'overlap_url' not in self.course_by_id[course_id]:
-                return None
+        #     if 'overlap_url' not in self.course_by_id[course_id]:
+        #         return None
             
-            result = self.course_by_id[course_id]['overlap_url']
-            print(f"In Tool: Getting course overlap url for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['overlap_url']
+        #     print(f"In Tool: Getting course overlap url for {course_id}: {result}\n")
+        #     return result
         
-        ##############################################################################
-        @tool("GetCourseOverlapCoursesFromID")
-        def get_course_overlap_courses_from_id(course_id: str) -> str:
-            """Get the course overlap courses from the course ID.
+        # ##############################################################################
+        # @tool("GetCourseOverlapCoursesFromID")
+        # def get_course_overlap_courses_from_id(course_id: str) -> str:
+        #     """Get the course overlap courses from the course ID.
             
-            Args:
-                course_id: The ID of the course to look up
-            """
+        #     Args:
+        #         course_id: The ID of the course to look up
+        #     """
 
-            if course_id not in self.course_by_id:
-                print(f"In Tool: Course {course_id} not found\n")
-                return None
+        #     if course_id not in self.course_by_id:
+        #         print(f"In Tool: Course {course_id} not found\n")
+        #         return None
             
-            if 'overlap_courses' not in self.course_by_id[course_id]:
-                return None
+        #     if 'overlap_courses' not in self.course_by_id[course_id]:
+        #         return None
             
-            result = self.course_by_id[course_id]['overlap_courses']
-            print(f"In Tool: Getting course overlap courses for {course_id}: {result}\n")
-            return result
+        #     result = self.course_by_id[course_id]['overlap_courses']
+        #     print(f"In Tool: Getting course overlap courses for {course_id}: {result}\n")
+        #     return result
         
         ##############################################################################
         @tool("GetSimilarCoursesByText")
@@ -477,22 +461,22 @@ class CoursesWithTools(AbstractLlm):
         ##############################################################################
         tools = [
                     get_course_id_from_name, 
-                    #create_tool_1,
                     get_course_name_from_id, 
-                    get_course_url_from_id, 
-                    get_course_credits_from_id, 
-                    get_course_classifications_from_id,
-                    get_course_condition_dependencies_text_from_id,
-                    get_course_condition_dependencies_courses_from_id,
-                    get_course_required_dependencies_text_from_id,
-                    get_course_required_dependencies_courses_from_id,
-                    get_course_recommended_dependencies_text_from_id,
-                    get_course_recommended_dependencies_courses_from_id,
+                    get_course_details_from_id,
+                    # get_course_url_from_id, 
+                    # get_course_credits_from_id, 
+                    # get_course_classifications_from_id,
+                    # get_course_condition_dependencies_text_from_id,
+                    # get_course_condition_dependencies_courses_from_id,
+                    # get_course_required_dependencies_text_from_id,
+                    # get_course_required_dependencies_courses_from_id,
+                    # get_course_recommended_dependencies_text_from_id,
+                    # get_course_recommended_dependencies_courses_from_id,
                     get_all_dependencies_courses_from_id,
-                    get_course_semesters_from_id,
-                    get_course_overview_from_id,
-                    get_course_overlap_url_from_id,
-                    get_course_overlap_courses_from_id,
+                    # get_course_semesters_from_id,
+                    # get_course_overview_from_id,
+                    # get_course_overlap_url_from_id,
+                    # get_course_overlap_courses_from_id,
                     get_similar_courses_by_id,
                     get_similar_courses_by_text,
                 ]
