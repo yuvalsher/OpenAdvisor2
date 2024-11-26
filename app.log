@@ -1,0 +1,66 @@
+2024-11-25 16:34:44,767 - INFO - Successfully opened Chroma DB at E:\Cursor\OpenAdvisor2\kb\chroma_CS
+2024-11-25 16:34:44,815 - INFO - Chroma DB contains 227 documents
+2024-11-25 16:34:45,422 - INFO - Dash is running on http://0.0.0.0:10000/
+
+2024-11-25 16:34:45,437 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://192.168.1.104:10000
+2024-11-25 16:34:45,438 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-25 16:34:50,154 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET / HTTP/1.1" 200 -
+2024-11-25 16:34:50,276 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/deps/polyfill@7.v2_18_1m1732545164.12.1.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,354 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/deps/react@16.v2_18_1m1732545164.14.0.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,632 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/deps/react-dom@16.v2_18_1m1732545164.14.0.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,640 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/deps/prop-types@15.v2_18_1m1732545164.8.1.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,651 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/dash-renderer/build/dash_renderer.v2_18_1m1732545164.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,661 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/dcc/dash_core_components.v2_14_2m1732545164.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,665 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/dcc/dash_core_components-shared.v2_14_2m1732545164.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,675 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/html/dash_html_components.v2_0_19m1732545165.min.js HTTP/1.1" 200 -
+2024-11-25 16:34:50,958 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:50] "GET /_dash-component-suites/dash/dash_table/bundle.v5_2_12m1732545164.js HTTP/1.1" 200 -
+2024-11-25 16:34:51,302 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:51] "GET /_dash-layout HTTP/1.1" 200 -
+2024-11-25 16:34:51,307 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:51] "GET /_dash-dependencies HTTP/1.1" 200 -
+2024-11-25 16:34:51,551 - INFO - 127.0.0.1 - - [25/Nov/2024 16:34:51] "GET /_favicon.ico?v=2.18.1 HTTP/1.1" 200 -
+2024-11-25 16:36:19,447 - INFO - 127.0.0.1 - - [25/Nov/2024 16:36:19] "POST /_dash-update-component HTTP/1.1" 200 -
+2024-11-25 16:36:19,459 - INFO - 127.0.0.1 - - [25/Nov/2024 16:36:19] "[36mGET /_dash-component-suites/dash/dcc/async-markdown.js HTTP/1.1[0m" 304 -
+2024-11-25 16:36:19,827 - INFO - 127.0.0.1 - - [25/Nov/2024 16:36:19] "GET /_dash-component-suites/dash/dcc/async-highlight.js HTTP/1.1" 200 -
+2024-11-26 13:43:41,728 - INFO - Successfully opened Chroma DB at E:\Cursor\OpenAdvisor2\kb\chroma_CS
+2024-11-26 13:43:41,763 - INFO - Chroma DB contains 227 documents
+2024-11-26 13:43:42,289 - INFO - Dash is running on http://0.0.0.0:10000/
+
+2024-11-26 13:43:42,309 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://192.168.1.104:10000
+2024-11-26 13:43:42,309 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-26 13:43:45,126 - INFO - 127.0.0.1 - - [26/Nov/2024 13:43:45] "GET / HTTP/1.1" 200 -
+2024-11-26 13:43:45,331 - INFO - 127.0.0.1 - - [26/Nov/2024 13:43:45] "GET /_dash-layout HTTP/1.1" 200 -
+2024-11-26 13:43:45,345 - INFO - 127.0.0.1 - - [26/Nov/2024 13:43:45] "GET /_dash-dependencies HTTP/1.1" 200 -
+2024-11-26 13:43:45,687 - INFO - 127.0.0.1 - - [26/Nov/2024 13:43:45] "GET /_favicon.ico?v=2.18.1 HTTP/1.1" 200 -
+2024-11-26 13:44:21,546 - INFO - 127.0.0.1 - - [26/Nov/2024 13:44:21] "POST /_dash-update-component HTTP/1.1" 200 -
+2024-11-26 13:44:21,925 - INFO - 127.0.0.1 - - [26/Nov/2024 13:44:21] "[36mGET /_dash-component-suites/dash/dcc/async-markdown.js HTTP/1.1[0m" 304 -
+2024-11-26 13:44:22,160 - INFO - 127.0.0.1 - - [26/Nov/2024 13:44:22] "[36mGET /_dash-component-suites/dash/dcc/async-highlight.js HTTP/1.1[0m" 304 -
+2024-11-26 13:50:46,586 - INFO - Successfully opened Chroma DB at E:\Cursor\OpenAdvisor2\kb\chroma_CS
+2024-11-26 13:50:46,619 - INFO - Chroma DB contains 227 documents
+2024-11-26 13:50:47,083 - INFO - Dash is running on http://0.0.0.0:10000/
+
+2024-11-26 13:50:47,099 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://192.168.1.104:10000
+2024-11-26 13:50:47,101 - INFO - [33mPress CTRL+C to quit[0m
+2024-11-26 13:51:03,494 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:03] "GET / HTTP/1.1" 200 -
+2024-11-26 13:51:03,714 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:03] "GET /_dash-layout HTTP/1.1" 200 -
+2024-11-26 13:51:03,728 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:03] "GET /_dash-dependencies HTTP/1.1" 200 -
+2024-11-26 13:51:04,063 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:04] "GET /_favicon.ico?v=2.18.1 HTTP/1.1" 200 -
+2024-11-26 13:51:17,675 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:17] "POST /_dash-update-component HTTP/1.1" 200 -
+2024-11-26 13:51:18,017 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:18] "[36mGET /_dash-component-suites/dash/dcc/async-markdown.js HTTP/1.1[0m" 304 -
+2024-11-26 13:51:18,264 - INFO - 127.0.0.1 - - [26/Nov/2024 13:51:18] "[36mGET /_dash-component-suites/dash/dcc/async-highlight.js HTTP/1.1[0m" 304 -
+2024-11-26 13:56:39,497 - INFO - Successfully opened Chroma DB at E:\Cursor\OpenAdvisor2\kb\chroma_CS
+2024-11-26 13:56:39,533 - INFO - Chroma DB contains 227 documents
+2024-11-26 13:56:39,994 - INFO - Dash is running on http://0.0.0.0:10000/
+
+2024-11-26 13:56:40,013 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:10000
+ * Running on http://192.168.1.104:10000
+2024-11-26 13:56:40,015 - INFO - [33mPress CTRL+C to quit[0m
