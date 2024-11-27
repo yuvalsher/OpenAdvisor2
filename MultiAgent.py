@@ -1,6 +1,7 @@
 from typing import Dict, Any
 from langchain.memory import ConversationBufferMemory
 from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
 from langchain.chains import LLMChain, RouterChain
 from langchain.chains.router import LLMRouterChain
@@ -11,6 +12,7 @@ from pydantic import BaseModel, Field
 
 from AbstractLlm import AbstractLlm
 from CoursesWithTools import CoursesWithTools
+from CoursesAgent import CoursesAgent
 
 ##############################################################################
 class MultiAgent(AbstractLlm):
@@ -23,7 +25,7 @@ class MultiAgent(AbstractLlm):
         """
 
         super().__init__(faculty_code, config)
-        self.courses_agent = CoursesWithTools(faculty_code, config)
+        self.courses_agent = CoursesAgent(config)
         self.memories: Dict[str, ConversationBufferMemory] = {}
 
     ##############################################################################
@@ -66,28 +68,33 @@ class MultiAgent(AbstractLlm):
 
         print(f"Entering Multi-Agent: user_input: {user_input[::-1]}")
 
-        #memory = self._get_or_create_memory(client_id)
+        memory = self._get_or_create_memory(client_id)
 
-        router_chain = self._build_router_agent(user_input, chat_history)
+        router_chain = self._build_router_agent(user_input)
         try:
             router_response = router_chain.invoke({"input": user_input})
+            print(f"Router response: {router_response}")
         except Exception as e:
             print(f"Error in router chain: {e}")
             router_response = "general"
 
-        if "course" in router_response:
-            response = self.courses_agent.do_query(user_input, chat_history, client_id)
-        else:
-            response = f"No agent implemented yet for this query type: {router_response}" #self.general_agent.get_agent(client_id).invoke(user_input)
+        try:
+            if "course" in router_response:
+                agent = self.courses_agent.get_agent()
+                agent.memory = memory
+                response = agent.invoke({"input": user_input})
+            else:
+                response = f"No agent implemented yet for this query type: {router_response}"
+        except Exception as e:
+            print(f"Error in {router_response} agent: {e}")
+            response = f"Error in {router_response} agent: {e}"
 
-        return response, client_id
+        return response['output'], client_id
 
     ##############################################################################
     def reset_chat_history(self, client_id: str):
         """
         Reset chat history for a specific client.
-        Note: RAG doesn't maintain persistent chat history, 
-        but uses the history provided in each query.
         
         Args:
             client_id: The client's unique identifier
@@ -99,7 +106,7 @@ class MultiAgent(AbstractLlm):
             )
 
     ##############################################################################
-    def _build_router_agent(self, user_input: str, chat_history: list[dict]) -> str:
+    def _build_router_agent(self, user_input: str) -> str:
         # Define the RouterChain's prompt to decide which chain to use
         router_prompt = PromptTemplate(
             input_variables=["input"],
@@ -119,7 +126,7 @@ class MultiAgent(AbstractLlm):
 
         # Create the LLMRouterChain
         router_llm = ChatOpenAI(model=self.config["router_llm_model"], temperature=0)
-        router_chain = router_prompt | router_llm | (lambda x: x.content.strip().lower())
+        router_chain = router_prompt | router_llm | StrOutputParser()
         return router_chain
 
 
