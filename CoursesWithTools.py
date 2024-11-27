@@ -2,7 +2,7 @@
 # 
 import os
 import json
-from langchain.agents import tool, AgentExecutor, create_tool_calling_agent
+from langchain.agents import tool, AgentExecutor, create_tool_calling_agent, initialize_agent, AgentType
 from langchain_openai import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain import hub
@@ -115,7 +115,7 @@ class CoursesWithTools(AbstractLlm):
         return self.memories[client_id]
 
     ##############################################################################
-    def _init_agent(self, client_id: str = None):
+    def _init_tools(self):
 
         ##############################################################################
         @tool("GetCourseIDFromName")
@@ -459,7 +459,7 @@ class CoursesWithTools(AbstractLlm):
             return result
             
         ##############################################################################
-        tools = [
+        self.tools = [
                     get_course_id_from_name, 
                     get_course_name_from_id, 
                     get_course_details_from_id,
@@ -481,32 +481,32 @@ class CoursesWithTools(AbstractLlm):
                     get_similar_courses_by_text,
                 ]
 
+    ##############################################################################
+    def get_agent(self, client_id: str):
+
         # Pull the prompt template from the hub
         self.prompt_template = hub.pull("hwchase17/openai-tools-agent")
-
-        if client_id is None:
-            client_id = self._create_new_memory()
 
         memory = self._get_or_create_memory(client_id)
 
         # Create the ReAct agent using the create_tool_calling_agent function
         agent = create_tool_calling_agent(
             llm=self.llm,
-            tools=tools,
+            tools=self.tools,
             prompt=self.prompt_template,
         )
 
         # Create the agent executor with client-specific memory
         agent_executor = AgentExecutor.from_agent_and_tools(
             agent=agent,
-            tools=tools,
+            tools=self.tools,
             verbose=True,
             memory=memory,
             handle_parsing_errors=True,
         )
 
-        return agent_executor, client_id
-
+        return agent_executor
+    
     ##############################################################################
     def init(self):
         # Initialize a ChatOpenAI model
@@ -518,19 +518,7 @@ class CoursesWithTools(AbstractLlm):
         # Initialize the data
         self._init_data()
 
-        # Remove agent initialization from here as it will be done per client
-
-    ##############################################################################
-    """
-    def _format_chat_history(self, chat_history: list[dict]) -> list[dict]:
-        formatted_history = []
-        for entry in chat_history:
-            formatted_history.append({
-                "role": entry["sender"],
-                "content": entry["message"]
-            })
-        return formatted_history 
-    """
+        self._init_tools()
 
     ##############################################################################
     def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None) -> tuple[str, str]:
@@ -545,7 +533,7 @@ class CoursesWithTools(AbstractLlm):
         Returns:
             tuple: (response_text, client_id)
         """
-        agent, client_id = self._init_agent(client_id)
+        agent = self.get_agent(client_id)
         response = agent.invoke({"input": user_input})
         print(f"Agent Response for client {client_id}: {response}")
         return response['output'], client_id

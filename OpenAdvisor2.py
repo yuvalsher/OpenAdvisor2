@@ -2,7 +2,11 @@ import logging
 import sys
 import os
 from dash_chat import DashChat
+from langtrace_python_sdk import langtrace
+
+
 from rag import Rag
+from MultiAgent import MultiAgent
 from CoursesWithTools import CoursesWithTools
 from config import all_config
 
@@ -38,6 +42,8 @@ def main(type, faculty_code):
     logging.getLogger('httpx').setLevel(logging.WARNING)
     logging.getLogger('httpcore').setLevel(logging.WARNING)
     logging.getLogger('chromadb').setLevel(logging.WARNING)
+
+    langtrace.init(api_key=os.getenv("LANGTRACE_API_KEY"))
     
     # Fetch the port from the environment, default to 10000
     port = int(os.getenv('PORT', 10000))
@@ -45,7 +51,9 @@ def main(type, faculty_code):
     general_config = all_config["General"]
 
     llm_obj = None
-    if (type == "Tools"):
+    if type == "MultiAgent":
+        llm_obj = MultiAgent(faculty_code, general_config)
+    elif type == "Tools":
         llm_obj = CoursesWithTools(faculty_code, general_config)
     else:
         llm_obj = Rag(faculty_code, general_config)
@@ -61,5 +69,6 @@ def main(type, faculty_code):
     dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    main("Tools", "CS")
+    main("MultiAgent", "CS")
+    #main("Tools", "CS")
     #main("RAG", "Courses")
