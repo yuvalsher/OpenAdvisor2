@@ -13,19 +13,17 @@ from AbstractLlm import AbstractLlm
 from rag import Rag
 from typing import Callable, Dict, Type, List, Optional
 from uuid import uuid4
+#from toolz import curry
 
 
 ##############################################################################
 ###### CoursesWithTools class  
 ##############################################################################
-class CoursesWithTools(AbstractLlm):
+class RagAgents(AbstractLlm):
 
     ##############################################################################
     def __init__(self, faculty_code, config):
         super().__init__(faculty_code, config)
-        self.course_data = []
-        self.course_by_id = {}
-        self.course_by_name = {}
         self.memories: Dict[str, ConversationBufferMemory] = {}
         
         self.system_instructions = """
