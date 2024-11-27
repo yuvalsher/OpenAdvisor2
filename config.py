@@ -14,6 +14,7 @@ def get_all_config():
         "General": {
             "embeddings": "text-embedding-3-small",
             "llm_model": "gpt-4o-mini",
+            "router_llm_model": "gpt-4o-mini",
             "Chroma_Path": os.path.join(script_dir, "kb", "chroma"),
             "DB_Path": os.path.join(script_dir, "kb", "json_source"),
             "Rag_System_message": "You are an AI model serving as an academic advisor for the Open University of Israel (OUI). The name of the OUI in Hebrew is האוניברסיטה הפתוחה. ",
