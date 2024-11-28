@@ -3,8 +3,7 @@ from abc import ABC, abstractmethod
 class AbstractLlm(ABC):
 
     ##############################################################################
-    def __init__(self, faculty_code, config):
-        self.faculty_code = faculty_code
+    def __init__(self, config):
         self.config = config
 
     ##############################################################################

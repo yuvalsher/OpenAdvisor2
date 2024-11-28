@@ -12,8 +12,8 @@ from AbstractLlm import AbstractLlm
 
 class Rag(AbstractLlm):
     ##############################################################################
-    def __init__(self, faculty_code, config):
-        super().__init__(faculty_code, config)
+    def __init__(self, config):
+        super().__init__(config)
         self.db = None
         self.llm = None
         self.retriever = None
@@ -35,7 +35,9 @@ class Rag(AbstractLlm):
     """
 
     ##############################################################################
-    def init(self):
+    def init(self, faculty_code):
+        self.faculty_code = faculty_code
+
         # Use the system message from the config
         self.system_message = self.config["Rag_System_message"]
         

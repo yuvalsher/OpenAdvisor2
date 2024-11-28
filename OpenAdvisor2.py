@@ -52,13 +52,13 @@ def main(type, faculty_code):
 
     llm_obj = None
     if type == "MultiAgent":
-        llm_obj = MultiAgent(faculty_code, general_config)
+        llm_obj = MultiAgent(general_config)
     elif type == "Tools":
-        llm_obj = CoursesWithTools(faculty_code, general_config)
+        llm_obj = CoursesWithTools(general_config)
     else:
-        llm_obj = Rag(faculty_code, general_config)
+        llm_obj = Rag(general_config)
 
-    llm_obj.init()
+    llm_obj.init(faculty_code)
 
     dash_chat = DashChat(llm_obj)
     title = text_config["title"]

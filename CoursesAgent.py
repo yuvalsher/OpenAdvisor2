@@ -81,6 +81,9 @@ class CoursesAgent(AbstractAgent):
             self.course_by_id[course['course_id']] = course
             self.course_by_name[course['course_name']] = course
 
+        self.rag = Rag(self.config)
+        self.rag.init("Courses")
+
 
     ##############################################################################
     def _init_tools(self):
@@ -216,7 +219,13 @@ class CoursesAgent(AbstractAgent):
                 course_id: The course ID of the input course
             """
 
-            overview = _get_course_overview_from_id(course_id)
+            if course_id not in self.course_by_id:
+                print(f"In Tool: Course {course_id} not found\n")
+                return None
+            
+            all_text = self.course_by_id[course_id]['text']
+            # concatenate all_text from an array of strings to a single string
+            overview = '\n'.join(all_text)
             result = self.rag.retrieve_rag_chunks_for_tool(overview)
             print(f"In Tool: Getting similar courses for {course_id}: {result}\n")
             return result
@@ -227,7 +236,7 @@ class CoursesAgent(AbstractAgent):
                     _get_course_name_from_id, 
                     _get_course_details_from_id,
                     _get_all_dependencies_courses_from_id,
-                    #_get_similar_courses_by_id,
                     _get_similar_courses_by_text,
+                    _get_similar_courses_by_id,
                 ]
 

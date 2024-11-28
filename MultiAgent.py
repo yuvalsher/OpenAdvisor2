@@ -1,37 +1,41 @@
 from typing import Dict, Any
 from langchain.memory import ConversationBufferMemory
-from langchain_core.messages import SystemMessage, HumanMessage, AIMessage
+from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from langchain_openai import ChatOpenAI
-from langchain.chains import LLMChain, RouterChain
-from langchain.chains.router import LLMRouterChain
 from langchain.prompts import PromptTemplate
-from langchain.schema import BaseOutputParser
-from langchain.agents import AgentExecutor
-from pydantic import BaseModel, Field
 
 from AbstractLlm import AbstractLlm
-from CoursesWithTools import CoursesWithTools
 from CoursesAgent import CoursesAgent
-
+from RagAgent import RagAgent
 ##############################################################################
 class MultiAgent(AbstractLlm):
     ##############################################################################
-    def __init__(self, faculty_code, config):
+    def __init__(self, config):
         self.system_instructions = """
             You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
             Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
             The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
         """
 
-        super().__init__(faculty_code, config)
-        self.courses_agent = CoursesAgent(config)
+        super().__init__(config)
         self.memories: Dict[str, ConversationBufferMemory] = {}
 
     ##############################################################################
-    def init(self):
+    def init(self, faculty_code):
         self.llm = ChatOpenAI(model=self.config["llm_model"], temperature=0)
-        self.courses_agent.init()
+
+        # Create agent for courses
+        self.courses_agent_creator = CoursesAgent(self.config)
+        self.courses_agent_creator.init()
+
+        # Create agent for general questions
+        self.general_agent_creator = RagAgent(self.config, "OUI")
+        self.general_agent_creator.init()
+
+        # Create agent for CS faculty questions
+        self.cs_agent_creator = RagAgent(self.config, "CS")
+        self.cs_agent_creator.init()
 
     ##############################################################################
     def _create_new_memory(self, client_id: str = None) -> str:
@@ -78,18 +82,31 @@ class MultiAgent(AbstractLlm):
             print(f"Error in router chain: {e}")
             router_response = "general"
 
+        result = None
+        agent = None
         try:
             if "course" in router_response:
-                agent = self.courses_agent.get_agent()
+                agent = self.courses_agent_creator.get_agent()
+            elif "general" in router_response:
+                agent = self.general_agent_creator.get_agent()
+            elif "faculty_cs" in router_response:
+                agent = self.cs_agent_creator.get_agent()
+            elif "study_program" in router_response:
+                result = f"No agent implemented yet for this query type: {router_response}"
+            else:
+                print(f"No agent implemented yet for this query type: {router_response}")
+                agent = self.general_agent_creator.get_agent()
+
+            if agent is not None:
                 agent.memory = memory
                 response = agent.invoke({"input": user_input})
-            else:
-                response = f"No agent implemented yet for this query type: {router_response}"
+                result = response['output']
+
         except Exception as e:
             print(f"Error in {router_response} agent: {e}")
-            response = f"Error in {router_response} agent: {e}"
+            result = f"Error in {router_response} agent: {e}"
 
-        return response['output'], client_id
+        return result, client_id
 
     ##############################################################################
     def reset_chat_history(self, client_id: str):
@@ -114,7 +131,7 @@ class MultiAgent(AbstractLlm):
                 Given a user's question, categorize it into one of the following categories:
 
                 - general: General questions about studying at the university.
-                - faculty: Questions from students about the Computer Science faculty.
+                - faculty_cs: Questions from students about the Computer Science faculty.
                 - course: Questions on details of specific courses.
                 - study_program: Questions regarding study programs.
 
@@ -124,7 +141,7 @@ class MultiAgent(AbstractLlm):
                 Category:"""
         )
 
-        # Create the LLMRouterChain
+        # Create the router chain
         router_llm = ChatOpenAI(model=self.config["router_llm_model"], temperature=0)
         router_chain = router_prompt | router_llm | StrOutputParser()
         return router_chain
