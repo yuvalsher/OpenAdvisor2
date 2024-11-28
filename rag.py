@@ -211,9 +211,9 @@ class Rag(AbstractLlm):
 
         def format_doc(doc):
             content = doc['document']
-            id = doc['metadata'].get('course_number', 'Unknown')
-            return f"{id}, "
-#            return f"Course ID: {id}\n{content}\n"
+            for key, value in doc['metadata'].items():
+                content += f"{key}: {value}\n"
+            return content
 
         def format_docs(docs):
             return ", ".join(format_doc(doc) for doc in docs)
