@@ -21,8 +21,8 @@ from uuid import uuid4
 class CoursesWithTools(AbstractLlm):
 
     ##############################################################################
-    def __init__(self, faculty_code, config):
-        super().__init__(faculty_code, config)
+    def __init__(self, config):
+        super().__init__(config)
         self.course_data = []
         self.course_by_id = {}
         self.course_by_name = {}
@@ -507,12 +507,13 @@ class CoursesWithTools(AbstractLlm):
         return agent_executor
     
     ##############################################################################
-    def init(self):
+    def init(self, faculty_code):
+        self.faculty_code = faculty_code
         # Initialize a ChatOpenAI model
         self.llm = ChatOpenAI(model=self.config["llm_model"])
 
-        self.rag = Rag(self.faculty_code, self.config)
-        self.rag.init()
+        self.rag = Rag(self.config)
+        self.rag.init(self.faculty_code)
 
         # Initialize the data
         self._init_data()
