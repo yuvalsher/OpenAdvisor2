@@ -47,7 +47,6 @@ def main(type, faculty_code):
     
     # Fetch the port from the environment, default to 10000
     port = int(os.getenv('PORT', 10000))
-    text_config = all_config[faculty_code]
     general_config = all_config["General"]
 
     llm_obj = None
@@ -61,14 +60,14 @@ def main(type, faculty_code):
     llm_obj.init(faculty_code)
 
     dash_chat = DashChat(llm_obj)
-    title = text_config["title"]
-    subtitle = text_config["description"]
+    title = general_config["title"]
+    subtitle = general_config["description"]
     dash_chat.init(title, subtitle, general_config)
 
     # Change this line to bind to all network interfaces
     dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    main("MultiAgent", "CS")
+    main("MultiAgent", "")
     #main("Tools", "CS")
     #main("RAG", "Courses")
