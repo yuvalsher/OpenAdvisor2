@@ -12,6 +12,8 @@ def get_all_config():
 
     all_config = {
         "General": {
+            "title": "האוניברסיטה הפתוחה - ייעוץ אקדמי",
+            "description": "אני בוט הייעוץ האקדמי של האוניברסיטה הפתוחה. תוכלו לשאול אותי שאלות על הלימודים באוניברסיטה.\nהקש 'נקה' לאיפוס היסטוריית השיחה.",
             "embeddings": "text-embedding-3-small",
             "llm_model": "gpt-4o-mini",
             "router_llm_model": "gpt-4o-mini",
@@ -97,6 +99,30 @@ all_crawl_config = {
         ],
         "allowed_domains": [
             'academic.openu.ac.il/cs/computer'
+        ],
+        "disallowed_domains": [
+        ],
+        "disallowed_pages": [
+        ]
+    },
+    "Math": {
+        "start_urls": [
+            'https://academic.openu.ac.il/cs/mathematics/pages/default.aspx'
+        ],
+        "allowed_domains": [
+            'academic.openu.ac.il/cs/mathematics'
+        ],
+        "disallowed_domains": [
+        ],
+        "disallowed_pages": [
+        ]
+    },
+    "Industrial": {
+        "start_urls": [
+            'https://academic.openu.ac.il/cs/industrial_engineering/pages/default.aspx'
+        ],
+        "allowed_domains": [
+            'academic.openu.ac.il/cs/industrial_engineering'
         ],
         "disallowed_domains": [
         ],
