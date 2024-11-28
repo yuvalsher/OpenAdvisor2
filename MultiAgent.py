@@ -133,13 +133,14 @@ class MultiAgent(AbstractLlm):
                 - general: General questions about studying at the university.
                 - faculty_cs: Questions from students about the Computer Science faculty.
                 - course: Questions on details of specific courses.
-                - study_program: Questions regarding study programs.
 
                 Provide only the category name that best fits the question.
 
                 Question: {input}
                 Category:"""
         )
+
+        #        - study_program: Questions regarding study programs.
 
         # Create the router chain
         router_llm = ChatOpenAI(model=self.config["router_llm_model"], temperature=0)
