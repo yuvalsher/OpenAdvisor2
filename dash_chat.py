@@ -19,11 +19,10 @@ class DashChat:
 
     ##############################################################################
     def _init_layout(self, title, subtitle):
-        subtitle += "\nהקש 'נקה' לאיפוס היסטוריית השיחה."
         return html.Div([
             # Title for the chat app (loaded from configuration)
             html.H1(title, style={'text-align': 'center', 'font-family': 'Arial', 'padding': '10px', 'border-bottom': '2px solid #ccc', 'direction': 'rtl'}),
-            html.H3(subtitle, style={'text-align': 'center', 'font-family': 'Arial', 'padding': '10px', 'border-bottom': '2px solid #ccc', 'direction': 'rtl'}),
+            html.H3(subtitle, style={'text-align': 'center', 'font-family': 'Arial', 'padding': '10px', 'border-bottom': '2px solid #ccc', 'direction': 'rtl', 'whiteSpace': 'pre-line'}),
             
             # Chat history with round edges, scrollable area and welcome message
             html.Div(id='chat-history', children=[], style={
