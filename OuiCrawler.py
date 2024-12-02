@@ -36,13 +36,15 @@ pages_dict = {}
 youtube_links = []
 msg_log = []
 pdf_files = []
+disallowed_pages = 0
+other_domains = {}
 
 is_testing = False
 context = ""
 
 ##############################################################################
 def is_allowed_domain(url):
-    global crawl_config
+    global crawl_config, disallowed_pages, other_domains
 
     if is_testing:
         return True
@@ -65,6 +67,7 @@ def is_allowed_domain(url):
 
         # Check if the domain matches and the path starts with the allowed path
         if domain == disallowed_domain_netloc and path.startswith(disallowed_domain_path):
+            disallowed_pages += 1
             return False
 
     # Check if the full domain and path are in the allowed domains
@@ -77,6 +80,9 @@ def is_allowed_domain(url):
         if domain == allowed_domain_netloc and path.startswith(allowed_domain_path):
             return True
 
+    if domain not in other_domains:
+        other_domains[domain] = 0
+    other_domains[domain] += 1
     return False
 
 ##############################################################################
@@ -304,7 +310,7 @@ def check_for_links(element, url, todo_links):
         # Normalize and remove URL fragments (e.g., #section)
         next_url = urlparse(next_url)._replace(fragment='').geturl()
         #  Add link to the ToDo list
-        if next_url not in todo_links and is_allowed_domain(next_url):
+        if next_url not in todo_links and is_allowed_domain(next_url) and next_url not in visited_urls:
             todo_links.append(next_url)
 
 ##############################################################################
@@ -381,7 +387,7 @@ def do_all_stats():
             not_counted.append(url)
 
     print(f"Total pages collected: {total_pages}\n")
-    print(f"Main pages collected: {main_pages}")
+    print(f"Main pages collected (under 'www.openu.ac.il'): {main_pages}")
     for dom1 in domains:
         print(f"Pages collected for {dom1}:")
         dom1_total = 0
@@ -391,7 +397,7 @@ def do_all_stats():
             dom1_total += domains[dom1][dom2]
         print(f"    Total: {dom1_total}")
 
-    print(f"\n\nAcademic pages collected: {ac_pages}")
+    print(f"\n\nAcademic pages collected (under 'academic.openu.ac.il'): {ac_pages}")
     for dom1 in ac_domains:
         print(f"Pages collected for {dom1}:")
         dom1_total = 0
@@ -412,6 +418,11 @@ def do_all_stats():
     print(f"\n\nPDF\DOCX files collected: {len(pdf_files)}")
     for pdf in pdf_files:
         print(f"    {pdf}")
+
+    print(f"\n\nDisallowed pages: {disallowed_pages}")
+    print(f"\nOther domains (not collected):")
+    for domain in other_domains:
+        print(f"    {domain}: {other_domains[domain]}")
 
                 
 
@@ -571,5 +582,5 @@ if __name__ == "__main__":
 #    start_crawling(["CS"])
 #    test_videos()
 #     start_crawling(["CS", "OUI"])
-    #start_crawling(["All"])
-    do_all_stats()
+    start_crawling(["All"])
+#    do_all_stats()
