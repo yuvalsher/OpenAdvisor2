@@ -52,6 +52,34 @@ def get_all_config():
 all_config = get_all_config()
 
 all_crawl_config = {
+    "All": {
+        "start_urls": [
+            'https://www.openu.ac.il/counseling/Pages/Preparation_for_counselin.aspx',
+            'https://www.openu.ac.il/registration/pages/default.aspx',
+            'https://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/default.aspx',
+            'https://www.openu.ac.il/students/pages/default.aspx',
+            'https://www.openu.ac.il/library/pages/default.aspx'
+        ],
+        "allowed_domains": [
+            'academic.openu.ac.il',
+            'www.openu.ac.il', 
+        ],
+        "disallowed_domains": [
+            'academic.openu.ac.il/yedion',
+            'academic.openu.ac.il/degrees/Pages',
+            'www.openu.ac.il/dean-students/opjob/events',
+            'www.openu.ac.il/publications',
+            'www.openu.ac.il/oui-press',
+            'www.openu.ac.il/events',
+            'www.openu.ac.il/allnews',
+            'www.openu.ac.il/personal_sites',
+            'www.openu.ac.il/jcmcenter',
+            'www.openu.ac.il/library/New_in_the_library',
+            'www.openu.ac.il/library/new_in_the_library'
+        ],
+        "disallowed_pages": [
+        ]
+    },
     "OUI": {
         # Define the initial URLs to start crawling from
         "start_urls": [

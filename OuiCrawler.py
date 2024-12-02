@@ -6,6 +6,8 @@ import re
 import os
 import json
 from openai import OpenAI
+from datetime import datetime
+
 from config import all_config, all_crawl_config
 from YouTubeTools import YouTubeTools
 
@@ -33,6 +35,7 @@ pages_dict = {}
 
 youtube_links = []
 msg_log = []
+pdf_files = []
 
 is_testing = False
 context = ""
@@ -121,7 +124,7 @@ def contains_chunks(element):
 
 ##############################################################################
 # Extract the text content of the web page. Use only stuff after the end of the header, marked with the '<!--END HEADER-->' element, and before the footer, marked with the "<!--FOOTER-->" element.
-def extract_text_content(soup, url):
+def extract_text_content(soup, url, todo_links):
     # Find all comments
     comments = soup.find_all(string=lambda text: isinstance(text, Comment))
 
@@ -167,7 +170,7 @@ def extract_text_content(soup, url):
                 text_content += current_element.text
 
             if not is_testing:
-                check_for_links(current_element, url)
+                check_for_links(current_element, url, todo_links)
 
             current_element = current_element.next_sibling
 
@@ -199,9 +202,23 @@ def add_chunk(url, title, chunk, type):
     })
 
 ##############################################################################
-def crawl_page(url):
+def crawl_page(url, todo_links):
     global pages_data
     global pages_dict
+
+    # Check if the URL points to a PDF file
+    if url.lower().endswith('.pdf'):
+        pdf_files.append(url)
+        msg = f"Skipping PDF file: {url}"
+        print(msg)
+        return
+
+    # Check if the URL points to a PDF file
+    if url.lower().endswith('.docx'):
+        pdf_files.append(url)
+        msg = f"Skipping DOCX file: {url}"
+        print(msg)
+        return
 
     # If URL is not in allowed domain or already visited, skip
     if url in visited_urls or not is_allowed_domain(url):
@@ -224,18 +241,19 @@ def crawl_page(url):
         return
 
     # Parse the page content with BeautifulSoup
-    soup = BeautifulSoup(response.content, 'html.parser')
+    try:    
+        soup = BeautifulSoup(response.content, 'html.parser')
+    except Exception as e:
+        msg = f"Failed to parse {url}: {e}"
+        print(msg)
+        msg_log.append(msg)
+        return
 
     # Extract the page title
     title = soup.title.string if soup.title else ''
 
-    # Extract text content or YouTube transcript
-    #text_content = ""
-    #if 'youtube.com' in url:
-        #text_content = extract_youtube_transcript(soup)
-        #print("Added YouTube video: " + title[::-1])
-    #else:
-    text_content = extract_text_content(soup, url)
+    text_content = extract_text_content(soup, url, todo_links)
+
     for chunk in text_content:
         if chunk in pages_dict:
             continue 
@@ -243,9 +261,9 @@ def crawl_page(url):
             pages_dict[chunk] = url
 
     if title:
-        print("Added page: " + title[::-1] + " @ " + url + "\n")
+        print(f"Added page: {title[::-1]} @ {url}\n")
     else:
-        msg = "Page with empty title: " + url + "\n"
+        msg = f"Page with empty title: {url}\n"
         print(msg)
         msg_log.append(msg)
 
@@ -273,13 +291,10 @@ def crawl_page(url):
         video_link = f"https://www.youtube.com/watch?v={video_id}"
         if video_link not in youtube_links:
             youtube_links.append(video_link)
-        #crawl_page(video_link)
-        #if link_url.startswith('https://www.youtube.com/watch\?v='):
-        #    crawl_page(link_url)
 
 
 ##############################################################################
-def check_for_links(element, url):
+def check_for_links(element, url, todo_links):
     if isinstance(element, NavigableString):
         return
 
@@ -288,7 +303,9 @@ def check_for_links(element, url):
         next_url = urljoin(url, link['href'])
         # Normalize and remove URL fragments (e.g., #section)
         next_url = urlparse(next_url)._replace(fragment='').geturl()
-        crawl_page(next_url)
+        #  Add link to the ToDo list
+        if next_url not in todo_links and is_allowed_domain(next_url):
+            todo_links.append(next_url)
 
 ##############################################################################
 # Function for reading the output jaon file and providing statistics on it
@@ -309,6 +326,94 @@ def do_stats():
     print(f"Total pages collected: {total_pages}")
     for domain, count in domain_counts.items():
         print(f"Pages collected for {domain}: {count}")
+
+##############################################################################
+def do_all_stats():
+    global pages_data
+    # Count the total number of pages collected
+    total_pages = len(pages_data)
+    if (total_pages == 0):
+        # Read the JSON file
+        db_path = all_config['General']['DB_Path']
+        filename = os.path.join(db_path, "crawled_data_All.json")
+        with open(filename, 'r', encoding='utf-8') as file:
+            pages_data = json.load(file)
+            total_pages = len(pages_data)
+        
+    domains = {}
+    ac_domains = {}
+    dom1 = ""
+    dom2 = ""
+    ac_pages = 0
+    main_pages = 0
+    not_counted = []
+    youtube_links = []
+    EMPTY_DOM = '<>'
+    for page in pages_data:
+        url = page['url']
+        parsed_url = urlparse(url)
+        dom = parsed_url.netloc
+        path = parsed_url.path
+        dom1 = path.split('/')[1] if len(path.split('/')) > 1 else EMPTY_DOM
+        if (dom1 == ''):
+            dom1 = EMPTY_DOM
+        dom2 = path.split('/')[2] if len(path.split('/')) > 2 else EMPTY_DOM
+        if (dom2 == '' or dom2.endswith('.aspx') or dom2.endswith('.html') or dom2.endswith('.htm')):
+            dom2 = EMPTY_DOM
+
+        if dom == 'www.openu.ac.il':
+            main_pages += 1
+            if not dom1 in domains:
+                domains[dom1] = {}
+            if not dom2 in domains[dom1]:
+                domains[dom1][dom2] = 0
+            domains[dom1][dom2] += 1
+        elif dom == 'academic.openu.ac.il':
+            ac_pages += 1
+            if not dom1 in ac_domains:
+                ac_domains[dom1] = {}
+            if not dom2 in ac_domains[dom1]:
+                ac_domains[dom1][dom2] = 0
+            ac_domains[dom1][dom2] += 1
+        elif dom == 'www.youtube.com':
+            youtube_links.append(url)
+        else:
+            not_counted.append(url)
+
+    print(f"Total pages collected: {total_pages}\n")
+    print(f"Main pages collected: {main_pages}")
+    for dom1 in domains:
+        print(f"Pages collected for {dom1}:")
+        dom1_total = 0
+        for dom2 in domains[dom1]:
+            if dom2 != EMPTY_DOM:
+                print(f"    {dom2}: {domains[dom1][dom2]}")
+            dom1_total += domains[dom1][dom2]
+        print(f"    Total: {dom1_total}")
+
+    print(f"\n\nAcademic pages collected: {ac_pages}")
+    for dom1 in ac_domains:
+        print(f"Pages collected for {dom1}:")
+        dom1_total = 0
+        for dom2 in ac_domains[dom1]:
+            if dom2 != EMPTY_DOM:
+                print(f"    {dom2}: {ac_domains[dom1][dom2]}")
+            dom1_total += ac_domains[dom1][dom2]
+        print(f"    Total: {dom1_total}")
+
+    print(f"\n\nYoutube links collected: {len(youtube_links)}:")
+    for url in youtube_links:
+        print(f"    {url}")
+
+    print(f"\n\nNot counted pages: {len(not_counted)}:")
+    for url in not_counted:
+        print(f"    {url}")
+
+    print(f"\n\nPDF\DOCX files collected: {len(pdf_files)}")
+    for pdf in pdf_files:
+        print(f"    {pdf}")
+
+                
 
 ##############################################################################
 # loop over youtube links, and use the YouTube API to get the video transcript.
@@ -341,6 +446,10 @@ def check_videos_for_transcripts(youtube_links):
 def start_crawling(faculties):
     global pages_data, crawl_config, context
 
+    start_time = datetime.now()
+    print(f"Starting at: {start_time}")
+    msg_log.append(f"Starting at: {start_time}")
+
     for faculty in faculties:
         msg = f"\n\nStarting crawling for {faculty}...\n"
         print(msg)
@@ -348,9 +457,16 @@ def start_crawling(faculties):
         context = faculty
         crawl_config = all_crawl_config[faculty]
 
+        todo_links = []
         # Start crawling from the initial URLs
         for url in crawl_config['start_urls']:
-            crawl_page(url)
+            while True:
+                crawl_page(url, todo_links)
+
+                if len(todo_links) == 0:
+                    break
+                else:
+                    url = todo_links.pop(0)
 
         check_videos_for_transcripts(youtube_links)
 
@@ -360,12 +476,24 @@ def start_crawling(faculties):
         with open(filename, 'w', encoding='utf-8') as json_file:
             json.dump(pages_data, json_file, ensure_ascii=False, indent=4)
 
-        do_stats()
+        if (faculty == "All"):
+            do_all_stats()
+        else:
+            do_stats()
+
+        end_time = datetime.now()
+        print(f"Ending at: {end_time}, total time: {end_time - start_time}")
+        msg_log.append(f"Ending at: {end_time}, total time: {end_time - start_time}")
 
         print("\nLog Messages:")
         for msg in msg_log:
             print(msg)
 
+
+    # Add the number of PDF files, and then the list of PDF files to msg_log
+    msg_log.append(f"\nPDF files collected: {len(pdf_files)}\n")
+    for pdf in pdf_files:
+        msg_log.append(f"    {pdf}\n")
 
     # write msg_log to log file
     log_filename = os.path.join(db_path, "crawled_data_" + faculty + "_log.txt")
@@ -442,4 +570,6 @@ def test_videos():
 if __name__ == "__main__":
 #    start_crawling(["CS"])
 #    test_videos()
-     start_crawling(["CS", "OUI"])
+#     start_crawling(["CS", "OUI"])
+    #start_crawling(["All"])
+    do_all_stats()
