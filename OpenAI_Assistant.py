@@ -65,7 +65,8 @@ class OpenAIAssistant(AbstractAgent):
         formatted_study_programs_data = json.dumps(self.study_programs_data[faculty_code], indent=2)
 
         # Combine instructions and data
-        system_message_content = f"{system_instructions}\n\n{self.program_instructions}\n\nData on Academic Study Programs:\n{formatted_study_programs_data}"
+        #system_message_content = f"{system_instructions}\n\n{self.program_instructions}\n\nData on Academic Study Programs:\n{formatted_study_programs_data}"
+        system_message_content = f"{system_instructions}"
 
         name = f"Study Advisor for {faculty_code}"
         tools=[{"type": "code_interpreter"}]
@@ -84,8 +85,37 @@ class OpenAIAssistant(AbstractAgent):
         return self.assistants[faculty_code]
     
     ##############################################################################
-    def create_thread(self, query):
-        thread = self.openai.beta.threads.create()
+    def create_thread(self, faculty_code, query):
+        messages=[
+            {
+            "role": "user",
+            "content": [
+                {
+                "type": "text",
+                "text": "These are the instructions on understanding the study programs"
+                },
+                {
+                "type": "text",
+                "text": self.program_instructions
+                },
+            ],
+            },
+            {
+            "role": "user",
+            "content": [
+                {
+                "type": "text",
+                "text": "This is the definition of the study program in JSON format"
+                },
+                {
+                "type": "text",
+                "text": json.dumps(self.study_programs_data[faculty_code], indent=2)
+                }
+            ],
+            }
+        ]
+
+        thread = self.openai.beta.threads.create(messages = messages)
     
         # Add the query to the Thread
         message = self.openai.beta.threads.messages.create(
@@ -97,11 +127,12 @@ class OpenAIAssistant(AbstractAgent):
         return thread
     
     ##############################################################################
-    def create_run_and_wait(self, thread_id, assistant_id, input):
-        run = self.openai.beta.threads.runs.create(
+    def create_run_and_wait(self, thread_id, assistant_id, instructions):
+        run = self.openai.beta.threads.runs.create_and_poll(
             thread_id=thread_id,
             assistant_id=assistant_id,
-            input=input,
+            instructions=instructions,
+            poll_interval_ms=500,
         )
         if run.status == 'completed': 
             messages = self.openai.beta.threads.messages.list(thread_id=thread_id)
@@ -111,18 +142,14 @@ class OpenAIAssistant(AbstractAgent):
 
     ##############################################################################
     def create_run_stream(self, thread_id, assistant_id, instructions):
-        answer = ""
         class EventHandler(AssistantEventHandler):    
             @override
             def on_text_created(self, text) -> None:
-                global answer
-                answer = str(text)
                 print(f"\nassistant > ", end="", flush=True)
             
             @override
             def on_text_delta(self, delta, snapshot):
                 global answer
-                answer += delta.value
                 print(delta.value, end="", flush=True)
             
             def on_tool_call_created(self, tool_call):
@@ -152,7 +179,8 @@ class OpenAIAssistant(AbstractAgent):
 def main(fac_code):
     query = "כמה נקודות זכות צריך להשלים עבור קורסי בחירה?"
     ass_ids = {
-        "AF": "asst_FhECPescLvwXFIynJfrOgpi9",
+#        "AF": "asst_FhECPescLvwXFIynJfrOgpi9",
+        "AF": "asst_Xrlv8kZAzdpbLyFMw5WrYkK7",
     }
     
     ass_agent = OpenAIAssistant(all_config["General"])
@@ -167,10 +195,11 @@ def main(fac_code):
         print(f"Assistant ID for {fac_code}: {ass_id}")
 
     ### Create a thread
-    thread = ass_agent.create_thread(query)
+    thread = ass_agent.create_thread(fac_code, query)
 
 
-    answer = ass_agent.create_run_stream(thread.id, ass_id, "")
+    #answer = ass_agent.create_run_stream(thread.id, ass_id, "")
+    answer = ass_agent.create_run_and_wait(thread.id, ass_id, "")
     print(f"Answer: {answer[::-1]}")
 
     # response = ass_agent.create_run_and_wait(thread.id, ass_id, query)
