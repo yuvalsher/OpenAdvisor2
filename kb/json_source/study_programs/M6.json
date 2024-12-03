@@ -1,0 +1,404 @@
+{
+	"code": "M6",
+	"name": "בוגר B.Sc. במדעי המחשב במסלול התמחות באבטחת המרחב המקוון (אבטחת סייבר)",
+	"text": [],
+	"footnotes": [],
+	"sections": [
+		{
+			"title": "יש לצבור לפחות 120 נ\"ז ולעמוד בדרישות הבאות:",
+			"footnotes": [],
+			"text": [
+				"לפחות 111 נ\"ז במדעים\nמתוכן לפחות 76 נ\"ז במדעי המחשב",
+				"לפחות 39 נ\"ז מתקדמות במדעי המחשב",
+				"מסלול ההתמחות אינו רשום בתעודת הבוגר. אישור על ההתמחות ניתן במסמך נלווה לתעודת הבוגר."
+			],
+			"sub-sections": [],
+			"courses": []
+		},
+		{
+			"title": "א - לימודי תשתית במתמטיקה: חובה - 35 נ\"ז",
+			"footnotes": [],
+			"text": [],
+			"sub-sections": [],
+			"courses": [
+				{
+					"type": "simple",
+					"id": "20476",
+					"name": "מתמטיקה בדידה: תורת הקבוצות, קומבינטוריקה ותורת הגרפים",
+					"url": "https://www.openu.ac.il/courses/20476.htm",
+					"level": "רגיל",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20109",
+					"name": "אלגברה לינארית 1",
+					"url": "https://www.openu.ac.il/courses/20109.htm",
+					"level": "רגיל",
+					"points": 7,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20229",
+					"name": "אלגברה לינארית 2",
+					"url": "https://www.openu.ac.il/courses/20229.htm",
+					"level": "רגיל",
+					"points": 5,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20474",
+					"name": "חשבון אינפיניטסימלי 1",
+					"url": "https://www.openu.ac.il/courses/20474.htm",
+					"level": "רגיל",
+					"points": 7,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20475",
+					"name": "חשבון אינפיניטסימלי 2",
+					"url": "https://www.openu.ac.il/courses/20475.htm",
+					"level": "רגיל",
+					"points": 7,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20425",
+					"name": "הסתברות ומבוא לסטטיסטיקה למדעי המחשב",
+					"url": "https://www.openu.ac.il/courses/20425.htm",
+					"level": "רגיל",
+					"points": 5,
+					"footnotes": []
+				}
+			]
+		},
+		{
+			"title": "ב - לימודי מדעי המחשב: לפחות 70 נ\"ז",
+			"footnotes": [],
+			"text": [],
+			"sub-sections": [],
+			"courses": [
+				{
+					"type": "simple",
+					"id": "20441",
+					"name": "מבוא למדעי המחשב ושפת Java",
+					"url": "https://www.openu.ac.il/courses/20441.htm",
+					"level": "רגיל",
+					"points": 6,
+					"footnotes": [
+						"במקום הקורס  מבוא למדעי המחשב ושפת Java (20441)  ניתן ללמוד את שני הקורסים  מבוא למדעי המחשב ושפת Java  א  ( 20453  ,3 נ\"ז) ו מבוא למדעי המחשב ושפת Java ב  ( 20454  ,3 נ\"ז)."
+					]
+				},
+				{
+					"type": "simple",
+					"id": "20407",
+					"name": "מבני נתונים ומבוא לאלגוריתמים",
+					"url": "https://www.openu.ac.il/courses/20407.htm",
+					"level": "רגיל",
+					"points": 6,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20417",
+					"name": "אלגוריתמים",
+					"url": "https://www.openu.ac.il/courses/20417.htm",
+					"level": "רגיל",
+					"points": 5,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20465",
+					"name": "מעבדה בתכנות מערכות",
+					"url": "https://www.openu.ac.il/courses/20465.htm",
+					"level": "רגיל",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "compound",
+					"operator": "OR",
+					"children": [
+						{
+							"type": "compound",
+							"operator": "AND",
+							"children": [
+								{
+									"type": "simple",
+									"id": "20440",
+									"name": "אוטומטים ושפות פורמליות",
+									"url": "https://www.openu.ac.il/courses/20440.htm",
+									"level": "רגיל",
+									"points": 4,
+									"footnotes": [
+										"הקורס אינו מוצע עוד."
+									]
+								},
+								{
+									"type": "simple",
+									"id": "20585",
+									"name": "מבוא לתורת החישוביות והסיבוכיות",
+									"url": "https://www.openu.ac.il/courses/20585.htm",
+									"level": "מתקדם",
+									"points": 5,
+									"footnotes": [
+										"הקורס יילמד בפעם האחרונה בסמסטר 2026א"
+									]
+								}
+							]
+						},
+						{
+							"type": "simple",
+							"id": "20604",
+							"name": "מודלים חישוביים",
+							"url": "https://www.openu.ac.il/courses/20604.htm",
+							"level": "רגיל (3) / מתקדם (2)",
+							"points": 5,
+							"footnotes": []
+						}
+					]
+				},
+				{
+					"type": "simple",
+					"id": "20471",
+					"name": "ארגון המחשב",
+					"url": "https://www.openu.ac.il/courses/20471.htm",
+					"level": "רגיל",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20466",
+					"name": "לוגיקה למדעי המחשב",
+					"url": "https://www.openu.ac.il/courses/20466.htm",
+					"level": "רגיל",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20594",
+					"name": "מערכות הפעלה",
+					"url": "https://www.openu.ac.il/courses/20594.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20905",
+					"name": "שפות תכנות",
+					"url": "https://www.openu.ac.il/courses/20905.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20580",
+					"name": "מבוא לקריפטוגרפיה",
+					"url": "https://www.openu.ac.il/courses/20580.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20582",
+					"name": "מבוא לרשתות תקשורת מחשבים",
+					"url": "https://www.openu.ac.il/courses/20582.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": [
+						"הקורס יילמד בפעם האחרונה בסמסטר 2025ג"
+					]
+				},
+				{
+					"type": "simple",
+					"id": "20937",
+					"name": "תכנות מערכות דפנסיבי",
+					"url": "https://www.openu.ac.il/courses/20937.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "compound",
+					"operator": "",
+					"children": [
+						{
+							"type": "simple",
+							"id": "20940",
+							"name": "מבוא לאבטחת המרחב המקוון",
+							"url": "https://www.openu.ac.il/courses/20940.htm",
+							"level": "מתקדם",
+							"points": 4,
+							"footnotes": [
+								"או הקורס  אבטחת מערכות תוכנה (22923)  שאינו מוצע עוד."
+							]
+						}
+					]
+				},
+				{
+					"type": "simple",
+					"id": "20551",
+					"name": "מבוא לבינה מלאכותית",
+					"url": "https://www.openu.ac.il/courses/20551.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20554",
+					"name": "תכנות מתקדם בשפת Java",
+					"url": "https://www.openu.ac.il/courses/20554.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20277",
+					"name": "מערכות בסיסי-נתונים",
+					"url": "https://www.openu.ac.il/courses/20277.htm",
+					"level": "רגיל",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20906",
+					"name": "תכנות מונחה עצמים",
+					"url": "https://www.openu.ac.il/courses/20906.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20595",
+					"name": "כריית מידע",
+					"url": "https://www.openu.ac.il/courses/20595.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "20946",
+					"name": "מבוא לבדיקות תוכנה (אנגלית)",
+					"url": "https://www.openu.ac.il/courses/20946.htm",
+					"level": "מתקדם",
+					"points": 4,
+					"footnotes": [
+						"קורס זה נכלל במניין הקורסים לסטודנטים וסטודנטיות הנדרשים ללמוד  קורס תוכן באנגלית  במסגרת תכנית לימודיהם. הקורס יילמד בשפה האנגלית."
+					]
+				},
+				{
+					"type": "simple",
+					"id": "22928",
+					"name": "מבוא לראייה ממוחשבת",
+					"url": "https://www.openu.ac.il/courses/22928.htm",
+					"level": "לתואר שני",
+					"points": 4,
+					"footnotes": []
+				},
+				{
+					"type": "simple",
+					"id": "22939",
+					"name": "נושאים מתקדמים באבטחת המרחב המקוון",
+					"url": "https://www.openu.ac.il/courses/22939.htm",
+					"level": "לתואר שני",
+					"points": 4,
+					"footnotes": [
+						"הקורס עדיין אינו נלמד."
+					]
+				}
+			]
+		},
+		{
+			"title": "ג - דרישות סמינריוניות במדעי המחשב: 6 נ\"ז מס",
+			"footnotes": [],
+			"text": [],
+			"sub-sections": [],
+			"courses": [
+				{
+					"type": "compound",
+					"operator": "OR",
+					"children": [
+						{
+							"type": "simple",
+							"id": "20927",
+							"name": "סמינר באבטחת המרחב המקוון",
+							"url": "https://www.openu.ac.il/courses/20927.htm",
+							"level": "מתקדם סמינריוני",
+							"points": 3,
+							"footnotes": []
+						},
+						{
+							"type": "simple",
+							"id": "20954",
+							"name": "סמינר במדעי המחשב (אנגלית)",
+							"url": "https://www.openu.ac.il/courses/20954.htm",
+							"level": "מתקדם סמינריוני",
+							"points": 3,
+							"footnotes": [
+								"קורס זה נכלל במניין הקורסים לסטודנטים וסטודנטיות הנדרשים ללמוד  קורס תוכן באנגלית  במסגרת תכנית לימודיהם. הקורס יילמד בשפה האנגלית.",
+								"הסמינר יהיה בנושא אבטחת המרחב המקוון"
+							]
+						}
+					]
+				},
+				{
+					"type": "simple",
+					"id": "20931",
+					"name": "סדנה באבטחת מידע",
+					"url": "https://www.openu.ac.il/courses/20931.htm",
+					"level": "מתקדם סמינריוני",
+					"points": 3,
+					"footnotes": []
+				}
+			]
+		},
+		{
+			"title": "ד - לימודי בחירה: 9 נ\"ז   [1525]",
+			"footnotes": [
+				{
+					"note_id": "1525",
+					"note": "ניתן ללמוד קורסים בבחירה חופשית ממגוון קורסי האו\"פ, עד להשלמת מכסות הנקודות השונות הנדרשות לתואר. לסטודנטים בעלי רקע של 4 יח\"ל במתמטיקה מהתיכון, המעוניינים ללמוד כלים מתמטיים בסיסיים וחשיבה מתמטית מופשטת, כהכנה לקורסי החובה במתמטיקה בתכנית מומלץ ללמוד את הקורס   אשנב למתמטיקה (04101, 6 נ\"ז)  ."
+				},
+				{
+					"note_id": "1526",
+					"note": "לפני הרשמה לקורס בחירה כללית בתכנית יש לוודא עמידה בכל תנאי הקבלה אליו. יש לעמוד בתנאי הקבלה גם כאשר הם כוללים קורסים שאינם ברשימות החובה או הבחירה שבתכנית."
+				}
+			],
+			"text": [
+				"-          ניתן ללמוד קורסים בבחירה חופשית ממגוון קורסי האו\"פ (לא כולל קורסים סמינריונים), עד להשלמת מכסות הנקודות השונות הנדרשות לתואר. \n[1526]"
+			],
+			"sub-sections": [],
+			"courses": []
+		},
+		{
+			"title": "ה - דרישות כלליות לתואר",
+			"footnotes": [],
+			"text": [
+				"עמידה בכל הדרישות כמפורט בסעיף \nדרישות לימודים כלליות לתואר ראשון\n:",
+				"צבירת נקודות זכות לתואר",
+				"עמידה בדרישות האנגלית",
+				"הדרכה ביבליוגרפית בספרייה",
+				"לפני הרשמה לקורס בתכנית יש לוודא עמידה בכל תנאי הקבלה אליו. יש לעמוד בתנאי הקבלה גם כאשר הם כוללים קורסים שאינם ברשימות החובה או הבחירה שבתכנית.",
+				"הערה: \nלימודי מדעי המחשב הם מובנים מיסודם. לפיכך יש חשיבות רבה לא רק לבחירה מושכלת של קורסים, אלא גם לתכנון הלימודים בסדר הגיוני. למשל, את לימודי החובה במתמטיקה מומלץ להקדים ככל האפשר. אפשר ורצוי להסתייע ביועצים האקדמיים."
+			],
+			"sub-sections": [],
+			"courses": []
+		}
+	]
+},
