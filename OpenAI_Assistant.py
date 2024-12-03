@@ -9,20 +9,23 @@ from openai import AssistantEventHandler
 from AbstractAgent import AbstractAgent
 from config import all_config
 
-# Define system instructions
-system_instructions = """
-You are an academic advisor specializing in study programs. You analyze JSON files describing study programs, align them with student grade lists, and suggest courses the student should take next. 
-You can perform the following:
-1. Parse and understand study program details from the JSON file.
-2. Answer questions about the study program.
-3. Check the student's completed courses against the program requirements.
-4. Suggest next courses to fulfill mandatory and elective requirements.
-5. Always consider course prerequisites and constraints.
-
-Respond in a clear, structured format with detailed reasoning.
-"""
-
 class OpenAIAssistant(AbstractAgent):
+
+    # Define system instructions
+    system_instructions = """
+        You are an academic advisor for the Open University of Israel (האוניברסיטה הפתוחה), specializing in academic study programs. 
+        You analyze a JSON file describing the study program, according to the detailed instructions provided in the first message, in order to answer student questions about this program.
+        The JSON file with the study program data is provided in the first message, use the code interpreter tool to read it.
+        You may also align the study program with student grade lists, and suggest courses the student should take next. 
+        The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
+        You can perform the following:
+        1. Parse and understand study program details from the JSON file, according to the detailed instructions provided.
+        2. Answer questions about the study program.
+        3. If the student provides a course grade report, check the student's completed courses against the program requirements, and suggest next courses to fulfill mandatory and elective requirements.
+        4. Always consider course prerequisites and constraints.
+
+        Respond in a clear, structured format with detailed reasoning.
+    """
 
     ##############################################################################
     def __init__(self, config):
@@ -30,7 +33,7 @@ class OpenAIAssistant(AbstractAgent):
         dotenv.load_dotenv()
         self.openai = OpenAI()
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
-        self.assistants = {}
+        self.assistant = None  # We'll store just one assistant
 
     ##############################################################################
     def _init_tools(self):
@@ -38,86 +41,70 @@ class OpenAIAssistant(AbstractAgent):
 
     ##############################################################################
     def _init_data(self):
-
         dir_path = self.config["DB_Path"]
-
-        # Load JSON data
-        json_path = os.path.join(dir_path, "cs_study_programs.json")
-        with open(json_path, "r", encoding='utf-8') as json_file:
-            data = json.load(json_file)
-        self.study_programs_data = {}
-        for faculty in data:
-            code = faculty['code']
-            self.study_programs_data[code] = faculty
         # Read text file containing instructions
         text_path = os.path.join(dir_path, "Study_Program_json_guide.txt")
         with open(text_path, "r", encoding='utf-8') as text_file:
             self.program_instructions = text_file.read()
 
     ##############################################################################
-    def create_assistant(self, faculty_code, instructions, model):
+    def get_assistant(self):
+        if self.assistant is None:
+            # Try to find existing assistant
+            name = "Study Program Advisor"
+            assistants_list = self.openai.beta.assistants.list(
+                order="desc",
+                limit=100
+            )
+            
+            # Look for an existing assistant with this name
+            for assistant in assistants_list.data:
+                if assistant.name == name:
+                    print(f"Found existing assistant: {assistant.id}")
+                    self.assistant = assistant
+                    return self.assistant
 
-        if faculty_code not in self.study_programs_data:
-            print(f"Faculty code {faculty_code} not found in study programs data")
-            return None
+            # Create new assistant if none exists
+            self.assistant = self.openai.beta.assistants.create(
+                name=name,
+                instructions=self.system_instructions,
+                tools=[{"type": "code_interpreter"}],
+                model="gpt-4-turbo-preview",
+            )
+            print(f"Created new assistant: {self.assistant.id}")
+        
+        return self.assistant
 
-        # Format JSON data for inclusion in the system message
-        formatted_study_programs_data = json.dumps(self.study_programs_data[faculty_code], indent=2)
-
-        # Combine instructions and data
-        #system_message_content = f"{system_instructions}\n\n{self.program_instructions}\n\nData on Academic Study Programs:\n{formatted_study_programs_data}"
-        system_message_content = f"{system_instructions}"
-
-        name = f"Study Advisor for {faculty_code}"
-        tools=[{"type": "code_interpreter"}]
-        assistant = self.openai.beta.assistants.create(
-            name=name,
-            instructions=system_message_content,
-            tools=tools,
-            model=model,
-        )
-        return assistant
-    
-    ##############################################################################
-    def get_assistant(self, faculty_code):
-        if faculty_code not in self.assistants:
-            self.assistants[faculty_code] = self.create_assistant(faculty_code, system_instructions, "gpt-4o-mini")
-        return self.assistants[faculty_code]
-    
     ##############################################################################
     def create_thread(self, faculty_code, query):
+        # Read the JSON file content
+        dir_path = self.config["DB_Path"]
+        json_path = os.path.join(dir_path, "study_programs", faculty_code+".json")
+        with open(json_path, 'r', encoding='utf-8') as f:
+            json_content = f.read()
+
+        # Create initial messages with both the program instructions and JSON content
         messages=[
             {
-            "role": "user",
-            "content": [
-                {
-                "type": "text",
-                "text": "These are the instructions on understanding the study programs"
-                },
-                {
-                "type": "text",
-                "text": self.program_instructions
-                },
-            ],
+                "role": "user",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": f"""Here are the instructions for understanding the study program data:
+                        {self.program_instructions}
+                        
+                        The study program data in JSON format is:
+                        {json_content}
+                        
+                        Please confirm you can read and parse this JSON data before proceeding."""
+                    },
+                ],
             },
-            {
-            "role": "user",
-            "content": [
-                {
-                "type": "text",
-                "text": "This is the definition of the study program in JSON format"
-                },
-                {
-                "type": "text",
-                "text": json.dumps(self.study_programs_data[faculty_code], indent=2)
-                }
-            ],
-            }
         ]
 
-        thread = self.openai.beta.threads.create(messages = messages)
-    
-        # Add the query to the Thread
+        thread = self.openai.beta.threads.create(messages=messages)
+        
+        # Add the user's query to the Thread
         message = self.openai.beta.threads.messages.create(
             thread_id=thread.id,
             role="user",
@@ -179,8 +166,7 @@ class OpenAIAssistant(AbstractAgent):
 def main(fac_code):
     query = "כמה נקודות זכות צריך להשלים עבור קורסי בחירה?"
     ass_ids = {
-#        "AF": "asst_FhECPescLvwXFIynJfrOgpi9",
-        "AF": "asst_Xrlv8kZAzdpbLyFMw5WrYkK7",
+        "AF": "asst_OLknkJI8eLDH7izjmHFtVXw9",
     }
     
     ass_agent = OpenAIAssistant(all_config["General"])
@@ -188,9 +174,8 @@ def main(fac_code):
 
     if fac_code in ass_ids:
         ass_id = ass_ids[fac_code]
-        print(f"Assistant ID for {fac_code}: {ass_id}")
     else:
-        ass = ass_agent.get_assistant(fac_code)
+        ass = ass_agent.get_assistant()
         ass_id = ass.id
         print(f"Assistant ID for {fac_code}: {ass_id}")
 
