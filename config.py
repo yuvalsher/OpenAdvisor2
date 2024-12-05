@@ -75,7 +75,9 @@ all_crawl_config = {
             'www.openu.ac.il/personal_sites',
             'www.openu.ac.il/jcmcenter',
             'www.openu.ac.il/library/New_in_the_library',
-            'www.openu.ac.il/library/new_in_the_library'
+            'www.openu.ac.il/library/new_in_the_library',
+            'www.openu.ac.il/staff/pages/results.aspx',
+            'www.openu.ac.il/about/Pages/procedures.aspx'
         ],
         "disallowed_pages": [
         ]
