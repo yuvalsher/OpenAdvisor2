@@ -7,7 +7,7 @@ from langtrace_python_sdk import langtrace
 
 
 from rag import Rag
-from MultiAgent import MultiAgent
+from MultiAgent2 import MultiAgent2
 from CoursesWithTools import CoursesWithTools
 from config import all_config
 
@@ -53,8 +53,8 @@ def main(type, faculty_code):
     llm_obj = None
     if type == "OpenAI_Assistant":
         llm_obj = OpenAIAssistant(general_config)
-    elif type == "MultiAgent":
-        llm_obj = MultiAgent(general_config)
+    elif type == "MultiAgent2":
+        llm_obj = MultiAgent2(general_config)
     elif type == "Tools":
         llm_obj = CoursesWithTools(general_config)
     else:
@@ -71,7 +71,7 @@ def main(type, faculty_code):
     dash_chat.run(host='0.0.0.0', port=port, debug=False)
 
 if __name__ == "__main__":
-    main("OpenAI_Assistant", "")
-    #main("MultiAgent", "")
+    #main("OpenAI_Assistant", "")
+    main("MultiAgent2", "")
     #main("Tools", "CS")
     #main("RAG", "Courses")
