@@ -104,7 +104,7 @@ class DashChat:
 
                 # Get the response from the LLM object with client_id
                 bot_response, client_id = self.llm_obj.do_query(user_message, chat_history, client_id)
-
+                
                 # Add the user message and the bot response to the chat history
                 chat_history.append({msg_sender: self.user_name, msg_text: user_message})
                 chat_history.append({msg_sender: self.bot_name, msg_text: bot_response})

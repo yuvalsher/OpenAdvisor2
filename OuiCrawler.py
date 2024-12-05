@@ -28,6 +28,7 @@ faq_pages = [
 
 # Set to store visited URLs to avoid revisiting
 visited_urls = set()
+visited_texts = set()
 
 # List to store page data
 pages_data = []
@@ -260,6 +261,10 @@ def crawl_page(url, todo_links):
 
     text_content = extract_text_content(soup, url, todo_links)
 
+    if text_content in visited_texts:
+        return
+    visited_texts.add(text_content)
+
     for chunk in text_content:
         if chunk in pages_dict:
             continue 
@@ -334,6 +339,69 @@ def do_stats():
         print(f"Pages collected for {domain}: {count}")
 
 ##############################################################################
+def base_url_stats():
+    #base_urls = {}
+    text_counters = {}
+    dups = 0
+    for page in pages_data:
+        url = page['url']
+        if url.startswith('https://www.youtube.com/watch?v='):
+            continue
+
+        text = page['text_content']
+        if text in text_counters:
+            dups += 1
+        else:
+            text_counters[text] = []
+        text_counters[text].append(url)
+        
+    for text in text_counters:
+        if len(text_counters[text]) > 1:
+            print(f"Text found in {len(text_counters[text])} pages:")
+            for url in text_counters[text]:
+                print(f"    {url}")
+
+    print(f"Total duplicates found: {dups}, out of total pages: {len(pages_data)}")
+
+    #     if '?' in url:
+    #         base_url = url.split('?')[0]
+    #         if base_url not in base_urls:
+    #             base_urls[base_url] = [page["text_content"]]
+    #         else:
+    #             base_urls[base_url].append(page["text_content"])
+
+    # dup_lines = []
+    # print(f"Total base URLs found: {len(base_urls)}")
+    # total_dups = 0
+    # for base_url in base_urls:
+    #     if len(base_urls[base_url]) == 1:
+    #         continue
+    #     total_dups += len(base_urls[base_url])
+    #     this_base = ""
+    #     all_dups = True
+    #     for text in base_urls[base_url]:
+    #         if this_base == "":
+    #             this_base = text
+    #         else:
+    #             if this_base != text:
+    #                 all_dups = False
+
+    #     line = f"Base URL- {len(base_urls[base_url])} pages: {base_url}"
+    #     if all_dups:
+    #         dup_lines.append(line)
+    #     else:
+    #         print(line)
+
+    # print("\n\nDUPLICATES:")
+    # for line in dup_lines:
+    #     print(line)
+
+    # print(f"Total duplicates found: {total_dups}")
+
+
+
+
+##############################################################################
 def do_all_stats():
     global pages_data
     # Count the total number of pages collected
@@ -346,6 +414,8 @@ def do_all_stats():
             pages_data = json.load(file)
             total_pages = len(pages_data)
         
+    base_url_stats()
+    return
     domains = {}
     ac_domains = {}
     dom1 = ""
