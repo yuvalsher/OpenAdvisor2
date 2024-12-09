@@ -119,11 +119,12 @@ class OpenAIAssistant():
         self.add_message(thread.id, USER_MESSAGE, f"Here are the instructions for understanding the study program data: \n{self.program_instructions}")   
 
         # Set the thread chat history from chat_history
-        for message in chat_history.chat_memory.messages:
-            if message.type == "user":
-                self.add_message(thread.id, USER_MESSAGE, message.content)
-            elif message.type == "assistant":
-                self.add_message(thread.id, ASSISTANT_MESSAGE, message.content)
+        if chat_history is not None:
+            for message in chat_history.chat_memory.messages:
+                if message.type == "user":
+                    self.add_message(thread.id, USER_MESSAGE, message.content)
+                elif message.type == "assistant":
+                    self.add_message(thread.id, ASSISTANT_MESSAGE, message.content)
 
         return thread
 
@@ -221,7 +222,7 @@ class OpenAIAssistant():
             client_id: The client's unique identifier
         """
         if client_id in self.threads:
-            new_thread = self.create_thread()
+            new_thread = self.create_thread(None)
             self.threads[client_id] = new_thread
 
 ##############################################################################
