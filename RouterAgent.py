@@ -69,9 +69,9 @@ class RouterAgent(AbstractAgent):
         self.prompt = """
             You are a routing agent for an academic advisor chatbot. Your role is to analyze the user query and decide how it should be handled. The query will fall into one of the following categories:
 
-            Course Details: Questions about specific university courses. Use the courses tool to answer these questions.
-            General University Information: General questions about studying at the university. Use the RAG (Retrieval-Augmented Generation) tool to search for relevant information on the university website.
-            Study Program Information: Questions about specific study programs offered by the university. These queries should be routed to a study program agent. The study program agent requires the study program code as input. If the study program name is provided in the user query, use the provided tool to get the code. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are not sure about the study program name, you can use the provided tool to list available study program names, and then choose the most similar option. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the correct study program name.
+            1. Course Details: Questions about specific university courses. Use the courses tool to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters.
+            2. General University Information: General questions about studying at the university. Use the RAG (Retrieval-Augmented Generation) tool to search for relevant information on the university website.
+            3. Study Program Information: Questions about specific study programs offered by the university. Study programs are a collection of requirements, that once satisfied, make the student eligible for an academic degree.Study program details involve several sections, each of them with a list of elective and required courses, and a requirement for minimum credit points. These queries should be routed to a study program agent. The study program agent requires the study program code as input. If the study program name is provided in the user query, use the provided tool to get the code. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are not sure about the study program name, you can use the provided tool to list available study program names, and then choose the most similar option. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the correct study program name.
             If the user query is unclear or missing necessary information, such as the name of the study program, ask clarifying questions to gather the required details.
              
             Expected Response Format:
@@ -290,11 +290,14 @@ class RouterAgent(AbstractAgent):
             
         ##############################################################################
         @tool("GetListOfStudyProgramNamesAndCodes")
-        def _get_list_of_study_program_names_and_codes() -> List[str]:
+        def _get_list_of_study_program_names_and_codes() -> List[tuple]:
             """Get a list of all study program names and codes.
+
+            Returns:
+                List[tuple]: A list of tuples, where in each tuple the first element is the study program code and the second element is the study program name.
             """
 
-            result = [f"{code} - {name}" for name, code in self.study_programs.items()]
+            result = [(code, name) for name, code in self.study_programs.items()]
             print(f"In Tool: Getting list of study program names and codes: {result}\n")
             return result
         
