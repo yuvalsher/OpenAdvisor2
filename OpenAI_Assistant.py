@@ -7,12 +7,15 @@ import os
 import json
 from typing_extensions import override
 from openai import AssistantEventHandler
+from langchain.memory import ConversationBufferMemory
 
-from AbstractAgent import AbstractAgent
-from AbstractLlm import AbstractLlm
 from config import all_config
 
-class OpenAIAssistant(AbstractLlm):
+
+USER_MESSAGE      = "user"
+ASSISTANT_MESSAGE = "assistant"
+
+class OpenAIAssistant():
 
     # Define system instructions
     system_instructions = """
@@ -22,6 +25,7 @@ class OpenAIAssistant(AbstractLlm):
         You may also align the study program with student grade lists, and suggest courses the student should take next. 
         The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
         Your answer should be in the same language as the query - if the user's question is in Hebrew, your answer should be in Hebrew.
+        Study programs tend to change over time, and footnotes are used to address students who took courses from previous versions of the same study program.
         You can perform the following:
         1. Parse and understand study program details from the JSON file, according to the detailed instructions provided.
         2. Answer questions about the study program.
@@ -33,15 +37,14 @@ class OpenAIAssistant(AbstractLlm):
 
     ##############################################################################
     def __init__(self, config):
-        super().__init__(config)
+        self.config = config
         dotenv.load_dotenv()
         self.openai = OpenAI()
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
         self.threads: Dict[str, "Thread"] = {}
 
     ##############################################################################
-    def init(self, faculty_code):
-        self.faculty_code = faculty_code
+    def init(self):
         self._init_tools()
         self._init_data()
 
@@ -52,6 +55,7 @@ class OpenAIAssistant(AbstractLlm):
     ##############################################################################
     def _init_data(self):
         self.dir_path = self.config["DB_Path"]
+
         # Read text file containing instructions
         text_path = os.path.join(self.dir_path, "Study_Program_json_guide.txt")
         with open(text_path, "r", encoding='utf-8') as text_file:
@@ -73,8 +77,14 @@ class OpenAIAssistant(AbstractLlm):
                 return assistant
 
         # Create new assistant if none exists
+        filename = os.path.join(self.dir_path, "study_programs", faculty_code+".json")
+        # Check if the file exists before proceeding
+        if not os.path.exists(filename):
+            print(f"Error: Study program file {filename} does not exist.")
+            raise FileNotFoundError(f"Study program file {filename} does not exist.")
+        
         file = self.openai.files.create(
-            file=open(os.path.join(self.dir_path, "study_programs", faculty_code+".json"), "rb"),
+            file=open(filename, "rb"),
             purpose='assistants'
         )
 
@@ -94,32 +104,28 @@ class OpenAIAssistant(AbstractLlm):
         return assistant
 
     ##############################################################################
-    def create_thread(self):
-        # Create initial messages with both the program instructions and JSON content
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "text",
-                        "text": f"""Here are the instructions for understanding the study program data:
-                        {self.program_instructions}"""
-                    },
-                ],
-            },
-        ]
-
-        thread = self.openai.beta.threads.create(messages=messages)
-        
-        return thread
-
-    ##############################################################################
-    def add_user_message(self, thread_id, query):
+    def add_message(self, thread_id, role, content):
         self.openai.beta.threads.messages.create(
             thread_id=thread_id,
-            role="user",
-            content=query
+            role=role,
+            content=content
         )
+
+    ##############################################################################
+    def create_thread(self, chat_history: ConversationBufferMemory):
+        thread = self.openai.beta.threads.create()
+
+        # Load the instructions to understand the JSON file
+        self.add_message(thread.id, USER_MESSAGE, f"Here are the instructions for understanding the study program data: \n{self.program_instructions}")   
+
+        # Set the thread chat history from chat_history
+        for message in chat_history.chat_memory.messages:
+            if message.type == "user":
+                self.add_message(thread.id, USER_MESSAGE, message.content)
+            elif message.type == "assistant":
+                self.add_message(thread.id, ASSISTANT_MESSAGE, message.content)
+
+        return thread
 
     ##############################################################################
     def create_run_and_wait(self, thread_id, assistant_id):
@@ -172,17 +178,17 @@ class OpenAIAssistant(AbstractLlm):
             return responses[0].content[0].text.value
 
     ##############################################################################
-    def _get_or_create_thread(self, client_id: str) -> "Thread":
+    def _get_or_create_thread(self, client_id: str, chat_history: ConversationBufferMemory) -> "Thread":
         """Get existing thread for client_id or create new if doesn't exist."""
         if client_id in self.threads:
             return self.threads[client_id]
         else:
-            thread = self.create_thread()
+            thread = self.create_thread(chat_history)
             self.threads[client_id] = thread
             return thread
 
     ##############################################################################
-    def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None) -> tuple[str, str]:
+    def do_query(self, user_input: str, faculty_code: str, chat_history: ConversationBufferMemory, client_id: str = None) -> tuple[str, str]:
         """
         Process a query using multiple agents.
         
@@ -195,16 +201,16 @@ class OpenAIAssistant(AbstractLlm):
             tuple: (response_text, client_id)
         """
 
-        faculty_code = "AF"
         print(f"Entering OpenAI Assistant for {faculty_code}: user_input: {user_input[::-1]}")
 
         assistant = self.get_assistant(faculty_code)
-        thread = self._get_or_create_thread(client_id)
-        self.add_user_message(thread.id, user_input)
+        thread = self.create_thread(chat_history)
+        #thread = self._get_or_create_thread(client_id, chat_history)
+        self.add_message(thread.id, USER_MESSAGE, user_input)
         answer = self.create_run_and_wait(thread.id, assistant.id)
         print_answer(answer)
 
-        return answer, client_id
+        return answer
 
     ##############################################################################
     def reset_chat_history(self, client_id: str):

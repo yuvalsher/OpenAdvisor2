@@ -1,3 +1,4 @@
+from uuid import uuid4
 from typing import Dict, Any
 from langchain.memory import ConversationBufferMemory
 from langchain_core.messages import SystemMessage
@@ -7,6 +8,7 @@ from langchain.prompts import PromptTemplate
 
 from AbstractLlm import AbstractLlm
 from CoursesAgent import CoursesAgent
+from OpenAI_Assistant import OpenAIAssistant
 from RagAgent import RagAgent
 from RouterAgent import RouterAgent
 
@@ -43,25 +45,30 @@ class MultiAgent2(AbstractLlm):
         self.router_agent_creator = RouterAgent(self.config)
         self.router_agent_creator.init()
 
+        # Create agent for routing questions
+        self.assistant_agent = OpenAIAssistant(self.config)
+        self.assistant_agent.init()
+
     ##############################################################################
     def _create_new_memory(self, client_id: str = None) -> str:
         """Create a new memory instance for a client and return its ID."""
-        if client_id is None:
-            client_id = str(uuid4())
         memory = ConversationBufferMemory(
             memory_key="chat_history",
             return_messages=True
         )
         memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
-        self.memories[client_id] = memory
-        return client_id
+        return memory
 
+    ##############################################################################
     def _get_or_create_memory(self, client_id: str) -> ConversationBufferMemory:
         """Get existing memory for client_id or create new if doesn't exist."""
         try:
-            if client_id not in self.memories:
-                self._create_new_memory(client_id)
-            return self.memories[client_id]
+            if client_id in self.memories:
+                return self.memories[client_id]
+            else:
+                memory = self._create_new_memory(client_id)
+                self.memories[client_id] = memory
+                return memory
         except Exception as e:
             print(f"Error in _get_or_create_memory: {e}")
             return None
@@ -82,6 +89,9 @@ class MultiAgent2(AbstractLlm):
 
         print(f"Entering Multi-Agent: user_input: {user_input[::-1]}")
 
+        if client_id is None:
+            client_id = str(uuid4())
+
         memory = self._get_or_create_memory(client_id)
 
         try:
@@ -98,17 +108,20 @@ class MultiAgent2(AbstractLlm):
         result = None
         agent = None
         try:
-            if router_response.startswith("Done - "):
-                result = router_response.replace("Done - ", "")
-            elif router_response.startswith("study_program - "):
-                study_program = router_response.replace("study_program - ", "")
-
-                result = f"No agent implemented yet for this query type: {router_response}"
+            if router_response.lower().startswith("done - "):
+                print(f"{router_response[::-1]}")
+                router_response = router_response[len("done - "):]
+            elif router_response.lower().startswith("question - "):
+                print(f"{router_response[::-1]}")
+                router_response = router_response[len("question - "):]
+                result = router_response
+            elif router_response.lower().startswith("program "):
+                program_code = router_response[len("program "):].strip()
+                print(f"Study Program - sending to assistant: {program_code}")
+                result = self.assistant_agent.do_query(user_input, program_code, memory, client_id) 
             else:
-                print(f"No agent implemented yet for this query type: {router_response}")
+                print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
                 agent = self.general_agent_creator.get_agent()
-
-            if agent is not None:
                 agent.memory = memory
                 response = agent.invoke({"input": user_input})
                 result = response['output']
