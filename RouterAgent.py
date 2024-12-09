@@ -24,65 +24,66 @@ class RouterAgent(AbstractAgent):
             Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
             The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
             
-            **Role and Tools:**
-            - Utilize various tools to provide concise and accurate answers.
-            - Access a comprehensive database of OUI courses through these tools to respond to user inquiries about course offerings and details.
+            - **Your Task:**
+                Your task is to analyze the user query and decide how it should be handled. 
+                First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or thirdcategory.
+                The query will fall into one of the following categories:
 
-            **Course Structure:**
-            - Each course has a unique ID (course number), a unique name, and additional pertinent details.
-            - Utilize specific tools to retrieve essential course information and an overview that encompasses all relevant details.
+                1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be sent to a study program agent. The study program agent requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, no further processing is required on your part - just return a response including the study program code and the question that the agent should answer, so that the query will be sent to the correct agent.
+                2. Course Details: Questions about specific university courses. Use the courses tools to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters.
+                3. General University Information: General questions about studying at the university. Use the GetRelevantContent tool to search for relevant information from the university website.
+                If the user query is unclear or missing necessary information, such as the name of the study program, ask clarifying questions to gather the required details.
+             
+            - **Expected Response Format:**
+                YOUR RESPONSE MUST BE FORMATTED AS AN ENGLISH KEYWORD FOLLOWED BY THE RESULT, EXACTLY AS ONE OF THE FOLLOWING OPTIONS:
+                1. "Done - <full text response>": Use this option when you have fully answered the user query.
+                2. "Program <study program code>: <question>": Use this option for study program queries once you have the study program code, so that the question can be sent to the study program agent with the specific program code.
+                3. "Question - <question>": Use this option when additional information is required to proceed.
 
-            **Semesters:**
-            - Courses are offered in specific semesters:
-                - '2025א' – First semester of 2025
-                - '2025ב' – Second semester of 2025
-                - '2025ג' – Summer semester of 2025
+            - **Role and Tools:**
+                - Utilize various tools to provide concise and accurate answers.
+                - Access a comprehensive database of OUI courses through these tools to respond to user inquiries about course offerings and details.
 
-            **Classifications:**
-            - Courses are classified under one or more departments ("סיווגים"), typically indicating the department and faculty offering the course.
+            - **General Guidelines:**
+                - Ensure all responses are clear, concise, and relevant.
+                - Leverage the available tools effectively to provide accurate information.
+                - Maintain the flow of conversation and context using the conversation memory.
 
-            **Overlaps:**
-            - Some courses overlap with others. Use the 'overlap_courses' tool to list courses with full or partial overlaps.
-            - For detailed information on overlapping courses, utilize the 'overlap_url' tool.
-            - If a user inquires specifically about overlaps, provide the overlap URL.
+            - **Course Structure:**
+                Each course has a unique ID (course number), a unique name, and additional pertinent details.
+                Utilize specific tools to retrieve essential course information and an overview that encompasses all relevant details.
 
-            **Dependencies:**
-            - Courses may have dependencies that must be satisfied before enrollment:
-                - **Condition Dependencies ("תנאי קבלה")**: Mandatory prerequisites without which registration fails.
-                - **Required Dependencies ("ידע קודם דרוש")**: Courses that should be taken prior.
-                - **Recommended Dependencies ("ידע קודם מומלץ")**: Courses that are advised to be taken beforehand.
-            - Each dependency type has two associated tools:
-                - One returns the textual description of the dependencies.
-                - The other returns a list of courses that are dependencies.
-            - Note that some dependent courses may have overlaps, requiring only a subset to be completed.
+                - Semesters:
+                    - Courses are offered in specific semesters:
+                        - '2025א' – First semester of 2025
+                        - '2025ב' – Second semester of 2025
+                        - '2025ג' – Summer semester of 2025
 
-            **Similarity Check:**
-            - The tool `GetSimilarCourses` employs an embeddings vector search to identify courses similar to the input query text.
-            - It returns a fixed number of results which may include irrelevant courses. Each result should be reviewed to ensure relevance.
+                - Classifications:
+                    - Courses are classified under one or more departments ("סיווגים"), typically indicating the department and faculty offering the course.
 
-            **General Guidelines:**
-            - Ensure all responses are clear, concise, and relevant.
-            - Leverage the available tools effectively to provide accurate information.
-            - Maintain the flow of conversation and context using the conversation memory.
-        """
+                - Overlaps:
+                    - Some courses overlap with others. Use the 'overlap_courses' tool to list courses with full or partial overlaps.
+                    - For detailed information on overlapping courses, utilize the 'overlap_url' tool.
+                    - If a user inquires specifically about overlaps, provide the overlap URL.
+
+                - Dependencies:
+                    - Courses may have dependencies that must be satisfied before enrollment:
+                        - **Condition Dependencies ("תנאי קבלה")**: Mandatory prerequisites without which registration fails.
+                        - **Required Dependencies ("ידע קודם דרוש")**: Courses that should be taken prior.
+                    - **Recommended Dependencies ("ידע קודם מומלץ")**: Courses that are advised to be taken beforehand.
+                    - Each dependency type has two associated tools:
+                        - One returns the textual description of the dependencies.
+                        - The other returns a list of courses that are dependencies.
+                    - Note that some dependent courses may have overlaps, requiring only a subset to be completed.
+
+                - Similarity Check:
+                    - The tool `GetSimilarCourses` employs an embeddings vector search to identify courses similar to the input query text.
+                    - It returns a fixed number of results which may include irrelevant courses. Each result should be reviewed to ensure relevance.
+            """
 
         self.prompt = """
-            You are a routing agent for an academic advisor chatbot. Your role is to analyze the user query and decide how it should be handled. The query will fall into one of the following categories:
-
-            1. Course Details: Questions about specific university courses. Use the courses tool to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters.
-            2. General University Information: General questions about studying at the university. Use the RAG (Retrieval-Augmented Generation) tool to search for relevant information on the university website.
-            3. Study Program Information: Questions about specific study programs offered by the university. Study programs are a collection of requirements, that once satisfied, make the student eligible for an academic degree.Study program details involve several sections, each of them with a list of elective and required courses, and a requirement for minimum credit points. These queries should be routed to a study program agent. The study program agent requires the study program code as input. If the study program name is provided in the user query, use the provided tool to get the code. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are not sure about the study program name, you can use the provided tool to list available study program names, and then choose the most similar option. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the correct study program name.
-            If the user query is unclear or missing necessary information, such as the name of the study program, ask clarifying questions to gather the required details.
-             
-            Expected Response Format:
-            Your response must be one of the following:
-
-            1. "Done - <full text response>": Use this option when you have fully answered the user query.
-            2. "Program <study program code>": Use this option when the user query should be routed to the study program agent with the specific program code.
-            3. "Question - <question>": Use this option when additional information is required to proceed.
-
-            User Query:
-            
+            Analyze the following user query:
         """
 
         self.course_data = self._load_json_file("all_courses.json")
@@ -235,7 +236,7 @@ class RouterAgent(AbstractAgent):
             """
 
             result = self.courses_rag.retrieve_rag_chunks_for_tool(query_text)
-            print(f"In Tool: Getting similar courses for {query_text}: {result}\n")
+            print(f"In Tool: Getting similar courses for {query_text[::-1]}: {result[::-1]}\n")
             return result
             
        ##############################################################################
@@ -255,7 +256,7 @@ class RouterAgent(AbstractAgent):
             # concatenate all_text from an array of strings to a single string
             overview = '\n'.join(all_text)
             result = self.courses_rag.retrieve_rag_chunks_for_tool(overview)
-            print(f"In Tool: Getting similar courses for {course_id}: {result}\n")
+            print(f"In Tool: Getting similar courses for {course_id[::-1]}: {result[::-1]}\n")
             return result
             
         ##############################################################################
@@ -268,7 +269,7 @@ class RouterAgent(AbstractAgent):
             """
 
             result = self.website_rag.retrieve_rag_chunks_for_tool(query_text)
-            print(f"In Tool: Getting relevant content for query {query_text}: \n{result}\n")
+            print(f"In Tool: Getting relevant content for query {query_text[::-1]}: \n{result[::-1]}\n")
             return result
             
         ##############################################################################
@@ -285,20 +286,22 @@ class RouterAgent(AbstractAgent):
                 return None
             
             result = self.study_programs[study_program_name]
-            print(f"In Tool: Getting study program code for {study_program_name}: {result}\n")
+            print(f"In Tool: Getting study program code for {study_program_name[::-1]}: {result}\n")
             return result
             
         ##############################################################################
         @tool("GetListOfStudyProgramNamesAndCodes")
-        def _get_list_of_study_program_names_and_codes() -> List[tuple]:
-            """Get a list of all study program names and codes.
+        def _get_list_of_study_program_names_and_codes() -> List[str]:
+            """Get a list of all study program names.
 
             Returns:
-                List[tuple]: A list of tuples, where in each tuple the first element is the study program code and the second element is the study program name.
+                List[str]: A list of study program names.
             """
 
-            result = [(code, name) for name, code in self.study_programs.items()]
-            print(f"In Tool: Getting list of study program names and codes: {result}\n")
+            #result = [(code, name) for name, code in self.study_programs.items()]
+            result = [name for name in self.study_programs.keys()]
+            reversed_result = [name[::-1] for name in result]
+            print(f"In Tool: Getting list of study program names: {reversed_result}\n")
             return result
         
         ##############################################################################

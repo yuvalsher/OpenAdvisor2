@@ -16,11 +16,11 @@ from RouterAgent import RouterAgent
 class MultiAgent2(AbstractLlm):
     ##############################################################################
     def __init__(self, config):
-        self.system_instructions = """
-            You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
-            Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
-            The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
-        """
+        # self.system_instructions = """
+        #     You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
+        #     Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
+        #     The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
+        # """
 
         super().__init__(config)
         self.memories: Dict[str, ConversationBufferMemory] = {}
@@ -56,7 +56,7 @@ class MultiAgent2(AbstractLlm):
             memory_key="chat_history",
             return_messages=True
         )
-        memory.chat_memory.add_message(SystemMessage(content=self.system_instructions))
+        memory.chat_memory.add_message(SystemMessage(content=self.router_agent_creator.system_instructions))
         return memory
 
     ##############################################################################
@@ -110,15 +110,14 @@ class MultiAgent2(AbstractLlm):
         try:
             if router_response.lower().startswith("done - "):
                 print(f"{router_response[::-1]}")
-                router_response = router_response[len("done - "):]
+                result = router_response[len("done - "):]
             elif router_response.lower().startswith("question - "):
                 print(f"{router_response[::-1]}")
-                router_response = router_response[len("question - "):]
-                result = router_response
+                result = router_response[len("question - "):]
             elif router_response.lower().startswith("program "):
-                program_code = router_response[len("program "):].strip()
-                print(f"Study Program - sending to assistant: {program_code}")
-                result = self.assistant_agent.do_query(user_input, program_code, memory, client_id) 
+                program_code, question = router_response[len("program "):].split(": ", 1)
+                print(f"Study Program - sending to assistant: {program_code}, Question: {question}")
+                result = self.assistant_agent.do_query(question, program_code, memory, client_id)
             else:
                 print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
                 agent = self.general_agent_creator.get_agent()
@@ -127,8 +126,9 @@ class MultiAgent2(AbstractLlm):
                 result = response['output']
 
         except Exception as e:
-            print(f"Error in {router_response} agent: {e}")
-            result = f"Error in {router_response} agent: {e}"
+            msg = f"Error processing router response {router_response}\nError: {e}"
+            print(msg)
+            result = msg
 
         return result, client_id
 
