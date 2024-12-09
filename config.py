@@ -54,6 +54,7 @@ all_config = get_all_config()
 all_crawl_config = {
     "All": {
         "start_urls": [
+            'http://www.openu.ac.il/about/pages/procedures.aspx?Subject=5%20&order=ProcedureNumber&direction=DESC'
             'https://www.openu.ac.il/counseling/Pages/Preparation_for_counselin.aspx',
             'https://www.openu.ac.il/registration/pages/default.aspx',
             'https://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/default.aspx',
@@ -74,10 +75,9 @@ all_crawl_config = {
             'www.openu.ac.il/allnews',
             'www.openu.ac.il/personal_sites',
             'www.openu.ac.il/jcmcenter',
-            'www.openu.ac.il/library/New_in_the_library',
             'www.openu.ac.il/library/new_in_the_library',
             'www.openu.ac.il/staff/pages/results.aspx',
-            'www.openu.ac.il/about/Pages/procedures.aspx'
+            'www.openu.ac.il/about/pages/procedures.aspx'
         ],
         "disallowed_pages": [
         ]

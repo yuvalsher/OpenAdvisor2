@@ -28,8 +28,6 @@ faq_pages = [
 
 # Set to store visited URLs to avoid revisiting
 visited_urls = set()
-visited_texts = set()
-
 # List to store page data
 pages_data = []
 pages_dict = {}
@@ -50,6 +48,7 @@ def is_allowed_domain(url):
     if is_testing:
         return True
     
+    url = url.lower()
     # Parse the URL to get the domain and path
     parsed_url = urlparse(url)
     domain = parsed_url.netloc
@@ -230,7 +229,11 @@ def crawl_page(url, todo_links):
     # If URL is not in allowed domain or already visited, skip
     if url in visited_urls or not is_allowed_domain(url):
         return
-    
+
+    # Ignore difference between "http" and "https"    
+    if url.startswith("https"):
+        url = url.replace("https", "http", 1)
+
     # if visited_urls contains a url that differs from the parameter url only by case, skip
     for visited_url in visited_urls:
         if visited_url.lower() == url.lower():
@@ -261,15 +264,17 @@ def crawl_page(url, todo_links):
 
     text_content = extract_text_content(soup, url, todo_links)
 
-    if text_content in visited_texts:
-        return
-    visited_texts.add(text_content)
-
+    chunks_skipped = 0
     for chunk in text_content:
         if chunk in pages_dict:
+            chunks_skipped += 1
             continue 
         else:
             pages_dict[chunk] = url
+
+
+    if chunks_skipped == len(text_content):
+        return
 
     if title:
         print(f"Added page: {title[::-1]} @ {url}\n")
@@ -289,7 +294,8 @@ def crawl_page(url, todo_links):
             if not is_single:
                 url_tip = f"?{i}"
                 i+=1
-            add_chunk(url+url_tip, title, chunk, "page")
+            if not chunk in pages_dict:
+                add_chunk(url+url_tip, title, chunk, "page")
 
     # Find all links to YouTube videos that look like this:
     # <link rel="canonical" href="https://www.youtube.com/watch?v=mPBFHQ4X31s">
