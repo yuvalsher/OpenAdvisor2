@@ -7,8 +7,8 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 from AbstractLlm import AbstractLlm
-from CoursesAgent import CoursesAgent
-from OpenAI_Assistant import OpenAIAssistant
+#from CoursesAgent import CoursesAgent
+from OpenAI_Assistant2 import OpenAIAssistant
 from RagAgent import RagAgent
 from RouterAgent import RouterAgent
 
@@ -30,16 +30,16 @@ class MultiAgent2(AbstractLlm):
         self.llm = ChatOpenAI(model=self.config["llm_model"], temperature=0)
 
         # Create agent for courses
-        self.courses_agent_creator = CoursesAgent(self.config)
-        self.courses_agent_creator.init()
+#        self.courses_agent_creator = CoursesAgent(self.config)
+#        self.courses_agent_creator.init()
 
         # Create agent for general questions
         self.general_agent_creator = RagAgent(self.config, "OUI")
         self.general_agent_creator.init()
 
         # Create agent for CS faculty questions
-        self.cs_agent_creator = RagAgent(self.config, "CS")
-        self.cs_agent_creator.init()
+#        self.cs_agent_creator = RagAgent(self.config, "CS")
+#        self.cs_agent_creator.init()
 
         # Create agent for routing questions
         self.router_agent_creator = RouterAgent(self.config)
@@ -102,35 +102,35 @@ class MultiAgent2(AbstractLlm):
             router_response = response['output']
         except Exception as e:
             print(f"Error in router agent: {e}")
-            router_response = "Done - Error in router agent"
+            router_response = "Error in router agent"
 
 
-        result = None
-        agent = None
-        try:
-            if router_response.lower().startswith("done - "):
-                print(f"{router_response[::-1]}")
-                result = router_response[len("done - "):]
-            elif router_response.lower().startswith("question - "):
-                print(f"{router_response[::-1]}")
-                result = router_response[len("question - "):]
-            elif router_response.lower().startswith("program "):
-                program_code, question = router_response[len("program "):].split(": ", 1)
-                print(f"Study Program - sending to assistant: {program_code}, Question: {question[::-1]}")
-                result = self.assistant_agent.do_query(question, program_code, memory, client_id)
-            else:
-                print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
-                agent = self.general_agent_creator.get_agent()
-                agent.memory = memory
-                response = agent.invoke({"input": user_input})
-                result = response['output']
+        # result = None
+        # agent = None
+        # try:
+        #     if router_response.lower().startswith("done - "):
+        #         print(f"{router_response[::-1]}")
+        #         result = router_response[len("done - "):]
+        #     elif router_response.lower().startswith("question - "):
+        #         print(f"{router_response[::-1]}")
+        #         result = router_response[len("question - "):]
+        #     elif router_response.lower().startswith("program "):
+        #         program_code, question = router_response[len("program "):].split(": ", 1)
+        #         print(f"Study Program - sending to assistant: {program_code}, Question: {question[::-1]}")
+        #         result = self.assistant_agent.do_query(question, program_code, memory, client_id)
+        #     else:
+        #         print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
+        #         agent = self.general_agent_creator.get_agent()
+        #         agent.memory = memory
+        #         response = agent.invoke({"input": user_input})
+        #         result = response['output']
 
-        except Exception as e:
-            msg = f"Error processing router response {router_response}\nError: {e}"
-            print(msg)
-            result = msg
+        # except Exception as e:
+        #     msg = f"Error processing router response {router_response}\nError: {e}"
+        #     print(msg)
+        #     result = msg
 
-        return result, client_id
+        return router_response, client_id
 
     ##############################################################################
     def reset_chat_history(self, client_id: str):
@@ -141,8 +141,8 @@ class MultiAgent2(AbstractLlm):
             client_id: The client's unique identifier
         """
         if client_id in self.memories:
-            self.memories[client_id].clear()
-            self.memories[client_id].chat_memory.add_message(
-                SystemMessage(content=self.system_instructions)
-            )
+            memory = self._create_new_memory(client_id)
+            self.memories[client_id] = memory
+
+
 
