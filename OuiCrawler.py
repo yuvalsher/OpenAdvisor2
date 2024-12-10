@@ -294,8 +294,8 @@ def crawl_page(url, todo_links):
             if not is_single:
                 url_tip = f"?{i}"
                 i+=1
-            if not chunk in pages_dict:
-                add_chunk(url+url_tip, title, chunk, "page")
+#            if not chunk in pages_dict:
+            add_chunk(url+url_tip, title, chunk, "page")
 
     # Find all links to YouTube videos that look like this:
     # <link rel="canonical" href="https://www.youtube.com/watch?v=mPBFHQ4X31s">
@@ -580,7 +580,7 @@ def start_crawling(faculties):
     # Add the number of PDF files, and then the list of PDF files to msg_log
     msg_log.append(f"\nPDF files collected: {len(pdf_files)}\n")
     for pdf in pdf_files:
-        msg_log.append(f"    {pdf}\n")
+        msg_log.append(f"    {pdf}")
 
     # write msg_log to log file
     log_filename = os.path.join(db_path, "crawled_data_" + faculty + "_log.txt")
