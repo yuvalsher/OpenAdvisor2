@@ -121,9 +121,9 @@ class OpenAIAssistant():
         # Set the thread chat history from chat_history
         if chat_history is not None:
             for message in chat_history.chat_memory.messages:
-                if message.type == "user":
+                if message.type == "user" or message.type == "human": # Ignore system messages they are confusing. or message.type == "system":
                     self.add_message(thread.id, USER_MESSAGE, message.content)
-                elif message.type == "assistant":
+                elif message.type == "assistant" or message.type == "ai":
                     self.add_message(thread.id, ASSISTANT_MESSAGE, message.content)
 
         return thread

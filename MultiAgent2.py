@@ -116,7 +116,7 @@ class MultiAgent2(AbstractLlm):
                 result = router_response[len("question - "):]
             elif router_response.lower().startswith("program "):
                 program_code, question = router_response[len("program "):].split(": ", 1)
-                print(f"Study Program - sending to assistant: {program_code}, Question: {question}")
+                print(f"Study Program - sending to assistant: {program_code}, Question: {question[::-1]}")
                 result = self.assistant_agent.do_query(question, program_code, memory, client_id)
             else:
                 print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
