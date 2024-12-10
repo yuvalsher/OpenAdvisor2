@@ -1,184 +1,12 @@
-Starting at: 2024-12-05 19:45:24.713469
+Starting at: 2024-12-09 18:42:02.767890
 
 
 Starting crawling for All...
 
-Page with empty title: https://www.openu.ac.il/exams/
-
-Page with empty title: https://www.openu.ac.il/english/
-
-Page with empty title: https://www.openu.ac.il/studies/
-
-Page with empty title: https://www.openu.ac.il/general/OpenU-authorities.html
-
-Page with empty title: http://www.openu.ac.il/sheilta
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/recomendation form OpenU.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/mekoriutMA.doc?_gl=1*1y11c0v*_ga*MTUzMTk2NTY3Ni4xNjg4NTU1MjE4*_ga_D925SY5X0Q*MTY4OTc3ODYzOS4yMC4xLjE2ODk3NzkyMjguMC4wLjA.
-
-Page with empty title: https://www.openu.ac.il/interested/
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/mekoriutMA.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_RIA/Academic/Economics/accounting/סרטון ברכה נשיא הלשכה פתיחת שנה.mp4
-
-Page with empty title: https://www.openu.ac.il/english
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/DisciplinaryCommittee.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/DisciplineOffenseinAlternativeAssessment.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/research/mehoni_mehkar_doh.xlsx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/IMG_5631.JPG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/IMG_5630.JPG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/bil-gates.PNG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/%D7%99%D7%95%D7%9B%D7%99%20%D7%A9%D7%A8%D7%9D%20%D7%9E%D7%99%D7%AA%D7%95%D7%A1%20%D7%94%D7%99%D7%95%D7%A4%D7%99%20%D7%94%D7%96%D7%9E%D7%A0%D7%94%20%20%20copy.jpg
-
-Page with empty title: https://www.openu.ac.il/raanana/p1.html
-
-Page with empty title: https://www.openu.ac.il/academic/timetable.html
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/about/Departments/human_resources/Eshel.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/departments/HumanResources/טופס טיולים מעודכן..xlsx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/about/Departments/human_resources/Dormitories.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Capture.GIF
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/הרצאה מיצוי זכויות כללית.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/סיעוד מעודכן 01-21.pptx
-
-Page with empty title: http://www.openu.ac.il/sheilta/
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Natural_Sciences/physics/structured_program_physics.xlsx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/lasers 20912_2018.png
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/Arts/Habibi.png
-
-Page with empty title: https://www.openu.ac.il/sheilta/
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/ArtiumTseitlin.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/PrivacypreservationInMining.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/SBTST.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Codingconventionsintegralsoftwareengineering.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/ImprovingDataMiningAlgorithmsUsingConstraints.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Usingvisualenvironmenttodemonstratethearray.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Usingsearchindexesgeometricgraphs.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/MisconceptionsDataStructuresAndBinaryTree.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/BSP.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Examination matching manipulatives.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Finding groups of contacts .doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/The problem of quality of service.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Virtualization.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Internal Resource Center.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/CacheBasedDynamicMemoryManagementsForGPS.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/LineBroadcastingInTrees.doc
-
-Failed to parse https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/SpeakerAgeEstimation.doc: The markup you provided was rejected by the parser. Trying a different parser or a different encoding may help.
+Failed to parse http://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/SpeakerAgeEstimation.doc: The markup you provided was rejected by the parser. Trying a different parser or a different encoding may help.
 
 Original exception(s) from parser:
  AssertionError: expected name token at '<![?��Ҁ�Fp\x17q�(]���W}'
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/example_open_page_heb.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/example_open_page_eng.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/kavim manchim.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/Teza2024a.pdf?_gl=1*jr6n5e*_ga*MTcwMTk1NTcyNS4xNzE2MTk0MjM5*_ga_D925SY5X0Q*MTcxNjM3ODI3NC4xMy4xLjE3MTYzNzkxMzcuNTEuMC4zMTA2NjUyNTc.
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/Teza2024a.pdf?_gl=1*ryv5pt*_ga*MTcwMTk1NTcyNS4xNzE2MTk0MjM5*_ga_D925SY5X0Q*MTcxNjI4MjI0MS43LjEuMTcxNjI4MzEyMS41NS4wLjE5NjczMDEzMjc.
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/%D7%94%D7%96%D7%9E%D7%A0%D7%94_%D7%9B%D7%9C%20%D7%94%D7%A4%D7%A8%D7%98%D7%99%D7%9D.jpg?_gl
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/מדיבורים למעשים - המצגת של אופיר.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/ZOCHIM-Dean-Award-Screens-1920x1080-202320.jpg
-
-Page with empty title: https://www.openu.ac.il/academictraningworkshops/
-
-Page with empty title: http://www.openu.ac.il/simple-connect/
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/תבנית לכתיבת קורות חיים 2024.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/לוח חופשות ומועדים  2024.doc
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/עדכון 02.11.23.PNG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/קיצור שבוע עבודה 25.10.23.PNG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/publications/miri_research_2014.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/publications/obituary.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/publications/dr-ruth-erev.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/publications/yosi-agur025.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/אישור פיתוח.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/תהליך טרום פיתוח.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/departments/מצגת תרגילי כושר במחשב.ppt
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/departments/מצגת LPR.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_RIA/Academic/Arts/יסודות שפת האמנות 10489.mp4
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/הזמנה_כל הפרטים.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/Arts/gallery_raanana/Dakat_masach_hazmana.png
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/HandwrittenRecognition-Tomer Dayan.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/OpenPartExampleSolution.xls
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/Fixedassetsan.xls
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/students/requiressoftware.JPG
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/adam-mechona.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/technology-everyday.jpg
-
-Page with empty title: http://www.openu.ac.il/Personal_sites/paul-gorskyE.html
-
-Page with empty title: http://www.openu.ac.il/Personal_sites/eran-chajutE.html
-
-Page with empty title: http://www.openu.ac.il/Personal_sites/ednatal/index.html
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/claplab.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Documents/amnon.pptx
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/Arts/gallery_raanana/55.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/Arts/gallery_raanana/invitation_makom_el_makom.jpg
-
-Page with empty title: https://www.openu.ac.il/Lists/MediaServer_Images/Academic/Arts/gallery_raanana/הזמנה לאירוע 21 דצמבר.jpg
-
 
 Found the following YouTube links:
 https://www.youtube.com/watch?v=mPBFHQ4X31s - Transcript found, length: 2307, title: ?החותפה הטיסרבינואב ראות םייסל ןתינ ןמז המכב.
@@ -487,6 +315,10 @@ https://www.youtube.com/watch?v=cOiV02AeQfA - No transcript found.
 https://www.youtube.com/watch?v=DuoUXSt4zSA - No transcript found.
 https://www.youtube.com/watch?v=9nRqZ6ePbCE - No transcript found.
 https://www.youtube.com/watch?v=8Yoi1pf1Mg8 - No transcript found.
+https://www.youtube.com/watch?v=iR729NQRmUY - No transcript found.
+https://www.youtube.com/watch?v=1OvbbWtYRRE - No transcript found.
+https://www.youtube.com/watch?v=SzUaMPWSioU - No transcript found.
+https://www.youtube.com/watch?v=88_BA4KG-jQ - Transcript found, length: 4695, title: 22/20/11 ,תוברת ןכוס | דועו "םיילוש וא זכרמ" הרפס לע החותפה 'נואהמ זועמ-ןוסלדנמ הידע 'פורפ.
 https://www.youtube.com/watch?v=6fubAEhWIoQ - No transcript found.
 https://www.youtube.com/watch?v=U0Go67NZo9g - No transcript found.
 https://www.youtube.com/watch?v=A2o3zZwlomI - Transcript found, length: 9758, title: 'ולופופ יטנווא' טרסב תולובג תייצח לש הקיטמלבורפ-דסמ הנד.
@@ -496,7 +328,7 @@ https://www.youtube.com/watch?v=lwbsiFnFCAc - No transcript found.
 https://www.youtube.com/watch?v=Vjsf3bKv-K8 - No transcript found.
 https://www.youtube.com/watch?v=slJtN2la_8k - No transcript found.
 https://www.youtube.com/watch?v=hfFStEsKQC8 - No transcript found.
-https://www.youtube.com/watch?v=dG4tub6Iq6c - No transcript found.
+https://www.youtube.com/watch?v=dG4tub6Iq6c - Transcript found, length: 14675, title: ב קלח - סוזנסנוקו עונלוק.
 https://www.youtube.com/watch?v=MqthTXqY9Wo - No transcript found.
 https://www.youtube.com/watch?v=krCjsxDhNyM - No transcript found.
 https://www.youtube.com/watch?v=VQ86UsbJaFg - No transcript found.
@@ -533,6 +365,12 @@ https://www.youtube.com/watch?v=4fryJq-36QU - No transcript found.
 https://www.youtube.com/watch?v=JxFq7d5fy-k - No transcript found.
 https://www.youtube.com/watch?v=Rbq8oQkqeEY - No transcript found.
 https://www.youtube.com/watch?v=4Rh3hvSE-14 - No transcript found.
+https://www.youtube.com/watch?v=7aqpfyiwcBQ - No transcript found.
+https://www.youtube.com/watch?v=NSeu8V-e7IU - No transcript found.
+https://www.youtube.com/watch?v=8HL9KUpfRtY - Transcript found, length: 29479, title: ןורוד דיבר ר"דו חטיא טור ןרק םע חומה לע סיבנקה תועפשה - םינכסמו םינרקסמ םירמוח.
+https://www.youtube.com/watch?v=bJOB95a1MjY - Transcript found, length: 32228, title: ןורוד דיבר ר"ד םע תובשחמה תא ונל תוארוקש תונוכמה.
+https://www.youtube.com/watch?v=5iIu4SRkaHA - No transcript found.
+https://www.youtube.com/watch?v=t4mLUXxlLmQ - No transcript found.
 https://www.youtube.com/watch?v=ZfR6PCDdEGo - Transcript found, length: 35151, title: 42.3.13-ץישפיל ירוא םע ABM -ה תינכת לש תומזיה ןודעומ שגפמ -)ןכ ינא המלו( לארשיב רסנלירפ תויהל אל המל.
 https://www.youtube.com/watch?v=gwTP5Fn71j4 - No transcript found.
 https://www.youtube.com/watch?v=OZEuf_dQDi8 - No transcript found.
@@ -543,21 +381,15 @@ https://www.youtube.com/watch?v=0pPcJ_nLWM0 - No transcript found.
 https://www.youtube.com/watch?v=8Xaz0pG_R54 - No transcript found.
 https://www.youtube.com/watch?v=5JqWvH-xQxk - No transcript found.
 https://www.youtube.com/watch?v=AM8lZ4Rijac - No transcript found.
-https://www.youtube.com/watch?v=7aqpfyiwcBQ - No transcript found.
-https://www.youtube.com/watch?v=NSeu8V-e7IU - No transcript found.
-https://www.youtube.com/watch?v=8HL9KUpfRtY - Transcript found, length: 29479, title: ןורוד דיבר ר"דו חטיא טור ןרק םע חומה לע סיבנקה תועפשה - םינכסמו םינרקסמ םירמוח.
-https://www.youtube.com/watch?v=bJOB95a1MjY - Transcript found, length: 32228, title: ןורוד דיבר ר"ד םע תובשחמה תא ונל תוארוקש תונוכמה.
-https://www.youtube.com/watch?v=5iIu4SRkaHA - No transcript found.
-https://www.youtube.com/watch?v=t4mLUXxlLmQ - No transcript found.
 https://www.youtube.com/watch?v=83X37pYWZS8 - No transcript found.
 https://www.youtube.com/watch?v=YsXJChfUfYk - Transcript found, length: 1752, title: החותפה הטיסרבינואב םיימדקא םידומילל ץועיל הקלחמה תא וריכה.
-Ending at: 2024-12-07 11:53:48.001126, total time: 1 day, 16:08:23.287657
+Ending at: 2024-12-09 21:06:04.214181, total time: 2:24:01.446291
 
-PDF files collected: 2083
+PDF files collected: 1940
 
     https://www.openu.ac.il/academic/young/download/candidacy.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/tofes-abroad-new6-8-23%20(003).pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/tofes-abroad-new6-8-23%20(003).pdf
 
     https://www.openu.ac.il/lists/mediaserver_documents/registration/reg_ma.pdf
 
@@ -598,8 +430,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/nispach aviv 2025b.pdf
 
     https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/overvashav.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz-hakol3.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz_leumi.pdf
 
@@ -650,6 +480,8 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/hukatakanon.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/overvashav.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz-hakol3.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz_markantil.pdf
 
@@ -706,6 +538,10 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/sachal tashpa.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/sachal2022.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/בקשה ללימודים לתואר נוסף.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/toarnosaf.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/registration/tofes6.pdf
 
@@ -827,8 +663,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/library/Welcome to LibKey NOMAD - Open University - Hebrew.docx.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz-hakol3.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz_leumi.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz_discont1.pdf
@@ -913,6 +747,10 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/FindingJobByYuvalShafir.pdf
 
+    https://www.openu.ac.il/Lists/MediaServer_Documents/בקשה ללימודים לתואר נוסף.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/toarnosaf.pdf
+
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/English/mandatory.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams12019.pdf
@@ -969,11 +807,13 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/homeexames2024.pdf
 
+    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/documentforgery2024.pdf
+
     https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/HebrewD.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/ArabicD.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/discipline.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/discipline.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/nohal-nz-hevrati.pdf
 
@@ -990,6 +830,8 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/nohal-hatamot-a+b 12.2020.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/טופס נלווה לאבחון למערכת הפניות (003).docx
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/120-hours-diagram.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Application form for the program of excellence in cs and software engineering.docx
 
@@ -1014,8 +856,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/thesis2023c.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Education_Psychology/cognitive_psychology/instructions2025.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/120-hours-diagram.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/miluim_law.pdf
 
@@ -1115,7 +955,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/beersheva2025a.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/jeruslem2025a.pdf
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/jeruslem2025a1.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/modiin2025a.pdf
 
@@ -1167,7 +1007,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/eilat2023a.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/eilat2023ap2.pdf
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/eilat2023ap3.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/localGovernmentSchool/beershava2023a1.pdf
 
@@ -1246,34 +1086,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/melel-irur.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/טופס נלווה לאבחון.docx
-
-    https://www.openu.ac.il/academic/young/download/candidacy.pdf
-
-    http://www.openu.ac.il/Lists/MediaServer_Documents/tofes-abroad-new6-8-23%20(003).pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/list.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/young/Candidacy.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/young/School.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/overvashav.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/rikuz_markantil.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/tlushsachar1.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/shuma.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/bituahleumi-looved.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/shearim.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/mezonot-ishi.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/deanstudents/schirut1.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/thank%20you%20letters.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/horut-bakasha.pdf
 
@@ -2013,62 +1825,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/מועצת הסגל דצמבר 2024.pdf
 
-    https://www.openu.ac.il/lists/mediaserver_documents/hukatakanon.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0247.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0248.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0129-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0404-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0401-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0403-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0407-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0402-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0126-13.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0216-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0290-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0136.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0140.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0382-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0381-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0154-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0165-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0225-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0159-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0300-05+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0384.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0239-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0176-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%a0%d7%95%d7%94%d7%9c+%d7%a4%d7%a8%d7%99%d7%a9%d7%94++11.11.2024.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0177-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%aa%d7%a7%d7%a0%d7%95%d7%9f+%d7%9e%d7%99%d7%a0%d7%95%d7%99%d7%99%d7%9d+11.11.2024+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0167-pirsum.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/אפקטיביות_לאתר.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Nudge.pdf
@@ -2167,13 +1923,15 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/library/מדריך לביצוע הזמנה חדש.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/library/confirmation_students.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/library/confirmation_students.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/library/staffinstructions.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/library/Welcome to LibKey NOMAD - Open University - Hebrew.docx.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/library/Welcome to LibKey NOMAD - Open University - Hebrew .pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/library/confirmation_students.pdf
 
     https://www.openu.ac.il/lists/mediaserver_documents/registration/reg_ma.pdf
 
@@ -2245,7 +2003,23 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/criteria.pdf
 
+    https://www.openu.ac.il/Lists/MediaServer_Documents/ToourColleagues-IsraeliUniPresidents01112023.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/about/Departments/president_office/mivne_irguni_2023E_ENG.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/English/RegulationsforPreventionofSexualHarassment.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/hukatakanonEng.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/120-hours-diagram-Arabic.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/structured_program108.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/QA_finance.pdf
+
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Application form for the program of excellence in cs and software engineering.docx
+
+    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/קורסים לפי הערכה מסכמת אוקטובר 24 (002).pdf
 
@@ -2627,7 +2401,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/gmar2024c.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/Teza2024d.pdf
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/teza2024h.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/KAH.pdf
 
@@ -2789,8 +2563,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Education_Psychology/phd/phd_proposal.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Yedion-A5-kidum-ovdei-horaa-2024+Summer.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/%d7%93%d7%95%d7%97%20%d7%9e%d7%97%d7%a7%d7%a8%20%d7%9e%d7%a1%d7%9b%d7%9d.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/דוח מחקר מסכם.pdf
@@ -2806,40 +2578,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/Dhsshub/DHSSHubNewsletter-June2023.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/graduates/takanon amutat bogrim2021.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/registration/tofes11.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/טופס בקשה הרשמה לסטודנט ותיק.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/reg_ma.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/reg_ph.d.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/tofes4.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/form11-n.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/credential_form.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/tofes5.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/הצהרה סטודנטים 29.5.24.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/tofes6.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/tofes7.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/בקשה ללימודים לתואר נוסף.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/tofes11.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/registration/accoountingform.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/nispach stav 2025a.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/nispach stav 2024a  - 7.11.23.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/nispach aviv 2025b.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/shirly_d.pdf
 
@@ -2895,7 +2633,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/mever_milim_izaharCohen.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Mitusi-elad%20segev.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/Mitusi-elad%20segev.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Klalim_Hachanat_Mivhanim_matalot.pdf
 
@@ -2943,6 +2681,52 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Arts/%D7%90%D7%A1%D7%95%D7%A4%D7%AA%20%D7%A9%D7%99%D7%A8%D7%94%20%D7%95%D7%A4%D7%A8%D7%95%D7%96%D7%94%202015.pdf
 
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-CS-3Years-108-without_04101.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/CS-3Years-108-modelim.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-CS-3Years-108-with_04101.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/CS-3Years-108-with_04101-modelim.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/structured_management.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Physics_CS_V120_3_years.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-Physics_CS_V120_3_years.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-CS-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-CS-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-DataScience-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-DataScience-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-Cyber-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-Cyber-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Physics_CS_V120_4_years.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-Physics_CS_V120_4_years.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-CS-Cognition-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-CS-Cognition-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-CS-5Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-CS-5Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-ProgrammingEng-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-ProgrammingEng-4Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Structured-ProgrammingEng-5Years-120.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/modelim-ProgrammingEng-5Years-120.pdf
+
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/tutorial-seminar.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/10900.pdf
@@ -2971,9 +2755,9 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/SM_Reg_Guide.pdf
 
-    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/%d7%a7%d7%95%d7%91%d7%a5%20%d7%a1%d7%9e%d7%99%d7%a0%d7%a8%d7%99%d7%9d2025%20%d7%91%20'.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Yedion-A5-kidum-ovdei-horaa-2024+Summer.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/nohal-hatamot-a+b%2012.2020.pdf
 
@@ -3008,10 +2792,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/FreedomOfInformationAct/2023.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/hukatakanon.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/English/RegulationsforPreventionofSexualHarassment.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/hukatakanonEng.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/טופס בקשת יציאה לשבתון .pdf
 
@@ -3108,74 +2888,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/publications/Appreciation-Letter3.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/publications/Appreciation-Letter4.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Madrich-Segel-Hadash-2023-web.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/%d7%9e%d7%95%d7%a2%d7%a6%d7%aa%20%d7%94%d7%a1%d7%92%d7%9c%20%d7%93%d7%a6%d7%9e%d7%91%d7%a8%202024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/מועצת הסגל דצמבר 2024.pdf
-
-    https://www.openu.ac.il/lists/mediaserver_documents/hukatakanon.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0383-06.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0303-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0299-07.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0247.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0248.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0129-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0404-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0401-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0403-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0407-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0402-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0126-13.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0216-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0290-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0136.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0140.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0382-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0381-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0154-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0165-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0225-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0159-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0300-05+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0384.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0239-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0176-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%a0%d7%95%d7%94%d7%9c+%d7%a4%d7%a8%d7%99%d7%a9%d7%94++11.11.2024.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0177-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%aa%d7%a7%d7%a0%d7%95%d7%9f+%d7%9e%d7%99%d7%a0%d7%95%d7%99%d7%99%d7%9d+11.11.2024+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0167-pirsum.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/מודעת דרושים סטודנט.ית לתקשורת.pdf
 
@@ -3499,9 +3211,21 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/hagashat muamadut 2019.pdf
 
+    https://www.openu.ac.il/Lists/MediaServer_Documents/בקשה ללימודים לתואר נוסף.pdf
+
     https://www.openu.ac.il/Lists/MediaServer_Documents/registration/toarnosaf.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/saman-openu.docx.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/ESRC OPENU English Intro Flyer.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/thesis2023c.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/Philosophy/philosophy_faculty_recruiting.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/nahda10122024.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/95003-Information-brochure-2019.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/שאלות נפוצות -תזה_.pdf
 
@@ -3534,8 +3258,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/Theory Seminar 22952 (2018a).pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/TheoryandAlgorithms.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/95003-Information-brochure-2019.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/mirey_avigal.pdf
 
@@ -3585,19 +3307,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/NKoren.pdf
 
-    https://www.openu.ac.il/lists/mediaserver_documents/registration/reg_ma.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/resume_form.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Education_Psychology/cognitive_psychology/recommendation_system.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/hesber muamad hamlatzot.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Education_Psychology/phd/intent_declaration_doctorate_2024.docx
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/ToourColleagues-IsraeliUniPresidents01112023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/about/Departments/president_office/mivne_irguni_2023E_ENG.pdf
 
     http://www.openu.ac.il/research_center/download/Mioduser-invitation1.pdf
 
@@ -3611,8 +3321,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Policy/research_report-1.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/library/library_softwares.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/קול קורא לבית ספר קיץ יוני 2024.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Merhav-Digitali-summer-school-inner--digital-2024.pdf
@@ -3621,69 +3329,13 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Dhsshub/Merhav-Digitali-summer-school-2023-Digital.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/%D7%A7%D7%95%D7%9C%20%D7%A7%D7%95%D7%A8%D7%90%20%D7%9C%D7%91%D7%99%D7%AA%20%D7%A1%D7%A4%D7%A8%20%D7%A7%D7%99%D7%A5%20%D7%99%D7%95%D7%A0%D7%99%202024.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/Merhav-Digitali-summer-school-inner--digital-2024.pdf
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/%D7%A7%D7%95%D7%9C%20%D7%A7%D7%95%D7%A8%D7%90%20%D7%9C%D7%91%D7%99%D7%AA%20%D7%A1%D7%A4%D7%A8%20%D7%A7%D7%99%D7%A5%20%D7%99%D7%95%D7%A0%D7%99%202024.pdf
 
     http://www.openu.ac.il/Lists/MediaServer_Documents/Dhsshub/Merhav-Digitali-summer-school-2023-Digital.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams12019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams12020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams12023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams12024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams22019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams22020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams22023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams22024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams42019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams42020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams42023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/exams42024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/maman2019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/maman2020pdf.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/maman2023pdf.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/maman2024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/seminar2019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/seminar2020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/seminar2023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/seminar2024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/other2019.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/other2020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/other2023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/other2024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/homeexames2020.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/homeexames2023.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/homeexames2024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/HebrewD.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/ArabicD.pdf
-
-    http://www.openu.ac.il/Lists/MediaServer_Documents/DeanAcademicStudies/discipline.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/Dhsshub/submissions2023.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/ronit.pdf
 
@@ -3741,7 +3393,7 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/מילות קישור.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/CSSeminar.pdf
+    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/tutorial-seminar.pdf
 
@@ -3770,8 +3422,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/10971MonetaryEconomics_S.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/SM_Reg_Guide.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/בקשה ללימודים לתואר נוסף.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/about/Departments/human_resources/heskem kibutzi 2011.pdf
 
@@ -3813,68 +3463,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Sociology/OmiLab/Datech Poster.pdf
 
-    https://www.openu.ac.il/lists/mediaserver_documents/hukatakanon.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0299-07.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0303-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0383-06.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0167-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%aa%d7%a7%d7%a0%d7%95%d7%9f+%d7%9e%d7%99%d7%a0%d7%95%d7%99%d7%99%d7%9d+11.11.2024+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0177-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%a0%d7%95%d7%94%d7%9c+%d7%a4%d7%a8%d7%99%d7%a9%d7%94++11.11.2024.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0176-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0239-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0384.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0300-05+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0159-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0225-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0165-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0154-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0381-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0382-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0140.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0136.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0290-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0216-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0126-13.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0402-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0407-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0403-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0401-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0404-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0129-pirsum.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0248.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2fpirsum-0247.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/%D7%A2%D7%9C%D7%95%D7%9F%20%D7%94%D7%9E%D7%A8%D7%9B%D7%96%20%D7%9C%D7%9E%D7%97%D7%A7%D7%A8%D7%99%20%D7%A1%D7%91%D7%99%D7%91%D7%94%20%D7%95%D7%A7%D7%99%D7%99%D7%9E%D7%95%D7%AA.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/flyer_en.pdf
@@ -3886,8 +3474,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/%d7%9e%d7%90%d7%9e%d7%a8%20%d7%93%d7%a2%d7%94%20-%20%d7%93%d7%a8%20%d7%98%d7%9c%20%d7%92%d7%95%d7%9c%d7%9f.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/מאמר דעה - דר טל גולן.pdf
-
-    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Arts/gallery_raanana/meshotetim2.pdf
 
@@ -3903,51 +3489,41 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Economics/RegistrationInstructions2023.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/Philosophy/philosophy_faculty_recruiting.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/nahda10122024.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/itonutyehudit.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/nahada.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/2024heiza11.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/latinaroeti.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/russia2023b.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/History/mahistory/thesis2023c.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/English/RegulationsforPreventionofSexualHarassment.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/hukatakanonEng.pdf
 
-    https://www.openu.ac.il/Download/yedeon-2015/pdf-yedion%202015.pdf
+    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/Kol_kore_3.pdf
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/kol_kore2.pdf
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/kol_kore1.pdf
+
+    https://www.openu.ac.il/Lists/MediaServer_Documents/תכנון מקיים- בני- 18.6.23 - לאחר הגהה.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/FullPaper_Chais-2025-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/FullPaper_Chais-2025-Eng.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/ShortPaper_Chais-2025-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/ShortPaper_Chais-2025-Eng.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/PosterChais-2025-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/Poster_Chais-2025-Eng.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2025/Panel_Chais-2025-Heb.docx
 
@@ -4057,29 +3633,11 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/entrepreneurship/chais2021.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/stastika.pdf
+    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/CS/95003-Information-brochure-2019.pdf
+
+    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/ONLPmeetup5-HebrewNER.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/flyer_en.pdf
-
-    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/Kol_kore_3.pdf
-
-    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/kol_kore2.pdf
-
-    http://www.openu.ac.il/Lists/MediaServer_Documents/env_centers/kol_kore1.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/תכנון מקיים- בני- 18.6.23 - לאחר הגהה.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/%d7%9e%d7%90%d7%9e%d7%a8%20%d7%93%d7%a2%d7%94%20-%20%d7%93%d7%a8%20%d7%98%d7%9c%20%d7%92%d7%95%d7%9c%d7%9f.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/מאמר דעה - דר טל גולן.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/מודעת דרושים סטודנט.ית לתקשורת.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Arts/arts_mang_post.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/Academic/Arts/poster 3A_active.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/arabic-milgot.pdf
 
@@ -4129,25 +3687,25 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2022/A-Z___Paper___Chais-2022-Eng____Authors' names___Submission number____Session.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/Short-Paper___Chais-2022-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/Short-Paper___Chais-2022-Eng.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/Poster______Chais-2023-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/Poster___Chais-2023-Eng.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/Panel______Chais-2023-Heb.docx
 
@@ -4259,13 +3817,13 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2023/c4_12.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/publications/heb_paper_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/publications/heb_paper_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/publications/eng_poster_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/publications/eng_poster_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/publications/heb_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/publications/heb_poster_i.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/publications/eng_poster_i.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/publications/eng_poster_i.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2020/a1_1.pdf
 
@@ -4357,21 +3915,27 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2020/c3-15.pdf
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_paper_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_paper_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_shortpaper_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_shortpaper_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_poster_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_poster_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_panel_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_panel_t.docx
 
-    https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_panel_t.docx
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_panel_t.docx
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/heb_panel_i.docx
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/eng_panel_i.docx
+
+    http://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/easy_chair_help.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/a1_1.pdf
 
@@ -4493,20 +4057,6 @@ PDF files collected: 2083
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2021/ראיון אינה דה-מרקר.pdf
 
-    https://www.openu.ac.il/lists/mediaserver_documents/hukatakanon.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%aa%d7%a7%d7%a0%d7%95%d7%9f+%d7%9e%d7%99%d7%a0%d7%95%d7%99%d7%99%d7%9d+11.11.2024+.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f%d7%a0%d7%95%d7%94%d7%9c+%d7%a4%d7%a8%d7%99%d7%a9%d7%94++11.11.2024.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0384.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0383-06.pdf
-
-    https://www.openu.ac.il/_layouts/download.aspx?SourceUrl=%2fabout%2fLists%2fAboutProceduresDocs%2f0382-pirsum.pdf
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/arabic-milgot.pdf
-
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/rikuz_leumi.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/bankotzarahayal.pdf
@@ -4532,8 +4082,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/thank you letters.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/deanStudents/thank%20you%20letters.docx
-
-    http://www.openu.ac.il/lists/mediaserver_documents/academic/programs/BU.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2022/a1_1.pdf
 
@@ -4708,8 +4256,6 @@ PDF files collected: 2083
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2022/Panel______Chais-2022-Heb.docx
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/innovation/chais/2022/A-Z___Panel___Chais-2022-Eng____Authors' names___Submission number____Session.docx
-
-    https://www.openu.ac.il/Lists/MediaServer_Documents/entrepreneurship/chais2021.pdf
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/flyer_en.pdf
 
