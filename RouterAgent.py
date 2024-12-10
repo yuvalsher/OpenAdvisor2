@@ -6,6 +6,7 @@ from typing import Optional, List
 
 from AbstractAgent import AbstractAgent
 from rag import Rag
+from OpenAI_Assistant2 import OpenAIAssistant
 
 class RouterAgent(AbstractAgent):
 
@@ -29,16 +30,13 @@ class RouterAgent(AbstractAgent):
                 First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or thirdcategory.
                 The query will fall into one of the following categories:
 
-                1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be sent to a study program agent. The study program agent requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, no further processing is required on your part - just return a response including the study program code and the question that the agent should answer, so that the query will be sent to the correct agent.
+                1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not accept the chat history, so the question should provbide all the relevant details.
                 2. Course Details: Questions about specific university courses. Use the courses tools to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters.
                 3. General University Information: General questions about studying at the university. Use the GetRelevantContent tool to search for relevant information from the university website.
-                If the user query is unclear or missing necessary information, such as the name of the study program, ask clarifying questions to gather the required details.
              
             - **Expected Response Format:**
-                YOUR RESPONSE MUST BE FORMATTED AS AN ENGLISH KEYWORD FOLLOWED BY THE RESULT, EXACTLY AS ONE OF THE FOLLOWING OPTIONS:
-                1. "Done - <full text response>": Use this option when you have fully answered the user query.
-                2. "Program <study program code>: <question>": Use this option for study program queries once you have the study program code, so that the question can be sent to the study program agent with the specific program code.
-                3. "Question - <question>": Use this option when additional information is required to proceed.
+                If the user query is unclear or missing necessary information, such as the name of the study program, the response should be a clarifying question for gathering the required details from the user.
+                Otherwise the response should be a detailed answer to the user question.
 
             - **Role and Tools:**
                 - Utilize various tools to provide concise and accurate answers.
@@ -101,6 +99,9 @@ class RouterAgent(AbstractAgent):
         self.website_rag = Rag(self.config)
         self.website_rag.init("OUI")
 
+        # Create agent for OpenAI Assistant for Study Programs
+        self.study_programs_assistant = OpenAIAssistant(self.config)
+        self.study_programs_assistant.init()
 
     ##############################################################################
     def _load_json_file(self, file_name: str):
@@ -305,16 +306,31 @@ class RouterAgent(AbstractAgent):
             return result
         
         ##############################################################################
+        @tool("GetAnswerOnStudyPrograms")
+        def _get_answer_on_study_programs(query_text: str, study_program_code: str) -> str:
+            """Get an answer on study programs from the study programs assistant.
+.            
+            Args:
+                query_text: A question about a study program
+                study_program_code: The code of the study program to answer the question
+            """
+
+            result = self.study_programs_assistant.do_query(query_text, study_program_code)
+            print(f"In Tool: Getting answer on study program {study_program_code} for {query_text[::-1]}: {result[::-1]}\n")
+            return result
+            
+        ##############################################################################
         self.tools = [
                     _get_course_id_from_name, 
                     _get_course_name_from_id, 
                     _get_course_details_from_id,
-                    _get_all_dependencies_courses_from_id,
+                    #_get_all_dependencies_courses_from_id,
                     _get_similar_courses_by_text,
                     _get_similar_courses_by_id,
                     _get_relevant_content,
                     _get_study_program_code_from_name,
-                    _get_list_of_study_program_names_and_codes
+                    _get_list_of_study_program_names_and_codes,
+                    _get_answer_on_study_programs,
                 ]
 
     ##############################################################################
