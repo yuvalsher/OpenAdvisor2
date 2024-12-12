@@ -658,5 +658,5 @@ if __name__ == "__main__":
 #    start_crawling(["CS"])
 #    test_videos()
 #     start_crawling(["CS", "OUI"])
-    start_crawling(["All"])
-#    do_all_stats()
+#    start_crawling(["All"])
+    do_all_stats()

@@ -50,23 +50,13 @@ class MultiAgent2(AbstractLlm):
         self.assistant_agent.init()
 
     ##############################################################################
-    def _create_new_memory(self, client_id: str = None) -> str:
-        """Create a new memory instance for a client and return its ID."""
-        memory = ConversationBufferMemory(
-            memory_key="chat_history",
-            return_messages=True
-        )
-        memory.chat_memory.add_message(SystemMessage(content=self.router_agent_creator.system_instructions))
-        return memory
-
-    ##############################################################################
     def _get_or_create_memory(self, client_id: str) -> ConversationBufferMemory:
         """Get existing memory for client_id or create new if doesn't exist."""
         try:
             if client_id in self.memories:
                 return self.memories[client_id]
             else:
-                memory = self._create_new_memory(client_id)
+                memory = self.router_agent_creator.create_new_memory()
                 self.memories[client_id] = memory
                 return memory
         except Exception as e:

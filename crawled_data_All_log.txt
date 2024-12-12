@@ -8911,3 +8911,187 @@ PDF files collected: 2088
 
     https://www.openu.ac.il/Lists/MediaServer_Documents/תכנון מקיים- בני- 18.6.23 - לאחר הגהה.pdf
 
+Duplicates:
+==============
+Text found in 2 pages:
+    http://academic.openu.ac.il/Education_Psychology/social-psychology/Pages/counseling.aspx?1
+    http://academic.openu.ac.il/Education_Psychology/social-psychology/Pages/counseling.aspx?2
+Text found in 2 pages:
+    http://academic.openu.ac.il/natural_sciences/astrophysics/pages/default.aspx?1
+    http://academic.openu.ac.il/natural_sciences/astrophysics/pages/faq.aspx?1
+Text found in 2 pages:
+    http://www.openu.ac.il/young/pages/studies.aspx?1
+    http://www.openu.ac.il/young/Pages/Method.aspx?1
+Text found in 2 pages:
+    http://www.openu.ac.il/young/pages/studies.aspx?2
+    http://www.openu.ac.il/young/Pages/Method.aspx?2
+Text found in 2 pages:
+    http://www.openu.ac.il/young/pages/studies.aspx?4
+    http://www.openu.ac.il/young/Pages/Method.aspx?4
+Text found in 2 pages:
+    http://www.openu.ac.il/counseling/seminar-training.html?1
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/avodaseminari.aspx?1
+Text found in 2 pages:
+    http://www.openu.ac.il/counseling/seminar-training.html?2
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/avodaseminari.aspx?2
+Text found in 2 pages:
+    http://www.openu.ac.il/counseling/seminar-training.html?3
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/avodaseminari.aspx?3
+Text found in 2 pages:
+    http://www.openu.ac.il/counseling/seminar-training.html?6
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/avodaseminari.aspx?6
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/tel-aviv/pages/psychology.aspx?4
+    http://www.openu.ac.il/transfertrack/haifa/pages/multidisciplinary_studies.aspx?2
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/tel-aviv/pages/statistics.aspx?5
+    http://www.openu.ac.il/transfertrack/tel-aviv/pages/mathematics.aspx?5
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/hebrew/pages/communication_journalism.aspx?2
+    http://www.openu.ac.il/transfertrack/hebrew/pages/sociology_anthropology.aspx?1
+Text found in 3 pages:
+    http://www.openu.ac.il/transfertrack/hebrew/pages/communication_journalism.aspx?4
+    http://www.openu.ac.il/transfertrack/hebrew/pages/education.aspx?4
+    http://www.openu.ac.il/transfertrack/hebrew/pages/sociology_anthropology.aspx?3
+Text found in 4 pages:
+    http://www.openu.ac.il/transfertrack/hebrew/pages/computer_science.aspx?6
+    http://www.openu.ac.il/transfertrack/hebrew/pages/mathematics.aspx?6
+    http://www.openu.ac.il/transfertrack/hebrew/pages/statistics.aspx?6
+    http://www.openu.ac.il/transfertrack/haifa/pages/information_systems.aspx?6
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/hebrew/pages/elecricity_computer.aspx?5
+    http://www.openu.ac.il/transfertrack/hebrew/pages/physics_engineering.aspx?5
+Text found in 3 pages:
+    http://www.openu.ac.il/transfertrack/haifa/Pages/humanities.aspx?4
+    http://www.openu.ac.il/transfertrack/haifa/Pages/education.aspx?3
+    http://www.openu.ac.il/transfertrack/haifa/pages/law.aspx?6
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/haifa/Pages/economics.aspx?3
+    http://www.openu.ac.il/transfertrack/haifa/pages/multidisciplinary_studies.aspx?3
+Text found in 3 pages:
+    http://www.openu.ac.il/transfertrack/haifa/pages/information_systems.aspx?4
+    http://www.openu.ac.il/transfertrack/haifa/pages/computer_science.aspx?4
+    http://www.openu.ac.il/transfertrack/haifa/pages/mathematics.aspx?4
+Text found in 2 pages:
+    http://www.openu.ac.il/transfertrack/ben-gurion/pages/economics.aspx?3
+    http://www.openu.ac.il/transfertrack/ben-gurion/pages/management.aspx?3
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/online.aspx?5
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/exam.aspx?5
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/ktivamitkadmim.aspx?1
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/ktivamitkadmim.aspx?1
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/ktivamitkadmim.aspx?2
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/ktivamitkadmim.aspx?2
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/ktivamitkadmim.aspx?3
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/ktivamitkadmim.aspx?3
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/ktivamitkadmim.aspx?6
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/ktivamitkadmim.aspx?6
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/beviliografia.aspx?1
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/beviliografia.aspx?1
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/beviliografia.aspx?2
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/beviliografia.aspx?2
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/beviliografia.aspx?3
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/beviliografia.aspx?3
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/beviliografia.aspx?5
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/beviliografia.aspx?5
+Text found in 2 pages:
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/beviliografia.aspx?6
+    http://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/writing_center/pages/beviliografia.aspx?6
+Text found in 3 pages:
+    http://academic.openu.ac.il/sociology/political_science/pages/programs.aspx?5
+    http://academic.openu.ac.il/history/philosophy/pages/programs.aspx?2
+    http://academic.openu.ac.il/economics/economy/pages/programs.aspx?2
+Text found in 2 pages:
+    http://academic.openu.ac.il/sociology/political_science/pages/courses.aspx?6
+    http://academic.openu.ac.il/sociology/sociology/pages/courses.aspx?3
+Text found in 2 pages:
+    http://academic.openu.ac.il/sociology/political_science/pages/courses.aspx?7
+    http://academic.openu.ac.il/sociology/sociology/pages/courses.aspx?4
+Text found in 2 pages:
+    http://academic.openu.ac.il/sociology/political_science/pages/courses.aspx?9
+    http://academic.openu.ac.il/sociology/sociology/pages/courses.aspx?5
+Text found in 2 pages:
+    http://academic.openu.ac.il/education_psychology/psychology/pages/courses.aspx?7
+    http://academic.openu.ac.il/education_psychology/education/pages/courses.aspx?5
+Text found in 2 pages:
+    http://academic.openu.ac.il/education_psychology/psychology/pages/courses.aspx?10
+    http://academic.openu.ac.il/education_psychology/education/pages/courses.aspx?10
+Text found in 2 pages:
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/info.aspx?2
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/courses.aspx?2
+Text found in 2 pages:
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/info.aspx?3
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/courses.aspx?3
+Text found in 2 pages:
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/info.aspx?5
+    http://academic.openu.ac.il/education_psychology/cognitive-psychology/Pages/courses.aspx?6
+Text found in 2 pages:
+    http://academic.openu.ac.il/cs/computer/pages/courses.aspx?2
+    http://academic.openu.ac.il/cs/mathematics/pages/courses.aspx?4
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/management/pages/courses.aspx?1
+    http://academic.openu.ac.il/economics/pages/courses.aspx?4
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/management/pages/courses.aspx?10
+    http://academic.openu.ac.il/economics/economy/pages/courses.aspx?3
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/accounting/pages/courses.aspx?1
+    http://academic.openu.ac.il/economics/pages/courses.aspx?6
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/accounting/pages/courses.aspx?2
+    http://academic.openu.ac.il/economics/pages/courses.aspx?7
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/accounting/pages/courses.aspx?3
+    http://academic.openu.ac.il/economics/pages/courses.aspx?9
+Text found in 2 pages:
+    http://academic.openu.ac.il/economics/accounting/pages/courses.aspx?4
+    http://academic.openu.ac.il/economics/pages/courses.aspx?10
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/literature/pages/courses.aspx?2
+    http://academic.openu.ac.il/arts/pages/courses.aspx?3
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/literature/pages/courses.aspx?4
+    http://academic.openu.ac.il/arts/pages/courses.aspx?10
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/literature/pages/courses.aspx?9
+    http://academic.openu.ac.il/arts/theater/Pages/courses.aspx?1
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/literature/pages/courses.aspx?10
+    http://academic.openu.ac.il/arts/theater/Pages/courses.aspx?2
+Text found in 3 pages:
+    http://www.openu.ac.il/about/departments/human-resources/in-memoriam/Pages/zvika_first.aspx?12
+    http://www.openu.ac.il/about/departments/human-resources/in-memoriam/Pages/izhak_mizrahi.aspx?3
+    http://www.openu.ac.il/about/departments/human-resources/in-memoriam/Pages/josef_yosi_agur.aspx?3
+Text found in 2 pages:
+    http://www.openu.ac.il/about/departments/human-resources/in-memoriam/Pages/shaul_bason.aspx?2
+    http://www.openu.ac.il/about/departments/human-resources/in-memoriam/Pages/shaul_bason.aspx?3
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/music/pages/courses.aspx?1
+    http://academic.openu.ac.il/arts/pages/courses.aspx?9
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/arts/pages/courses.aspx?1
+    http://academic.openu.ac.il/arts/pages/courses.aspx?4
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/arts/pages/courses.aspx?2
+    http://academic.openu.ac.il/arts/pages/courses.aspx?5
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/arts/pages/courses.aspx?3
+    http://academic.openu.ac.il/arts/pages/courses.aspx?6
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/arts/pages/courses.aspx?4
+    http://academic.openu.ac.il/arts/pages/courses.aspx?7
+Text found in 2 pages:
+    http://academic.openu.ac.il/arts/arts/pages/courses.aspx?5
+    http://academic.openu.ac.il/arts/pages/courses.aspx?8
+Text found in 2 pages:
+    http://academic.openu.ac.il/cs/computer/Pages/seminarsEx.aspx?3
+    http://academic.openu.ac.il/cs/msc/Pages/seminarsEx.aspx?3
+Total duplicates found: 65, out of total pages: 5357

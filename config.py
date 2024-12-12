@@ -30,7 +30,8 @@ def get_all_config():
             "msg_sender_field": "role",
             "msg_text_field": "content",
             "user_name": "user",
-            "bot_name": "assistant"
+            "bot_name": "assistant",
+            "assistant_temperature": 0.3
         },
         "OUI": {
             "title": "האוניברסיטה הפתוחה - ייעוץ כללי",

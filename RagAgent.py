@@ -35,6 +35,10 @@ class RagAgent(AbstractAgent):
         self.rag.init(self.faculty_code)
 
     ##############################################################################
+    def get_system_instructions(self):
+        return [self.system_instructions]
+
+    ##############################################################################
     def _init_tools(self):
 
         ##############################################################################

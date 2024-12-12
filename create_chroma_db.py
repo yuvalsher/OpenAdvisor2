@@ -223,6 +223,6 @@ def course_stats():
 
 ##############################################################################
 if __name__ == "__main__":
-    #create_kb_db(["CS", "OUI"])
-    create_courses_db()
+    create_kb_db(["All"])
+    #create_courses_db()
     #course_stats()

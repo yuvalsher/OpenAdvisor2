@@ -20,7 +20,7 @@ class OpenAIAssistant():
     # Define system instructions
     system_instructions = """
         You are an academic advisor for the Open University of Israel (האוניברסיטה הפתוחה), specializing in academic study programs. 
-        You analyze a JSON file describing the study program, according to the detailed instructions provided in the first message, in order to answer student questions about this program.
+        You must analyze a JSON file describing the study program, according to the detailed instructions provided in the first message, in order to answer student questions about this program.
         The JSON data of the study program is provided in one of the first messages, and should be parsed using the code interpreter tool.
         You may also align the study program with student grade lists, and suggest courses the student should take next. 
         The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
@@ -90,7 +90,7 @@ class OpenAIAssistant():
             instructions=self.system_instructions,
             tools=[{"type": "code_interpreter"}],
             model="gpt-4o-mini",
-            temperature=0.3
+            temperature=self.config.get("assistant_temperature", 0.3)
         )
         print(f"Created new assistant: {assistant.id}")
         
@@ -111,7 +111,8 @@ class OpenAIAssistant():
         # Load the instructions to understand the JSON file
         self.add_message(thread.id, USER_MESSAGE, f"Here are the instructions for understanding the study program data: \n{self.program_instructions}")
         json_data = json.dumps(self.study_programs_data[faculty_code], indent=2)
-        self.add_message(thread.id, USER_MESSAGE, f"This is the definition of the study program in JSON format:\n{json_data}")
+        self.add_message(thread.id, USER_MESSAGE, f"Use the code interpreter tool to understand the definition of the study program in JSON format in the next nessage.")
+        self.add_message(thread.id, USER_MESSAGE, f"{json_data}")
 
         return thread
 
@@ -197,7 +198,8 @@ class OpenAIAssistant():
         assistant = self.get_assistant()
         thread = self.create_thread(faculty_code)
         self.add_message(thread.id, USER_MESSAGE, user_input)
-        answer = self.create_run_and_wait(thread.id, assistant.id)
+        #answer = self.create_run_and_wait(thread.id, assistant.id)
+        answer = self.create_run_stream(thread.id, assistant.id, "")
         print_answer(answer)
 
         return answer

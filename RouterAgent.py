@@ -7,6 +7,7 @@ from typing import Optional, List
 from AbstractAgent import AbstractAgent
 from rag import Rag
 from OpenAI_Assistant2 import OpenAIAssistant
+from StudyProgramAgent import StudyProgramAgent
 
 class RouterAgent(AbstractAgent):
 
@@ -103,17 +104,12 @@ class RouterAgent(AbstractAgent):
         self.study_programs_assistant = OpenAIAssistant(self.config)
         self.study_programs_assistant.init()
 
+        self.study_program_agent = StudyProgramAgent(self.config)
+        self.study_program_agent.init()
+
     ##############################################################################
-    def _load_json_file(self, file_name: str):
-        # Use the DB_Path from the config
-        full_path = os.path.join(self.config["DB_Path"], file_name)
-        if not os.path.exists(full_path):
-            print(f"File {full_path} does not exist.")
-            raise FileNotFoundError(f"File {full_path} does not exist.")
-            return
-        
-        with open(full_path, "r", encoding='utf-8') as f:
-            return json.load(f)
+    def get_system_instructions(self):
+        return [self.system_instructions]
 
     ##############################################################################
     def _init_tools(self):
@@ -314,11 +310,23 @@ class RouterAgent(AbstractAgent):
                 query_text: A question about a study program
                 study_program_code: The code of the study program to answer the question
             """
+            # try:
+            #     agent = self.study_program_agent.get_agent()
+            #     memory = self.study_program_agent.create_new_memory()
+            #     agent.memory = memory
+            #     prompt = self.study_program_agent.get_prompt(study_program_code, query_text)
+            #     response = agent.invoke({"input": prompt})
+            #     result = response['output']
+            # except Exception as e:
+            #     print(f"Error in study program agent: {e}")
+            #     result = "Error in study program agent"
+
 
             result = self.study_programs_assistant.do_query(query_text, study_program_code)
+            
             print(f"In Tool: Getting answer on study program {study_program_code} for {query_text[::-1]}: {result[::-1]}\n")
             return result
-            
+        
         ##############################################################################
         self.tools = [
                     _get_course_id_from_name, 

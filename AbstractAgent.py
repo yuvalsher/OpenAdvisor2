@@ -1,6 +1,11 @@
+import os
+import json
 from abc import ABC, abstractmethod
+from typing import List
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_openai import ChatOpenAI
+from langchain.memory import ConversationBufferMemory
+from langchain_core.messages import SystemMessage
 from langchain import hub
 
 class AbstractAgent(ABC):
@@ -44,7 +49,7 @@ class AbstractAgent(ABC):
         agent = create_tool_calling_agent(
             llm=self.llm,
             tools=self.tools,
-            prompt=self.prompt_template,
+            prompt=self.prompt_template
         )
 
         # Create the agent executor with client-specific memory
@@ -57,3 +62,33 @@ class AbstractAgent(ABC):
 
         return agent_executor
     
+    ##############################################################################
+    def _load_json_file(self, file_name: str):
+        # Use the DB_Path from the config
+        full_path = os.path.join(self.config["DB_Path"], file_name)
+        if not os.path.exists(full_path):
+            print(f"File {full_path} does not exist.")
+            raise FileNotFoundError(f"File {full_path} does not exist.")
+            return
+        
+        with open(full_path, "r", encoding='utf-8') as f:
+            return json.load(f)
+
+    ##############################################################################
+    @abstractmethod
+    def get_system_instructions(self) -> List[str]:
+        pass
+
+    ##############################################################################
+    def create_new_memory(self) -> str:
+        """Create a new memory instance for a client and return its ID."""
+        memory = ConversationBufferMemory(
+            memory_key="chat_history",
+            return_messages=True
+        )
+        system_instructions = self.get_system_instructions()
+        for msg in system_instructions:
+            memory.chat_memory.add_message(SystemMessage(content=msg))
+        return memory
+
+
