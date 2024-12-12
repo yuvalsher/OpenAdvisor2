@@ -189,7 +189,7 @@ class OpenAIAssistant():
             return thread
 
     ##############################################################################
-    def do_query(self, user_input: str, faculty_code: str, chat_history: ConversationBufferMemory, client_id: str = None) -> tuple[str, str]:
+    def do_query(self, user_input: str, faculty_code: str, chat_history: ConversationBufferMemory = None) -> tuple[str, str]:
         """
         Process a query using multiple agents.
         
@@ -206,7 +206,6 @@ class OpenAIAssistant():
 
         assistant = self.get_assistant(faculty_code)
         thread = self.create_thread(chat_history)
-        #thread = self._get_or_create_thread(client_id, chat_history)
         self.add_message(thread.id, USER_MESSAGE, user_input)
         answer = self.create_run_and_wait(thread.id, assistant.id)
         print_answer(answer)

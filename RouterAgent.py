@@ -6,8 +6,8 @@ from typing import Optional, List
 
 from AbstractAgent import AbstractAgent
 from rag import Rag
-from OpenAI_Assistant2 import OpenAIAssistant
-from StudyProgramAgent import StudyProgramAgent
+from OpenAI_Assistant import OpenAIAssistant
+#from StudyProgramAgent import StudyProgramAgent
 
 class RouterAgent(AbstractAgent):
 
@@ -31,7 +31,7 @@ class RouterAgent(AbstractAgent):
                 First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or thirdcategory.
                 The query will fall into one of the following categories:
 
-                1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not accept the chat history, so the question should provbide all the relevant details.
+                1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not have access to the chat history, so you must rephrase the question so that it contains all the relevant details from the chat history.
                 2. Course Details: Questions about specific university courses. Use the courses tools to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters.
                 3. General University Information: General questions about studying at the university. Use the GetRelevantContent tool to search for relevant information from the university website.
              
@@ -98,14 +98,14 @@ class RouterAgent(AbstractAgent):
         self.courses_rag.init("Courses")
 
         self.website_rag = Rag(self.config)
-        self.website_rag.init("OUI")
+        self.website_rag.init("All")
 
         # Create agent for OpenAI Assistant for Study Programs
         self.study_programs_assistant = OpenAIAssistant(self.config)
         self.study_programs_assistant.init()
 
-        self.study_program_agent = StudyProgramAgent(self.config)
-        self.study_program_agent.init()
+        # self.study_program_agent = StudyProgramAgent(self.config)
+        # self.study_program_agent.init()
 
     ##############################################################################
     def get_system_instructions(self):
@@ -323,7 +323,7 @@ class RouterAgent(AbstractAgent):
 
 
             result = self.study_programs_assistant.do_query(query_text, study_program_code)
-            
+
             print(f"In Tool: Getting answer on study program {study_program_code} for {query_text[::-1]}: {result[::-1]}\n")
             return result
         
