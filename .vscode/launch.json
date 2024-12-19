@@ -18,6 +18,16 @@
             "program": "${workspaceFolder}/OpenAdvisor2.py",
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Streamlit",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "streamlit",
+            "args": [
+                "run",
+                "${file}"
+            ],
         }
     ]
 }
