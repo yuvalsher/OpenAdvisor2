@@ -10,6 +10,7 @@ from openai import AssistantEventHandler
 from langchain.memory import ConversationBufferMemory
 
 from config import all_config
+from utils import flip_by_line
 
 
 USER_MESSAGE      = "user"
@@ -246,11 +247,11 @@ def main(fac_code):
     #answer = ass_agent.create_run_stream(thread.id, ass_id, "")
     ass_agent.add_user_message(thread.id, query1)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    print_answer(flip_by_line(answer))
 
     ass_agent.add_user_message(thread.id, query2)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    print_answer(flip_by_line(answer))
 
 ##############################################################################
 if __name__ == "__main__":
@@ -346,7 +347,7 @@ class OpenAIAssistant():
             name=name,
             instructions=self.system_instructions,
             tools=[{"type": "code_interpreter"}],
-            model="gpt-4o-mini",
+            model="gpt-4o-mini", # "o1-mini"
             temperature=self.config.get("assistant_temperature", 0.3)
         )
         print(f"Created new assistant: {assistant.id}")
@@ -446,7 +447,7 @@ class OpenAIAssistant():
             str: response_text
         """
 
-        print(f"Entering OpenAI Assistant2 for {faculty_code}: user_input: {user_input[::-1]}")
+        print(f"Entering OpenAI Assistant2 for {faculty_code}. user_input: {flip_by_line(user_input)}")
         if faculty_code not in self.study_programs_data:
             msg =f"Error: Faculty code {faculty_code} not found in study programs data"
             print(msg)
@@ -457,7 +458,7 @@ class OpenAIAssistant():
         self.add_message(thread.id, USER_MESSAGE, user_input)
         #answer = self.create_run_and_wait(thread.id, assistant.id)
         answer = self.create_run_stream(thread.id, assistant.id, "")
-        print_answer(answer)
+        print(flip_by_line(answer))
 
         return answer
 
@@ -474,23 +475,6 @@ class OpenAIAssistant():
             self.threads[client_id] = new_thread
 
 ##############################################################################
-def print_answer(answer):
-        # Regular expression pattern to match Hebrew characters
-    hebrew_pattern = re.compile(r'[\u0590-\u05FF]')
-    # Count total alphabetic characters
-    total_alpha_chars = sum(1 for char in answer if char.isalpha())
-    # Count Hebrew characters
-    hebrew_chars = len(hebrew_pattern.findall(answer))
-    # Determine if the majority are Hebrew
-    if (hebrew_chars > total_alpha_chars / 2):
-        # Mostly Hebrew characters, print reversed
-        print(f"Answer: {answer[::-1]}")
-    else:
-        # No Hebrew, print normally
-        print(f"Answer: {answer}")
-
-
-##############################################################################
 def main(fac_code):
     query1 = "איזה קורסי מתמטיקה הם חלק מהתוכנית?"
     query2 = "כמה נקודות זכות נותן הקורס השני?"  
@@ -505,11 +489,11 @@ def main(fac_code):
     #answer = ass_agent.create_run_stream(thread.id, ass_id, "")
     ass_agent.add_user_message(thread.id, query1)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    print(answer)
 
     ass_agent.add_user_message(thread.id, query2)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    print(answer)
 
 ##############################################################################
 if __name__ == "__main__":

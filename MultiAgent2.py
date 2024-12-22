@@ -2,6 +2,7 @@ from uuid import uuid4
 from typing import Dict, Any
 import io
 import PyPDF2
+from openai import OpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -13,6 +14,7 @@ from AbstractLlm import AbstractLlm
 from OpenAI_Assistant2 import OpenAIAssistant
 from RagAgent import RagAgent
 from RouterAgent import RouterAgent
+from utils import flip_by_line
 
 ##############################################################################
 class MultiAgent2(AbstractLlm):
@@ -69,8 +71,50 @@ class MultiAgent2(AbstractLlm):
     def add_files_to_prompt(self, prompt: str, uploaded_files: list[Dict[str, str]]) -> str:
         """Add the content of the uploaded files to the prompt"""
         for file in uploaded_files:
-            prompt += f"\n\nHere is the content of the uploaded file {file['name']}:\n\n{file['content']}"
+            cleaned_text = self.rephrase_text(file['content'])
+            prompt += f"\n\nHere is the content of the uploaded file {file['name']}:\n\n{cleaned_text}"
         return prompt
+
+    ##############################################################################
+    def rephrase_text(self, text, model="gpt-4o-mini", max_tokens=5000):
+        """
+        Rephrase the input text using OpenAI's API.
+        
+        Args:
+        - text (str): The text to rephrase.
+        - model (str): The OpenAI model to use (default is "gpt-4").
+        - max_tokens (int): The maximum number of tokens for the summary (default is 300).
+        
+        Returns:
+        - str: The summary of the input text.
+        """
+        
+        prompt = """Please rephrase the following text using the input language. Keep all the relevant text, but clean it up and remove any irrelevant characters used for formatting. The file typically includes a table of courses with their details, and is formatted using ascii characters. The text is in Hebrew. The output format should be easily understood by an LLM. Start with the title of the document.
+        The text is:
+        """
+        # Set the OpenAI API key
+        openai_epi_key = self.config["OPENAI_API_KEY"]
+        client = OpenAI(api_key=openai_epi_key)
+        
+        try:
+            # Call the OpenAI API to summarize the text
+            response = client.chat.completions.create(
+                model=model,
+                max_tokens=max_tokens,
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant."},
+                    {"role": "user", "content": f"{prompt}\n{text}"}
+                ]
+            )
+
+            # Extract the summary from the response
+            summary = response.choices[0].message.content.strip()
+            return summary
+        
+        except Exception as e:
+            return f"An error occurred: {e}"
+
+
 
     ##############################################################################
     def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None, uploaded_files: list[Dict[str, str]] = None) -> tuple[str, str]:
@@ -87,7 +131,7 @@ class MultiAgent2(AbstractLlm):
             tuple: (response_text, client_id)
         """
 
-        print(f"Entering Multi-Agent: user_input: {user_input[::-1]}")
+        print(f"Entering Multi-Agent: user_input: {user_input[::-1]}, Chat hiostory length: {len(chat_history)}, uploaded files: {len(uploaded_files)}")
 
         if client_id is None:
             client_id = str(uuid4())
@@ -99,6 +143,7 @@ class MultiAgent2(AbstractLlm):
             prompt = self.router_agent_creator.get_prompt() + user_input
             prompt = self.add_files_to_prompt(prompt, uploaded_files)
             router_agent.memory = memory
+            print(f"Router agent prompt: {flip_by_line(prompt)}")
             response = router_agent.invoke({"input": prompt})
             router_response = response['output']
         except Exception as e:
