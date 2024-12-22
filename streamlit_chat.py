@@ -156,7 +156,7 @@ def init_css():
             cursor: wait !important;
         }
                 
-        /* File uploader styles */
+        /* File uploader styles 
         [data-testid='stFileUploader'] {
             width: max-content;
         }
@@ -170,7 +170,7 @@ def init_css():
         [data-testid='stFileUploader'] section + div {
             float: right;
             padding-top: 0;
-        }
+        } */
         </style>
     """, unsafe_allow_html=True)
 
@@ -212,55 +212,44 @@ def main():
     st.title(config["title"])
     st.caption(config["description"])
 
-    # Create a container for chat history
+    # Chat history container
     chat_container = st.container()
-    # Create a container for input elements at the bottom
-    input_container = st.container()
-
-    # Display chat history in the chat container
     with chat_container:
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
-    # Use the input container for input elements
+        if st.session_state["processing"] and st.session_state["current_input"]:
+            with st.chat_message("assistant"):
+                response, _ = st.session_state["llm_obj"].do_query(
+                    st.session_state["current_input"],
+                    st.session_state["messages"],
+                    st.session_state["client_id"],
+                    st.session_state["uploaded_files"]
+                )
+                st.markdown(response)
+                st.session_state.messages.append({"role": "assistant", "content": response})
+            st.session_state["current_input"] = ""
+            st.session_state["processing"] = False
+
+    # Input container at the bottom
+    input_container = st.container()
     with input_container:
-        # Create columns for file upload and chat input (reversed order for RTL)
-        input_col, upload_col = st.columns([6, 1])  # Reversed order
-        
-        with input_col:
-            if prompt := st.chat_input("What is up?"):
-                # Add user message to session state
-                st.session_state.messages.append({"role": "user", "content": prompt})
-                st.session_state["current_input"] = prompt  # Store the input for processing
-                st.session_state["processing"] = True  # Set processing flag
-                st.rerun()  # Rerun to display user message immediately
+        if prompt := st.chat_input("במה אוכל לעזור לך?"):
+            st.session_state.messages.append({"role": "user", "content": prompt})
+            st.session_state["current_input"] = prompt
+            st.session_state["processing"] = True
+            st.rerun()
 
-            # Check if we have a pending message to process
-            if "current_input" in st.session_state and st.session_state["processing"]:
-                # Get bot response
-                bot_response, client_id = llm_obj.do_query(
-                    st.session_state["current_input"], 
-                    st.session_state["messages"], 
-                    st.session_state["client_id"], 
-                    st.session_state["uploaded_files"])
-                st.session_state.messages.append({"role": "assistant", "content": bot_response})
-                del st.session_state["current_input"]  # Clear the pending input
-                st.session_state["processing"] = False  # Reset processing flag
-                st.rerun()  # Rerun to update with the bot response
-        
-        with upload_col:
-            uploaded_file = st.file_uploader("Upload", 
-                                         key="upload_button",
-                                         type=["pdf"],
-                                         label_visibility="collapsed",
-                                         disabled=st.session_state["processing"])
+        uploaded_file = st.file_uploader("העלה קובץ PDF", 
+                                       key="upload_button",
+                                       type=["pdf"],
+                                       label_visibility="visible") #"collapsed")
 
-    if uploaded_file:
-        pdf_content = _read_pdf_content(uploaded_file)
-        st.session_state["uploaded_files"].append({"name": uploaded_file.name, "content": pdf_content})
-        st.success(f"הקובץ {uploaded_file.name[::-1]} הועלה בהצלחה!")
-
+        if uploaded_file:
+            pdf_content = _read_pdf_content(uploaded_file)
+            st.session_state["uploaded_files"].append({"name": uploaded_file.name, "content": pdf_content})
+            st.success(f"הקובץ {uploaded_file.name[::-1]} הועלה בהצלחה!")
 
 ##############################################################################
 if __name__ == "__main__":
