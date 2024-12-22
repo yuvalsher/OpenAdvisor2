@@ -1,10 +1,13 @@
 import os
 import sys
+import io
+import PyPDF2
 import logging
 from uuid import uuid4
 from langtrace_python_sdk import langtrace
 import streamlit as st
 from openai import OpenAI
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 
 from config import all_config
 from MultiAgent2 import MultiAgent2
@@ -28,6 +31,8 @@ def init_session_state(config, llm_obj):
         st.session_state["llm_obj"] = llm_obj
     if "client_id" not in st.session_state:
         st.session_state["client_id"] = str(uuid4())
+    if "uploaded_files" not in st.session_state:
+        st.session_state["uploaded_files"] = []
 
 ##############################################################################
 def clear_input():
@@ -178,6 +183,19 @@ def init_css():
         """, unsafe_allow_html=True)
 
 ##############################################################################
+def _read_pdf_content(file: UploadedFile) -> str:
+    """Helper method to read PDF content"""
+    try:
+        pdf_bytes = io.BytesIO(file.getvalue())
+        pdf_reader = PyPDF2.PdfReader(pdf_bytes)
+        text_content = ""
+        for page in pdf_reader.pages:
+            text_content += page.extract_text() + "\n"
+        return text_content
+    except Exception as e:
+        return f"Error reading PDF file {file.name}: {str(e)}"
+
+##############################################################################
 def main():
     # Set page config
     st.set_page_config(
@@ -221,7 +239,11 @@ def main():
             # Check if we have a pending message to process
             if "current_input" in st.session_state and st.session_state["processing"]:
                 # Get bot response
-                bot_response, client_id = llm_obj.do_query(st.session_state["current_input"], st.session_state["messages"], st.session_state["client_id"])
+                bot_response, client_id = llm_obj.do_query(
+                    st.session_state["current_input"], 
+                    st.session_state["messages"], 
+                    st.session_state["client_id"], 
+                    st.session_state["uploaded_files"])
                 st.session_state.messages.append({"role": "assistant", "content": bot_response})
                 del st.session_state["current_input"]  # Clear the pending input
                 st.session_state["processing"] = False  # Reset processing flag
@@ -234,97 +256,11 @@ def main():
                                          label_visibility="collapsed",
                                          disabled=st.session_state["processing"])
 
-    # Handle file upload
     if uploaded_file:
-        st.success(f"File {uploaded_file.name} uploaded successfully!")
+        pdf_content = _read_pdf_content(uploaded_file)
+        st.session_state["uploaded_files"].append({"name": uploaded_file.name, "content": pdf_content})
+        st.success(f"הקובץ {uploaded_file.name[::-1]} הועלה בהצלחה!")
 
-##############################################################################
-def old_main():
-    # Set page config
-    st.set_page_config(
-        page_title="האוניברסיטה הפתוחה - ייעוץ אקדמי", #config["title"],
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
-
-    config, llm_obj = init()
-    init_session_state(config, llm_obj)
-    init_css()
-
-    # Header
-    st.title(config["title"])
-    st.subheader(config["description"])
-
-    # Chat history container
-    with st.container():
-        for message in st.session_state["messages"]:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
-        st.markdown('</div>', unsafe_allow_html=True)
-
-    # Input area container
-    with st.container():
-        # Text input row (removed send button column)
-        prompt = st.text_input(
-            "Message", 
-            key="user_input",
-            value=st.session_state["input_text"],
-            label_visibility="collapsed",
-            disabled=st.session_state["processing"]
-            #on_change=lambda: handle_input() if st.session_state.user_input else None
-        )
-
-        # Bottom buttons row
-        col1, col2 = st.columns(2)
-        with col1:
-            uploaded_file = st.file_uploader("Upload", 
-                                         key="upload_button",
-                                         type=["pdf"],
-                                         label_visibility="collapsed",
-                                         disabled=st.session_state["processing"])
-        with col2:
-            if st.button("🔄", 
-                        use_container_width=True,
-                        disabled=st.session_state["processing"]):
-                st.session_state["messages"] = []
-                st.rerun()
-
-        # Handle input when text is entered
-        if prompt and not st.session_state["processing"]:  # Only process new input when not already processing
-            st.session_state["current_input"] = prompt  # Store the input in a different session state variable
-            st.session_state["input_text"] = ""  # Clear the input immediately
-            st.session_state["processing"] = True
-            st.rerun()
-            
-        # If we're processing, show the spinner and make the API call
-        if st.session_state["processing"] and "current_input" in st.session_state:
-            try:
-                # Add user message to chat history
-                st.session_state["messages"].append({"role": "user", "content": st.session_state["current_input"]})
-                
-                # Get bot response
-                bot_response, client_id = llm_obj.do_query(st.session_state["current_input"], st.session_state["messages"], st.session_state["client_id"])
-                
-                # Add bot response to chat history
-                st.session_state["messages"].append({"role": "assistant", "content": bot_response})
-                
-            except Exception as e:
-                msg = f"Error processing query: Error: {e}"
-                print(msg)
-
-            finally:
-                # Reset processing state
-                st.session_state["processing"] = False
-                # Clear the inputs
-                st.session_state["input_text"] = ""
-                if "current_input" in st.session_state:
-                    del st.session_state["current_input"]
-                # Rerun to update the UI
-                st.rerun()
-
-        # Handle file upload
-        if uploaded_file:
-            st.success(f"File {uploaded_file.name} uploaded successfully!")
 
 ##############################################################################
 if __name__ == "__main__":
