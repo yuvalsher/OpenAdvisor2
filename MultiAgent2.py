@@ -1,5 +1,7 @@
 from uuid import uuid4
 from typing import Dict, Any
+import io
+import PyPDF2
 from langchain.memory import ConversationBufferMemory
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -64,7 +66,14 @@ class MultiAgent2(AbstractLlm):
             return None
 
     ##############################################################################
-    def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None) -> tuple[str, str]:
+    def add_files_to_prompt(self, prompt: str, uploaded_files: list[Dict[str, str]]) -> str:
+        """Add the content of the uploaded files to the prompt"""
+        for file in uploaded_files:
+            prompt += f"\n\nHere is the content of the uploaded file {file['name']}:\n\n{file['content']}"
+        return prompt
+
+    ##############################################################################
+    def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None, uploaded_files: list[Dict[str, str]] = None) -> tuple[str, str]:
         """
         Process a query using multiple agents.
         
@@ -72,6 +81,7 @@ class MultiAgent2(AbstractLlm):
             user_input: The user's query
             chat_history: The chat history used to maintain conversation context
             client_id: The client's unique identifier (not used in RAG but required for interface)
+            uploaded_files: List of paths to uploaded files
             
         Returns:
             tuple: (response_text, client_id)
@@ -87,6 +97,7 @@ class MultiAgent2(AbstractLlm):
         try:
             router_agent = self.router_agent_creator.get_agent()
             prompt = self.router_agent_creator.get_prompt() + user_input
+            prompt = self.add_files_to_prompt(prompt, uploaded_files)
             router_agent.memory = memory
             response = router_agent.invoke({"input": prompt})
             router_response = response['output']
@@ -133,6 +144,5 @@ class MultiAgent2(AbstractLlm):
         if client_id in self.memories:
             memory = self._create_new_memory(client_id)
             self.memories[client_id] = memory
-
 
 

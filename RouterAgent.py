@@ -3,6 +3,9 @@ import json
 from langchain.agents import tool
 from pydantic import BaseModel, Field
 from typing import Optional, List
+import PyPDF2
+from streamlit.runtime.uploaded_file_manager import UploadedFile
+import io  # Also need to import io for BytesIO
 
 from AbstractAgent import AbstractAgent
 from rag import Rag
@@ -25,6 +28,7 @@ class RouterAgent(AbstractAgent):
             You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
             Your primary function is to assist users by answering questions, offering explanations, and providing insights, adapting your communication style to suit different users and contexts. 
             The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
+            The query may include the text contents of uploaded PDF files. Use this content to answer the user query.
             
             - **Your Task:**
                 Your task is to analyze the user query and decide how it should be handled. 
