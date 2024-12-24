@@ -1,6 +1,7 @@
 from uuid import uuid4
 from typing import Dict, Any
 import io
+import os
 import PyPDF2
 from openai import OpenAI
 from langchain.memory import ConversationBufferMemory
@@ -52,6 +53,9 @@ class MultiAgent2(AbstractLlm):
         # Create agent for routing questions
         self.assistant_agent = OpenAIAssistant(self.config)
         self.assistant_agent.init()
+        
+        self.example_raw = self.load_text_file("Student1-Raw.txt")
+        self.example_formatted = self.load_text_file("Student1-Formatted.txt")
 
     ##############################################################################
     def _get_or_create_memory(self, client_id: str) -> ConversationBufferMemory:
@@ -76,6 +80,13 @@ class MultiAgent2(AbstractLlm):
         return prompt
 
     ##############################################################################
+    def load_text_file(self, file_name):
+        # Read text file containing instructions
+        text_path = os.path.join(self.config["DB_Path"], file_name)
+        with open(text_path, "r", encoding='utf-8') as text_file:
+            return text_file.read()
+
+    ##############################################################################
     def rephrase_text(self, text, model="gpt-4o-mini", max_tokens=5000):
         """
         Rephrase the input text using OpenAI's API.
@@ -88,9 +99,13 @@ class MultiAgent2(AbstractLlm):
         Returns:
         - str: The summary of the input text.
         """
-        
-        prompt = """Please rephrase the following text using the input language. Keep all the relevant text, but clean it up and remove any irrelevant characters used for formatting. The file typically includes a table of courses with their details, and is formatted using ascii characters. The text is in Hebrew. The output format should be easily understood by an LLM. Start with the title of the document.
-        The text is:
+        prompt = f"""Please rephrase the following text using the input language. Keep all the relevant text, but clean it up and remove any irrelevant characters used for formatting. The file typically includes a table of courses with their details, and is formatted using ascii characters. The text is in Hebrew. The output format should be easily understood by an LLM. Start with the title of the document. In the example below, the text includes a list of completed courses with their grades, courses in progress without grades, and courses that are planned.
+        Here is an example input text:
+        {self.example_raw}
+        Here is an example output text:
+        {self.example_formatted}
+        The text to rephrase is:
+        {text}
         """
         # Set the OpenAI API key
         openai_epi_key = self.config["OPENAI_API_KEY"]
@@ -113,8 +128,6 @@ class MultiAgent2(AbstractLlm):
         
         except Exception as e:
             return f"An error occurred: {e}"
-
-
 
     ##############################################################################
     def do_query(self, user_input: str, chat_history: list[dict], client_id: str = None, uploaded_files: list[Dict[str, str]] = None) -> tuple[str, str]:
@@ -148,7 +161,7 @@ class MultiAgent2(AbstractLlm):
             router_response = response['output']
         except Exception as e:
             print(f"Error in router agent: {e}")
-            router_response = "Error in router agent"
+            router_response = f"Error in router agent: {e}"
 
 
         # result = None

@@ -212,7 +212,7 @@ class Rag(AbstractLlm):
         def format_doc(doc):
             content = doc['document']
             for key, value in doc['metadata'].items():
-                content += f"{key}: {value}\n"
+                content += f"\n{key}: {value}"
             return content
 
         def format_docs(docs):
