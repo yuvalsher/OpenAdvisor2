@@ -91,6 +91,7 @@ class OpenAIAssistant():
             instructions=self.system_instructions,
             tools=[{"type": "code_interpreter"}],
             model="gpt-4o-mini",
+#            model="o1-mini",
             temperature=0.3
         )
         print(f"Created new assistant: {assistant.id}")
@@ -189,6 +190,7 @@ class OpenAIAssistant():
             str: response_text
         """
 
+        raise Exception("Wrong assistant file!!!")
         print(f"Entering OpenAI Assistant2 for {faculty_code}: user_input: {user_input[::-1]}")
         if faculty_code not in self.study_programs_data:
             msg =f"Error: Faculty code {faculty_code} not found in study programs data"
@@ -435,19 +437,26 @@ class OpenAIAssistant():
             return thread
 
     ##############################################################################
-    def do_query(self, user_input: str, faculty_code: str) -> tuple[str, str]:
+    def do_query(self, user_input: str, faculty_code: str, grade_status: str) -> str:
         """
         Process a query using multiple agents.
         
         Args:
             user_input: The user's query
             faculty_code: The faculty code of the study program
-            
+            grade_status: A list of completed courses with their grades
+
         Returns:
             str: response_text
         """
 
+        raise Exception("Wrong assistant file!!!")
         print(f"Entering OpenAI Assistant2 for {faculty_code}. user_input: {flip_by_line(user_input)}")
+        if grade_status:
+            print(f"Grade status: {flip_by_line(grade_status)}")
+        else:
+            print("No grade status provided")
+
         if faculty_code not in self.study_programs_data:
             msg =f"Error: Faculty code {faculty_code} not found in study programs data"
             print(msg)
@@ -456,6 +465,7 @@ class OpenAIAssistant():
         assistant = self.get_assistant()
         thread = self.create_thread(faculty_code)
         self.add_message(thread.id, USER_MESSAGE, user_input)
+        self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + grade_status)
         #answer = self.create_run_and_wait(thread.id, assistant.id)
         answer = self.create_run_stream(thread.id, assistant.id, "")
         print(flip_by_line(answer))

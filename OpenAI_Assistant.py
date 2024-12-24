@@ -10,6 +10,7 @@ from openai import AssistantEventHandler
 from langchain.memory import ConversationBufferMemory
 
 from config import all_config
+from utils import flip_by_line
 
 
 USER_MESSAGE      = "user"
@@ -98,6 +99,8 @@ class OpenAIAssistant():
                 }
             },
             model="gpt-4o-mini",
+#            model="o1-mini",
+            temperature=0.3
         )
         print(f"Created new assistant: {assistant.id}")
         
@@ -112,7 +115,7 @@ class OpenAIAssistant():
         )
 
     ##############################################################################
-    def create_thread(self, chat_history: ConversationBufferMemory):
+    def create_thread(self, chat_history: ConversationBufferMemory = None):
         thread = self.openai.beta.threads.create()
 
         # Load the instructions to understand the JSON file
@@ -189,26 +192,27 @@ class OpenAIAssistant():
             return thread
 
     ##############################################################################
-    def do_query(self, user_input: str, faculty_code: str, chat_history: ConversationBufferMemory = None) -> tuple[str, str]:
+    def do_query(self, user_input: str, faculty_code: str, grade_status: str) -> str:
         """
         Process a query using multiple agents.
         
         Args:
             user_input: The user's query
-            chat_history: The chat history used to maintain conversation context
             client_id: The client's unique identifier (not used in RAG but required for interface)
-            
+            grade_status: A list of completed courses with their grades
+
         Returns:
-            tuple: (response_text, client_id)
+            tuple: response_text
         """
 
         print(f"Entering OpenAI Assistant for {faculty_code}: user_input: {user_input[::-1]}")
 
         assistant = self.get_assistant(faculty_code)
-        thread = self.create_thread(chat_history)
+        thread = self.create_thread()
         self.add_message(thread.id, USER_MESSAGE, user_input)
+        self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + grade_status)
         answer = self.create_run_and_wait(thread.id, assistant.id)
-        print_answer(answer)
+        print(flip_by_line(answer))
 
         return answer
 
@@ -225,23 +229,6 @@ class OpenAIAssistant():
             self.threads[client_id] = new_thread
 
 ##############################################################################
-def print_answer(answer):
-        # Regular expression pattern to match Hebrew characters
-    hebrew_pattern = re.compile(r'[\u0590-\u05FF]')
-    # Count total alphabetic characters
-    total_alpha_chars = sum(1 for char in answer if char.isalpha())
-    # Count Hebrew characters
-    hebrew_chars = len(hebrew_pattern.findall(answer))
-    # Determine if the majority are Hebrew
-    if (hebrew_chars > total_alpha_chars / 2):
-        # Mostly Hebrew characters, print reversed
-        print(f"Answer: {answer[::-1]}")
-    else:
-        # No Hebrew, print normally
-        print(f"Answer: {answer}")
-
-
-##############################################################################
 def main(fac_code):
     query1 = "איזה קורסי מתמטיקה הם חלק מהתוכנית?"
     query2 = "כמה נקודות זכות נותן הקורס השני?"  
@@ -256,11 +243,11 @@ def main(fac_code):
     #answer = ass_agent.create_run_stream(thread.id, ass_id, "")
     ass_agent.add_user_message(thread.id, query1)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    flip_by_line(answer)
 
     ass_agent.add_user_message(thread.id, query2)
     answer = ass_agent.create_run_and_wait(thread.id, ass.id)
-    print_answer(answer)
+    flip_by_line(answer)
 
 ##############################################################################
 if __name__ == "__main__":
