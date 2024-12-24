@@ -11,9 +11,6 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import PromptTemplate
 
 from AbstractLlm import AbstractLlm
-#from CoursesAgent import CoursesAgent
-from OpenAI_Assistant2 import OpenAIAssistant
-from RagAgent import RagAgent
 from RouterAgent import RouterAgent
 from utils import flip_by_line
 
@@ -34,26 +31,10 @@ class MultiAgent2(AbstractLlm):
     def init(self, faculty_code):
         self.llm = ChatOpenAI(model=self.config["llm_model"], temperature=0)
 
-        # Create agent for courses
-#        self.courses_agent_creator = CoursesAgent(self.config)
-#        self.courses_agent_creator.init()
-
-        # Create agent for general questions
-        self.general_agent_creator = RagAgent(self.config, "OUI")
-        self.general_agent_creator.init()
-
-        # Create agent for CS faculty questions
-#        self.cs_agent_creator = RagAgent(self.config, "CS")
-#        self.cs_agent_creator.init()
-
         # Create agent for routing questions
         self.router_agent_creator = RouterAgent(self.config)
         self.router_agent_creator.init()
 
-        # Create agent for routing questions
-        self.assistant_agent = OpenAIAssistant(self.config)
-        self.assistant_agent.init()
-        
         self.example_raw = self.load_text_file("Student1-Raw.txt")
         self.example_formatted = self.load_text_file("Student1-Formatted.txt")
 
@@ -163,31 +144,6 @@ class MultiAgent2(AbstractLlm):
             print(f"Error in router agent: {e}")
             router_response = f"Error in router agent: {e}"
 
-
-        # result = None
-        # agent = None
-        # try:
-        #     if router_response.lower().startswith("done - "):
-        #         print(f"{router_response[::-1]}")
-        #         result = router_response[len("done - "):]
-        #     elif router_response.lower().startswith("question - "):
-        #         print(f"{router_response[::-1]}")
-        #         result = router_response[len("question - "):]
-        #     elif router_response.lower().startswith("program "):
-        #         program_code, question = router_response[len("program "):].split(": ", 1)
-        #         print(f"Study Program - sending to assistant: {program_code}, Question: {question[::-1]}")
-        #         result = self.assistant_agent.do_query(question, program_code, memory, client_id)
-        #     else:
-        #         print(f"No agent implemented yet for this query type: {router_response} - defaulting to general RAG agent")
-        #         agent = self.general_agent_creator.get_agent()
-        #         agent.memory = memory
-        #         response = agent.invoke({"input": user_input})
-        #         result = response['output']
-
-        # except Exception as e:
-        #     msg = f"Error processing router response {router_response}\nError: {e}"
-        #     print(msg)
-        #     result = msg
 
         return router_response, client_id
 
