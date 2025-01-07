@@ -1,3 +1,11 @@
+import streamlit as st
+# Set page config
+st.set_page_config(
+    page_title="האוניברסיטה הפתוחה - ייעוץ אקדמי",
+    layout="centered",
+    initial_sidebar_state="collapsed"
+)
+
 import os
 import sys
 import io
@@ -5,10 +13,9 @@ import PyPDF2
 import logging
 from uuid import uuid4
 from langtrace_python_sdk import langtrace
-import streamlit as st
 from openai import OpenAI
 from streamlit.runtime.uploaded_file_manager import UploadedFile
-
+5
 from config import all_config
 from MultiAgent2 import MultiAgent2
 
@@ -195,13 +202,6 @@ def _read_pdf_content(file: UploadedFile) -> str:
 
 ##############################################################################
 def main():
-    # Set page config
-    st.set_page_config(
-        page_title="האוניברסיטה הפתוחה - ייעוץ אקדמי",
-        layout="centered",
-        initial_sidebar_state="collapsed"
-    )
-
     config, llm_obj = init()
     init_session_state(config, llm_obj)
     init_css()

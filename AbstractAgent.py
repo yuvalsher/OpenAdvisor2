@@ -69,10 +69,17 @@ class AbstractAgent(ABC):
         if not os.path.exists(full_path):
             print(f"File {full_path} does not exist.")
             raise FileNotFoundError(f"File {full_path} does not exist.")
-            return
         
-        with open(full_path, "r", encoding='utf-8') as f:
-            return json.load(f)
+        try:    
+            with open(full_path, "r", encoding='utf-8') as f:
+                # read file contents into string    
+                file_contents = f.read()
+                # Remove BOM and direction marks
+                file_contents = file_contents.strip('\ufeff\u200e\u200f')
+                return json.loads(file_contents)
+        except Exception as e:
+            print(f"Error loading JSON file {file_name}: {str(e)}")
+            raise e
 
     ##############################################################################
     @abstractmethod

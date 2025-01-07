@@ -33,7 +33,7 @@ class RouterAgent(AbstractAgent):
             
             - **Your Task:**
                 Your task is to analyze the user query and decide how it should be handled. 
-                First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or thirdcategory.
+                First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or third category. 
                 The query will fall into one of the following categories:
 
                 - 1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not have access to the chat history, so you must rephrase the question so that it contains all the relevant details from the chat history. If the query includes the contents of a PDF file, with the grade status of the student, provide that content to the study program tool as a parameter. 
@@ -46,6 +46,7 @@ class RouterAgent(AbstractAgent):
 
             - **Role and Tools:**
                 - Utilize various tools to provide concise and accurate answers.
+                - If you initially suspect that the query involves a study program, but no you cannot match it to any provided study programs, use GetRelevantContent tool to search for relevant information from the university website.
                 - Access a comprehensive database of OUI courses through these tools to respond to user inquiries about course offerings and details.
 
             - **General Guidelines:**
