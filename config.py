@@ -31,7 +31,11 @@ def get_all_config():
             "msg_text_field": "content",
             "user_name": "user",
             "bot_name": "assistant",
-            "assistant_temperature": 0.3
+            "assistant_temperature": 0.3,
+            "dataset_name_pages": "OUI_Pages",
+            "dataset_name_videos": "OUI_Videos",
+            "supabase_table_name": "site_pages"
+
         },
         "OUI": {
             "title": "האוניברסיטה הפתוחה - ייעוץ כללי",
@@ -55,8 +59,6 @@ all_config = get_all_config()
 all_crawl_config = {
     "All": {
         "start_urls": [
-            'http://www.openu.ac.il/about/pages/procedures.aspx?Subject=5%20&order=ProcedureNumber&direction=DESC'
-            'https://www.openu.ac.il/counseling/Pages/Preparation_for_counselin.aspx',
             'https://www.openu.ac.il/registration/pages/default.aspx',
             'https://www.openu.ac.il/deanacademicstudies/teachandlearn/learning_skiils/pages/default.aspx',
             'https://www.openu.ac.il/students/pages/default.aspx',
@@ -77,10 +79,13 @@ all_crawl_config = {
             'www.openu.ac.il/personal_sites',
             'www.openu.ac.il/jcmcenter',
             'www.openu.ac.il/library/new_in_the_library',
-            'www.openu.ac.il/staff/pages/results.aspx',
-            'www.openu.ac.il/about/pages/procedures.aspx'
+            'www.openu.ac.il/tafnit',
+            'www.openu.ac.il/hasifa',
         ],
         "disallowed_pages": [
+            'https://academic.openu.ac.il/degrees/Pages/archive.aspx',
+            'https://www.openu.ac.il/staff/pages/results.aspx',
+            'https://www.openu.ac.il/about/pages/procedures.aspx',
         ]
     },
     "OUI": {

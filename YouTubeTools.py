@@ -2,19 +2,29 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from pytube import YouTube
 import re
 import yt_dlp
+import aiohttp
 
 ##############################################################################
 class YouTubeTools:
 
     ##############################################################################
     @staticmethod
-    def fetch_youtuve_transcript(video_id):
+    async def fetch_youtuve_transcript(video_id):
         try:
-            # Get transcript list
+            # Get transcript list - YouTubeTranscriptApi is synchronous, but it's API-based and fast
             transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
+            # Check both manual and generated transcripts
+            available_transcripts = list(transcript_list._manually_created_transcripts.keys()) + \
+                                  list(transcript_list._generated_transcripts.keys())
+            
+            if 'iw' in available_transcripts:
+                lang = 'iw'
+            elif 'en' in available_transcripts:
+                lang = 'en'
+            else:
+                lang = available_transcripts[0]
 
-            # You can choose the transcript you need. Here, we get the Hebrew one.
-            transcript = transcript_list.find_transcript(['iw'])
+            transcript = transcript_list.find_transcript([lang])
 
             # Fetch the actual transcript
             transcript_data = transcript.fetch()
@@ -32,8 +42,9 @@ class YouTubeTools:
 
     ##############################################################################
     @staticmethod
-    def fetch_youtube_title_pytube(video_url):
+    async def fetch_youtube_title_pytube(video_url):
         try:
+            # pytube is synchronous but relatively fast for metadata
             yt = YouTube(video_url)
             return yt.title
 
@@ -43,7 +54,7 @@ class YouTubeTools:
 
     ##############################################################################
     @staticmethod
-    def fetch_youtube_title(video_url):
+    async def fetch_youtube_title(video_url):
         ydl_opts = {
             'quiet': True,
             'no_warnings': True
@@ -51,6 +62,7 @@ class YouTubeTools:
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             try:
+                # yt-dlp operations are CPU-bound, consider running in executor if needed
                 info_dict = ydl.extract_info(video_url, download=False)
                 return info_dict.get('title', None)
             except Exception as e:
