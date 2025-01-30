@@ -1,7 +1,8 @@
-from typing import Dict
+from typing import Dict, List
 import re
 import openai
 from openai import OpenAI
+from openai.types.beta import Thread
 import dotenv
 import os
 import json
@@ -42,7 +43,7 @@ class OpenAIAssistant():
         dotenv.load_dotenv()
         self.openai = OpenAI()
         self.openai.api_key = os.getenv("OPENAI_API_KEY")
-        self.threads: Dict[str, "Thread"] = {}
+        self.threads: Dict[str, Thread] = {}
 
     ##############################################################################
     def init(self):
@@ -182,7 +183,7 @@ class OpenAIAssistant():
             return responses[0].content[0].text.value
 
     ##############################################################################
-    def _get_or_create_thread(self, client_id: str, chat_history: ConversationBufferMemory) -> "Thread":
+    def _get_or_create_thread(self, client_id: str, chat_history: ConversationBufferMemory) -> Thread:
         """Get existing thread for client_id or create new if doesn't exist."""
         if client_id in self.threads:
             return self.threads[client_id]
@@ -192,7 +193,7 @@ class OpenAIAssistant():
             return thread
 
     ##############################################################################
-    def do_query(self, user_input: str, faculty_code: str, grade_status: str) -> str:
+    def do_query(self, user_input: str, faculty_code: str, uploaded_files: List[str]) -> str:
         """
         Process a query using multiple agents.
         
@@ -210,7 +211,9 @@ class OpenAIAssistant():
         assistant = self.get_assistant(faculty_code)
         thread = self.create_thread()
         self.add_message(thread.id, USER_MESSAGE, user_input)
-        self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + grade_status)
+        if len(uploaded_files) > 0:
+            file0 = uploaded_files[0]
+            self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + file0["content"])
         answer = self.create_run_and_wait(thread.id, assistant.id)
         print(flip_by_line(answer))
 

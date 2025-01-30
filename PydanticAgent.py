@@ -7,14 +7,16 @@ import asyncio
 import httpx
 import os
 
+from pydantic import Field
 from pydantic_ai import Agent, ModelRetry, RunContext
 from pydantic_ai.models.openai import OpenAIModel
 from openai import AsyncOpenAI
 from supabase import Client
-from typing import List
+from typing import Annotated, List
 
+from OpenAI_Assistant import OpenAIAssistant
 from config import all_config
-
+from utils import load_json_file
 load_dotenv()
 
 llm = os.getenv('LLM_MODEL', 'gpt-4o-mini')
@@ -24,8 +26,9 @@ logfire.configure(send_to_logfire='if-token-present')
 
 @dataclass
 class PydanticAIDeps:
-    supabase: Client
-    openai_client: AsyncOpenAI
+    supabase: Annotated[Client, "The Supabase client"]
+    openai_client: Annotated[AsyncOpenAI, "The OpenAI client"]
+    uploaded_files: Annotated[List[str], "A list of strings with the contents of uploaded files"]
 
 system_prompt = """
     You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
@@ -35,7 +38,7 @@ system_prompt = """
     When using RAG, you can also check the list of available documentation pages and retrieve the content of page(s).
     Always let the user know when you didn't find the answer in the documentation or the right URL - be honest.
     The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
-    The query may include the text contents of PDF files uploaded by the user. Use this content to answer the user query.
+    The query dependencies may include the text contents of PDF files uploaded by the user. Use this content to answer the user query.
     
     - **Your Task:**
         Your task is to analyze the user query and decide how it should be handled. 
@@ -95,6 +98,23 @@ system_prompt = """
         - If the query includes the contents of a PDF file, with the grade status of the student, provide that content to the study program tool as a parameter.
 """
 
+course_by_id = {}
+course_by_name = {} 
+course_data = load_json_file("all_courses.json", all_config["General"])
+for course in course_data:
+    course_by_id[course['course_id']] = course
+    course_by_name[course['course_name']] = course
+
+study_programs = {}
+program_data = load_json_file("cs_study_programs.json", all_config["General"])
+for program in program_data:
+    study_programs[program['name']] = program['code']
+
+# Create agent for OpenAI Assistant for Study Programs
+study_programs_assistant = OpenAIAssistant(all_config["General"])
+study_programs_assistant.init()
+
+
 open_university_expert = Agent(
     model,
     system_prompt=system_prompt,
@@ -122,7 +142,7 @@ async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_quer
     Retrieve relevant chunks of web pages based on the query with RAG.
     
     Args:
-        ctx: The context including the Supabase client and OpenAI client
+        ctx: The context including the Supabase client, the OpenAI client, and the uploaded files
         user_query: The user's question or query
         
     Returns:
@@ -168,6 +188,9 @@ async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]
     """
     Retrieve a list of all available Pydantic AI documentation pages.
     
+    Args:
+        ctx: The context including the Supabase
+
     Returns:
         List[str]: List of unique URLs for all documentation pages
     """
@@ -276,3 +299,163 @@ async def retrieve_relevant_videos(ctx: RunContext[PydanticAIDeps], user_query: 
         print(f"Error retrieving documentation: {e}")
         return f"Error retrieving documentation: {str(e)}"
 
+##############################################################################
+@open_university_expert.tool
+async def get_study_program_code_from_name(ctx: RunContext[PydanticAIDeps], study_program_name: str) -> str:
+    """Get the study program code from the study program name.
+.            
+    Args:
+        study_program_name: The name of the study program to look up
+    """
+
+    if study_program_name not in study_programs:
+        print(f"In Tool: Study program {study_program_name} not found\n")
+        return None
+    
+    result = study_programs[study_program_name]
+    print(f"In Tool: Getting study program code for {study_program_name[::-1]}: {result}\n")
+    return result
+    
+##############################################################################
+@open_university_expert.tool
+async def get_list_of_study_program_names_and_codes(ctx: RunContext[PydanticAIDeps]) -> List[str]:
+    """Get a list of all study program names.
+
+    Returns:
+        List[str]: A list of study program names.
+    """
+
+    #result = [(code, name) for name, code in self.study_programs.items()]
+    result = [name for name in study_programs.keys()]
+    reversed_result = [name[::-1] for name in result]
+    print(f"In Tool: Getting list of study program names: {reversed_result}\n")
+    return result
+
+##############################################################################
+@open_university_expert.tool
+async def get_answer_on_study_programs(ctx: RunContext[PydanticAIDeps], query_text: str, study_program_code: str) -> str:
+    """Get an answer on study programs from the study programs assistant.
+.            
+    Args:
+        ctx: The context including uploaded files
+        query_text: A question about a study program
+        study_program_code: The code of the study program to answer the question
+        grade_status: A list of completed courses with their grades
+    """
+
+    print(f"In Tool: Getting answer on study program {study_program_code} for {query_text[::-1]}\nIncluded uploaded files: {len(ctx.deps.uploaded_files)}")
+
+    result = study_programs_assistant.do_query(query_text, study_program_code, ctx.deps.uploaded_files)
+
+    print(f"In Tool: Getting answer on study program {study_program_code} Returning: {result[::-1]}\n")
+    return result
+
+##############################################################################
+@open_university_expert.tool
+async def get_course_id_from_name(ctx: RunContext[PydanticAIDeps], course_name: str) -> str:
+    """Get the course ID from the course name.
+    
+    Args:
+        course_name: The name of the course to look up
+    """
+
+    if course_name not in course_by_name:
+        print(f"In Tool: Course {course_name[::-1]} not found")
+        return None
+    
+    result = course_by_name[course_name]['course_id']
+    print(f"In Tool: Getting course ID for {course_name[::-1]}: {result}\n")
+    return result
+
+##############################################################################
+@open_university_expert.tool
+async def get_course_name_from_id(ctx: RunContext[PydanticAIDeps], course_id: str) -> str:
+    """Get the course name from the course ID.
+    
+    Args:
+        course_id: The ID of the course to look up
+    """
+
+    if course_id not in course_by_id:
+        print(f"In Tool: Course {course_id} not found")
+        return None
+    
+    result = course_by_id[course_id]['course_name']
+    print(f"In Tool: Getting course name for {course_id}: {result[::-1]}\n")
+    return result
+
+##############################################################################
+@dataclass
+class CourseDetails:
+    course_url: str
+    course_id: str
+    course_name: str
+    credits: str
+    classification: List[List[str]]
+    condition_courses: List[str]
+    required_deps_courses: List[str]
+    recommended_deps_courses: List[str]
+    overlap: List[str]
+    text: List[str]
+    footnotes: List[str]
+    discontinued: bool
+    overlap_url: str
+    semesters: List[str]
+    overlap_courses: List[str]
+    condition_text: str = Field(default="")
+    required_deps_text: str = Field(default="")
+    recommended_deps_text: str = Field(default="")
+
+@open_university_expert.tool
+async def get_course_details_from_id(ctx: RunContext[PydanticAIDeps], course_id: str) -> CourseDetails:
+    """Get the course details from the course ID.
+    
+    Args:
+        course_id: The ID of the course to look up
+    """
+
+    if course_id not in course_by_id:
+        print(f"In Tool: Course {course_id} not found")
+        return None
+    
+    result = course_by_id[course_id]
+    print(f"In Tool: Getting course details for {course_id}: {result['course_name'][::-1]}\n")
+    return result
+
+##############################################################################
+@open_university_expert.tool
+async def get_all_dependencies_courses_from_id(ctx: RunContext[PydanticAIDeps], course_id: str) -> List[str]:
+    """Get the all the dependencies courses (condition, required and recommended) from the course ID.
+    
+    Args:
+        course_id: The ID of the course to look up
+    """
+    if course_id not in course_by_id:
+        print(f"In Tool: Course {course_id} not found\n")
+        return None
+    
+    deps = []   
+    deps.extend(course_by_id[course_id]['condition_courses'])
+    deps.extend(course_by_id[course_id]['required_deps_courses'])
+    deps.extend(course_by_id[course_id]['recommended_deps_courses'])
+    print(f"In Tool: Getting all dependencies courses for {course_id}: {deps}\n")
+    return deps
+
+##############################################################################
+@open_university_expert.tool
+async def get_course_overview_from_id(ctx: RunContext[PydanticAIDeps], course_id: str) -> str:
+    """Get the course overview from the course ID. 
+    
+    Args:
+        course_id: The ID of the course to look up
+    """
+
+    if course_id not in course_by_id:
+        print(f"In Tool: Course {course_id} not found\n")
+        return None
+    
+    all_text = course_by_id[course_id]['text']
+    # concatenate all_text from an array of strings to a single string
+    result = ' '.join(all_text)
+    print(f"In Tool: Getting course overview for {course_id}: {result[::-1]}\n")
+    return result

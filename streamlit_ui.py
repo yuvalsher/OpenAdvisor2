@@ -1,9 +1,13 @@
 from __future__ import annotations
+import io
 from typing import Literal, TypedDict
 import asyncio
 import os
+from uuid import uuid4
 
+import PyPDF2
 import streamlit as st
+from streamlit.runtime.uploaded_file_manager import UploadedFile
 import json
 import logfire
 from supabase import Client
@@ -28,6 +32,16 @@ from config import all_config
 # Load environment variables
 from dotenv import load_dotenv
 load_dotenv()
+
+##############################################################################
+def init_session_state():
+    # Initialize all session state variables if they don't exist
+    if "messages" not in st.session_state:
+        st.session_state["messages"] = []
+    if "client_id" not in st.session_state:
+        st.session_state["client_id"] = str(uuid4())
+    if "uploaded_files" not in st.session_state:
+        st.session_state["uploaded_files"] = []
 
 ##############################################################################
 def init_css():
@@ -159,6 +173,7 @@ class ChatMessage(TypedDict):
     content: str
 
 
+##############################################################################
 def display_message_part(part):
     """
     Display a single part of a message in the Streamlit UI.
@@ -179,6 +194,7 @@ def display_message_part(part):
             st.markdown(part.content)          
 
 
+##############################################################################
 async def run_agent_with_streaming(user_input: str):
     """
     Run the agent with streaming text for the user_input prompt,
@@ -187,14 +203,15 @@ async def run_agent_with_streaming(user_input: str):
     # Prepare dependencies
     deps = PydanticAIDeps(
         supabase=supabase,
-        openai_client=openai_client
+        openai_client=openai_client,
+        uploaded_files=st.session_state["uploaded_files"]
     )
 
     # Run the agent in a stream
     async with open_university_expert.run_stream(
         user_input,
         deps=deps,
-        message_history= st.session_state.messages[:-1],  # pass entire conversation so far
+        message_history=st.session_state.messages[:-1]  # pass entire conversation so far
     ) as result:
         # We'll gather partial text to show incrementally
         partial_text = ""
@@ -218,13 +235,26 @@ async def run_agent_with_streaming(user_input: str):
         )
 
 
+##############################################################################
+def _read_pdf_content(file: UploadedFile) -> str:
+    """Helper method to read PDF content"""
+    try:
+        pdf_bytes = io.BytesIO(file.getvalue())
+        pdf_reader = PyPDF2.PdfReader(pdf_bytes)
+        text_content = ""
+        for page in pdf_reader.pages:
+            text_content += page.extract_text() + "\n"
+        return text_content
+    except Exception as e:
+        return None
+
+##############################################################################
 async def main():
+    init_session_state()
+    init_css()
+    
     st.title(all_config["General"]["title"])
     st.write(all_config["General"]["description"])
-
-    # Initialize chat history in session state if not present
-    if "messages" not in st.session_state:
-        st.session_state.messages = []
 
     # Display all messages from the conversation so far
     # Each message is either a ModelRequest or ModelResponse.
@@ -234,7 +264,6 @@ async def main():
             for part in msg.parts:
                 display_message_part(part)
 
-    init_css()
     # Chat input for the user
     user_input = st.chat_input(all_config["General"]["Chat_Welcome_Message"])
 
@@ -253,6 +282,25 @@ async def main():
             # Actually run the agent now, streaming the text
             await run_agent_with_streaming(user_input)
 
+    # File uploader
+    uploaded_file = st.file_uploader(
+        "העלה קובץ PDF",
+        type=["pdf"],
+        help="ניתן להעלות קבצים בפורמט PDF בלבד"
+    )
 
+    if uploaded_file:
+        # Read PDF content
+        pdf_content = _read_pdf_content(uploaded_file)
+        if (pdf_content):
+            st.session_state["uploaded_files"].append({
+                "name": uploaded_file.name, 
+                "content": pdf_content
+            })
+            st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
+        else:
+            st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
+
+##############################################################################
 if __name__ == "__main__":
     asyncio.run(main())
