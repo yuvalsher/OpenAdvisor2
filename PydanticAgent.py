@@ -12,7 +12,7 @@ from pydantic_ai import Agent, ModelRetry, RunContext
 from pydantic_ai.models.openai import OpenAIModel
 from openai import AsyncOpenAI
 from supabase import Client
-from typing import Annotated, List
+from typing import Annotated, List, Dict
 
 from OpenAI_Assistant import OpenAIAssistant
 from config import all_config
@@ -28,7 +28,7 @@ logfire.configure(send_to_logfire='if-token-present')
 class PydanticAIDeps:
     supabase: Annotated[Client, "The Supabase client"]
     openai_client: Annotated[AsyncOpenAI, "The OpenAI client"]
-    uploaded_files: Annotated[List[str], "A list of strings with the contents of uploaded files"]
+    uploaded_files: Annotated[List[Dict[str, str]], "A list of dictionaries with 'name' and 'content' keys for uploaded files"]
 
 system_prompt = """
     You are an advanced AI assistant with vast knowledge of the Open University of Israel (האוניברסיטה הפתוחה), designed to provide helpful information.  
@@ -38,14 +38,14 @@ system_prompt = """
     When using RAG, you can also check the list of available documentation pages and retrieve the content of page(s).
     Always let the user know when you didn't find the answer in the documentation or the right URL - be honest.
     The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
-    The query dependencies may include the text contents of PDF files uploaded by the user. Use this content to answer the user query.
+    The query dependencies in the run context may include the text contents of PDF files uploaded by the user. Use this content to answer the user query.
     
     - **Your Task:**
         Your task is to analyze the user query and decide how it should be handled. 
         First identify if the question involves a specific study program or not. If it does, act on the first category below. If it doesn't, act on the second or third category. 
         The query will fall into one of the following categories:
 
-        - 1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not have access to the chat history, so you must rephrase the question so that it contains all the relevant details from the chat history. If the query includes the contents of a PDF file, with the grade status of the student, provide that content to the study program tool as a parameter. 
+        - 1. Study Programs: Questions about specific study programs offered by the university. Study programs are a collection of requirements for eligibility for an academic degree. Study programs have a name in Hebrew, and a code which is a short (less than 10 characters) and unique string of uppercase English characters and optionally some numbers. Examples of study program codes include 'AF' and 'G188'. Study program details involve several sections, each of them can be a list of elective or required courses, with a requirement for minimum credit points. These queries should be handled using the a study program tool. The study program tool requires the study program code as input. If a study program name is provided in the user query, match the name to the list of study program names and codes. If the study program name is not provided in the query, you must ask the user for the study program name to identify the code. If you are unsure about the study program name, you can ask the user to approve your choice, or provide the study program name. Once you have the study program code, use the study program tool with the study program code and the question that the tool should answer. The tool does not have access to the chat history, so you must rephrase the question so that it contains all the relevant details from the chat history. If the query includes the contents of a PDF file, with the grade status of the student, provide that content to the study program tool as a parameter. 
         - 2. Course Details: Questions about specific university courses. Use the courses tools to answer these questions. Course details include course ID, name, URL, credits, classification, dependent courses, course overlaps, course overview, and available semesters. Always provide the url of the course page in the response.
         - 3. General University Information: General questions about studying at the university. Use the GetRelevantContent tool to search for relevant information from the university website. Always provide the source url of the information in the response.
         
@@ -96,6 +96,12 @@ system_prompt = """
             - It returns a fixed number of results which may include irrelevant courses. Each result should be reviewed to ensure relevance.
     - **IMPORTANT:**
         - If the query includes the contents of a PDF file, with the grade status of the student, provide that content to the study program tool as a parameter.
+
+    - **File Handling:**
+        - You have access to uploaded files through ctx.deps.uploaded_files
+        - Each file in uploaded_files is a dictionary with 'name' and 'content' keys
+        - When answering questions, ALWAYS check ctx.deps.uploaded_files first if they contain relevant information
+        - If a user asks about their grades or course status, the information should be in the uploaded files
 """
 
 course_by_id = {}
@@ -309,45 +315,60 @@ async def get_study_program_code_from_name(ctx: RunContext[PydanticAIDeps], stud
     """
 
     if study_program_name not in study_programs:
-        print(f"In Tool: Study program {study_program_name} not found\n")
+        print(f"In Tool: Study program '{study_program_name[::-1]}' not found\n")
         return None
     
     result = study_programs[study_program_name]
-    print(f"In Tool: Getting study program code for {study_program_name[::-1]}: {result}\n")
+    print(f"In Tool: Getting study program code for '{study_program_name[::-1]}': {result}\n")
     return result
     
 ##############################################################################
+@dataclass
+class StudyProgram:
+    program_name: str
+    program_code: str
+
 @open_university_expert.tool
 async def get_list_of_study_program_names_and_codes(ctx: RunContext[PydanticAIDeps]) -> List[str]:
     """Get a list of all study program names.
 
     Returns:
-        List[str]: A list of study program names.
+        List[StudyProgram]: A list of study program names and codes.
     """
 
-    #result = [(code, name) for name, code in self.study_programs.items()]
-    result = [name for name in study_programs.keys()]
-    reversed_result = [name[::-1] for name in result]
-    print(f"In Tool: Getting list of study program names: {reversed_result}\n")
+    result = [StudyProgram(name, code) for name, code in study_programs.items()]
+    display_result = [f"    {program.program_name[::-1]}\n - {program.program_code[::-1]}" for program in result]
+    print(f"In Tool: Getting list of study program names: \n{display_result}\n")
     return result
+
 
 ##############################################################################
 @open_university_expert.tool
 async def get_answer_on_study_programs(ctx: RunContext[PydanticAIDeps], query_text: str, study_program_code: str) -> str:
     """Get an answer on study programs from the study programs assistant.
-.            
+            
     Args:
         ctx: The context including uploaded files
         query_text: A question about a study program
         study_program_code: The code of the study program to answer the question
-        grade_status: A list of completed courses with their grades
     """
+    
+    uploaded_files_content = []
+    if ctx.deps.uploaded_files:
+        for file in ctx.deps.uploaded_files:
+            uploaded_files_content.append(file["content"])
+    
+    print(f"In Tool: Getting answer on study program {study_program_code} for '{query_text[::-1]}'\n")
+    print(f"Number of uploaded files: {len(uploaded_files_content)}")
+    print(f"Files content: {[content[:100] + '...' for content in uploaded_files_content]}")
 
-    print(f"In Tool: Getting answer on study program {study_program_code} for {query_text[::-1]}\nIncluded uploaded files: {len(ctx.deps.uploaded_files)}")
+    result = study_programs_assistant.do_query(
+        query_text, 
+        study_program_code, 
+        uploaded_files_content
+    )
 
-    result = study_programs_assistant.do_query(query_text, study_program_code, ctx.deps.uploaded_files)
-
-    print(f"In Tool: Getting answer on study program {study_program_code} Returning: {result[::-1]}\n")
+    print(f"In Tool: Getting answer on study program {study_program_code} Returning: '{result[::-1]}'\n")
     return result
 
 ##############################################################################
@@ -360,11 +381,11 @@ async def get_course_id_from_name(ctx: RunContext[PydanticAIDeps], course_name: 
     """
 
     if course_name not in course_by_name:
-        print(f"In Tool: Course {course_name[::-1]} not found")
+        print(f"In Tool: Course '{course_name[::-1]}' not found")
         return None
     
     result = course_by_name[course_name]['course_id']
-    print(f"In Tool: Getting course ID for {course_name[::-1]}: {result}\n")
+    print(f"In Tool: Getting course ID for '{course_name[::-1]}': {result}\n")
     return result
 
 ##############################################################################
@@ -381,7 +402,7 @@ async def get_course_name_from_id(ctx: RunContext[PydanticAIDeps], course_id: st
         return None
     
     result = course_by_id[course_id]['course_name']
-    print(f"In Tool: Getting course name for {course_id}: {result[::-1]}\n")
+    print(f"In Tool: Getting course name for {course_id}: '{result[::-1]}'\n")
     return result
 
 ##############################################################################
@@ -419,7 +440,7 @@ async def get_course_details_from_id(ctx: RunContext[PydanticAIDeps], course_id:
         return None
     
     result = course_by_id[course_id]
-    print(f"In Tool: Getting course details for {course_id}: {result['course_name'][::-1]}\n")
+    print(f"In Tool: Getting course details for {course_id}: '{result['course_name'][::-1]}'\n")
     return result
 
 ##############################################################################
@@ -457,5 +478,5 @@ async def get_course_overview_from_id(ctx: RunContext[PydanticAIDeps], course_id
     all_text = course_by_id[course_id]['text']
     # concatenate all_text from an array of strings to a single string
     result = ' '.join(all_text)
-    print(f"In Tool: Getting course overview for {course_id}: {result[::-1]}\n")
+    print(f"In Tool: Getting course overview for {course_id}: '{result[::-1]}'\n")
     return result

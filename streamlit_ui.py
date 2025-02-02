@@ -183,6 +183,7 @@ def _read_pdf_content(file: UploadedFile) -> str:
             text_content += page.extract_text() + "\n"
         return text_content
     except Exception as e:
+        st.error(f"Error reading PDF file: {str(e)}")
         return None
 
 ##############################################################################
@@ -232,6 +233,12 @@ async def main():
                     st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
                 else:
                     st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
+
+    # Display currently uploaded files
+    if st.session_state["uploaded_files"]:
+        st.write("קבצים שהועלו:")
+        for file in st.session_state["uploaded_files"]:
+            st.write(f"- {file['name']}")
 
     # Chat container
     messages_container = st.container(border=True, height=600)

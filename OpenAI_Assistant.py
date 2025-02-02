@@ -200,7 +200,7 @@ class OpenAIAssistant():
         Args:
             user_input: The user's query
             client_id: The client's unique identifier (not used in RAG but required for interface)
-            grade_status: A list of completed courses with their grades
+            uploaded_files: A list of completed courses with their grades
 
         Returns:
             tuple: response_text
@@ -211,9 +211,11 @@ class OpenAIAssistant():
         assistant = self.get_assistant(faculty_code)
         thread = self.create_thread()
         self.add_message(thread.id, USER_MESSAGE, user_input)
+        file0 = ""
         if len(uploaded_files) > 0:
             file0 = uploaded_files[0]
-            self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + file0["content"])
+            self.add_message(thread.id, USER_MESSAGE, "הנה פירוט מצב הקורסים הנוכחי:\n" + file0)
+            print(f"Uploaded file: {file0[:100]}")
         answer = self.create_run_and_wait(thread.id, assistant.id)
         print(flip_by_line(answer))
 
