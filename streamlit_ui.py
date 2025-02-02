@@ -33,6 +33,13 @@ from config import all_config
 from dotenv import load_dotenv
 load_dotenv()
 
+# Set page config must be the first Streamlit command
+st.set_page_config(
+    page_title=all_config["General"]["title"],
+    page_icon=":robot:",
+    layout="wide"
+)
+
 ##############################################################################
 def init_session_state():
     # Initialize all session state variables if they don't exist
@@ -45,116 +52,35 @@ def init_session_state():
 
 ##############################################################################
 def init_css():
-    # Custom CSS for styling
     st.markdown("""
         <style>
-        body, html {
+        /* Base RTL styles */
+        body, html, p, div, input, label, h1, h2, h3, h4, h5, h6 {
             direction: RTL;
             text-align: right;
         }
-        p, div, input, label, h1, h2, h3, h4, h5, h6 {
-            direction: RTL;
-            text-align: right;
-        }
-        /* Main container styles */
-        .main {
-            max-width: 100%;
-            padding: 0;
-        }
         
-        /* Chat container styles */
-        .chat-container {
-            height: 70vh;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            background-color: #f9f9f9;
+        /* Container styles */
+        [data-testid="stChatMessageContent"] {
             direction: rtl;
             text-align: right;
         }
         
-        /* Message styles */
-        .chat-message {
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
-            max-width: 85%;
+        .stChatFloatingInputContainer {
             direction: rtl;
-            text-align: right;
-        }
-        .chat-message.user {
-            background-color: #e6f3ff;
-            margin-left: auto;
-        }
-        .chat-message.bot {
-            background-color: #f0f0f0;
-            margin-right: auto;
         }
         
-        /* Input area styles */
-        .input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 1rem;
-            background-color: white;
-            border-top: 1px solid #ddd;
+        /* File uploader styles */
+        [data-testid="stFileUploader"] {
             direction: rtl;
-            text-align: right;
         }
         
-        /* Button styles */
-        .stButton button {
-            width: 100%;
-            border-radius: 5px;
-            height: 2.5em;
+        /* Column layout fixes for RTL */
+        [data-testid="column"] {
+            direction: rtl;
         }
-        
-        /* Adjust main content padding to prevent overlap with fixed input area */
-        .main .block-container {
-            padding-bottom: 180px;
-        }
-        
-        /* Disabled button styles */
-        .stButton button:disabled {
-            background-color: #e0e0e0;
-            cursor: wait;
-            opacity: 0.7;
-        }
-
-        /* Loading cursor for the whole page when processing */
-        .processing {
-            cursor: wait !important;
-        }
-                
-        /* File uploader styles 
-        [data-testid='stFileUploader'] {
-            width: max-content;
-        }
-        [data-testid='stFileUploader'] section {
-            padding: 0;
-            float: left;
-        }
-        [data-testid='stFileUploader'] section > input + div {
-            display: none;
-        }
-        [data-testid='stFileUploader'] section + div {
-            float: right;
-            padding-top: 0;
-        } */
         </style>
     """, unsafe_allow_html=True)
-
-    # # Add processing class to body if processing
-    # if st.session_state["processing"]:
-    #     st.markdown("""
-    #         <script>
-    #             document.body.classList.add('processing');
-    #         </script>
-    #     """, unsafe_allow_html=True)
 
 openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 supabase: Client = Client(
@@ -200,39 +126,50 @@ async def run_agent_with_streaming(user_input: str):
     Run the agent with streaming text for the user_input prompt,
     while maintaining the entire conversation in `st.session_state.messages`.
     """
-    # Prepare dependencies
-    deps = PydanticAIDeps(
-        supabase=supabase,
-        openai_client=openai_client,
-        uploaded_files=st.session_state["uploaded_files"]
-    )
-
-    # Run the agent in a stream
-    async with open_university_expert.run_stream(
-        user_input,
-        deps=deps,
-        message_history=st.session_state.messages[:-1]  # pass entire conversation so far
-    ) as result:
-        # We'll gather partial text to show incrementally
-        partial_text = ""
-        message_placeholder = st.empty()
-
-        # Render partial text as it arrives
-        async for chunk in result.stream_text(delta=True):
-            partial_text += chunk
-            message_placeholder.markdown(partial_text)
-
-        # Now that the stream is finished, we have a final result.
-        # Add new messages from this run, excluding user-prompt messages
-        filtered_messages = [msg for msg in result.new_messages() 
-                            if not (hasattr(msg, 'parts') and 
-                                    any(part.part_kind == 'user-prompt' for part in msg.parts))]
-        st.session_state.messages.extend(filtered_messages)
-
-        # Add the final response to the messages
-        st.session_state.messages.append(
-            ModelResponse(parts=[TextPart(content=partial_text)])
+    try:
+        # Prepare dependencies
+        deps = PydanticAIDeps(
+            supabase=supabase,
+            openai_client=openai_client,
+            uploaded_files=st.session_state["uploaded_files"]
         )
+
+        # Run the agent in a stream
+        async with open_university_expert.run_stream(
+            user_input,
+            deps=deps,
+            message_history=st.session_state.messages[:-1]  # pass entire conversation so far
+        ) as result:
+            # We'll gather partial text to show incrementally
+            partial_text = ""
+            message_placeholder = st.empty()
+
+            # Render partial text as it arrives
+            async for chunk in result.stream_text(delta=True):
+                partial_text += chunk
+                message_placeholder.markdown(partial_text)
+
+            # Now that the stream is finished, we have a final result.
+            # Add new messages from this run, excluding user-prompt messages
+            filtered_messages = [msg for msg in result.new_messages() 
+                                if not (hasattr(msg, 'parts') and 
+                                        any(part.part_kind == 'user-prompt' for part in msg.parts))]
+            st.session_state.messages.extend(filtered_messages)
+
+            # Add the final response to the messages
+            st.session_state.messages.append(
+                ModelResponse(parts=[TextPart(content=partial_text)])
+            )
+
+    except Exception as e:
+        error_message = "מצטער, נתקלתי בבעיה בעיבוד הבקשה שלך. אנא נסה שוב."
+        st.error(error_message)
+        # Add error response to conversation
+        st.session_state.messages.append(
+            ModelResponse(parts=[TextPart(content=error_message)])
+        )
+        # Log the error for debugging
+        print(f"Error in run_agent_with_streaming: {str(e)}")
 
 
 ##############################################################################
@@ -253,53 +190,74 @@ async def main():
     init_session_state()
     init_css()
     
-    st.title(all_config["General"]["title"])
-    st.write(all_config["General"]["description"])
+    # Initialize clicked state if not exists
+    if 'clicked' not in st.session_state:
+        st.session_state.clicked = False
 
-    # Display all messages from the conversation so far
-    # Each message is either a ModelRequest or ModelResponse.
-    # We iterate over their parts to decide how to display them.
-    for msg in st.session_state.messages:
-        if isinstance(msg, ModelRequest) or isinstance(msg, ModelResponse):
-            for part in msg.parts:
-                display_message_part(part)
+    def toggle_clicked():
+        st.session_state.clicked = not st.session_state.clicked
 
-    # Chat input for the user
-    user_input = st.chat_input(all_config["General"]["Chat_Welcome_Message"])
+    # Header layout with columns
+    col1, col2 = st.columns([4, 1], gap="large")
+    with col1:
+        st.header(all_config["General"]["title"])
+    with col2:
+        if st.session_state.clicked:
+            st.button("סגור קבצים", on_click=toggle_clicked)
+        else:
+            st.button("העלה קבצים", on_click=toggle_clicked)
 
-    if user_input:
-        # We append a new request to the conversation explicitly
+    # File upload section
+    if st.session_state.clicked:
+        uploaded_file = st.file_uploader(
+            "העלה קובץ PDF",
+            type=["pdf"],
+            help="ניתן להעלות קבצים בפורמט PDF בלבד"
+        )
+
+        if uploaded_file:
+            # Check if file is already processed
+            file_already_uploaded = any(
+                f["name"] == uploaded_file.name 
+                for f in st.session_state["uploaded_files"]
+            )
+            
+            if not file_already_uploaded:
+                pdf_content = _read_pdf_content(uploaded_file)
+                if pdf_content:
+                    st.session_state["uploaded_files"].append({
+                        "name": uploaded_file.name, 
+                        "content": pdf_content
+                    })
+                    st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
+                else:
+                    st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
+
+    # Chat container
+    messages_container = st.container(border=True, height=600)
+    
+    with messages_container:
+        # Display existing messages
+        for msg in st.session_state.messages:
+            if isinstance(msg, (ModelRequest, ModelResponse)):
+                for part in msg.parts:
+                    display_message_part(part)
+
+    # Chat input
+    if user_input := st.chat_input(all_config["General"]["Chat_Welcome_Message"]):
+        # Append new request to conversation
         st.session_state.messages.append(
             ModelRequest(parts=[UserPromptPart(content=user_input)])
         )
         
-        # Display user prompt in the UI
-        with st.chat_message("user"):
-            st.markdown(user_input)
-
-        # Display the assistant's partial response while streaming
-        with st.chat_message("assistant"):
-            # Actually run the agent now, streaming the text
-            await run_agent_with_streaming(user_input)
-
-    # File uploader
-    uploaded_file = st.file_uploader(
-        "העלה קובץ PDF",
-        type=["pdf"],
-        help="ניתן להעלות קבצים בפורמט PDF בלבד"
-    )
-
-    if uploaded_file:
-        # Read PDF content
-        pdf_content = _read_pdf_content(uploaded_file)
-        if (pdf_content):
-            st.session_state["uploaded_files"].append({
-                "name": uploaded_file.name, 
-                "content": pdf_content
-            })
-            st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
-        else:
-            st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
+        # Display user message
+        with messages_container:
+            with st.chat_message("user"):
+                st.markdown(user_input)
+            
+            # Display assistant response
+            with st.chat_message("assistant"):
+                await run_agent_with_streaming(user_input)
 
 ##############################################################################
 if __name__ == "__main__":
