@@ -1,1 +1,1 @@
-Deployed on: https://openadvisor.onrender.com
+Deployed on: https://openadvisor2-1.streamlit.app/
