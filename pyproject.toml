@@ -2,7 +2,7 @@
 name = "openadvisor2-1"
 version = "0.1.0"
 description = "Academic advisor chatbot"
-authors = ["yuvalsherman65 <yuval.sherman@gmail.com>"]
+authors = ["yuvalsher <yuval.sherman@gmail.com>"]
 readme = "README.md"
 packages = [{include = "openadvisor2"}]
 
