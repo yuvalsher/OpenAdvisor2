@@ -38,7 +38,7 @@ system_prompt = """
     When using RAG, you can also check the list of available documentation pages and retrieve the content of page(s).
     Always let the user know when you didn't find the answer in the documentation or the right URL - be honest.
     The language of most of the content is Hebrew. Hebrew names for elements such as course names, faculty names, study program names, etc. must be provided verbatim, exactly as given in the provided content (returned by the provided tools).
-    The query dependencies in the run context may include the text contents of PDF files uploaded by the user. Use this content to answer the user query.
+    The query dependencies in the run context may include the text contents of PDF files uploaded by the user. Use this content to answer the user query. When answering any user query, if there is any uploaded file content available in ctx.deps.uploaded_files, please consider it and attach its context to your answer.
     
     - **Your Task:**
         Your task is to analyze the user query and decide how it should be handled. 
@@ -480,3 +480,20 @@ async def get_course_overview_from_id(ctx: RunContext[PydanticAIDeps], course_id
     result = ' '.join(all_text)
     print(f"In Tool: Getting course overview for {course_id}: '{result[::-1]}'\n")
     return result
+
+##############################################################################
+@open_university_expert.tool
+async def attach_uploaded_files(ctx: RunContext[PydanticAIDeps], user_query: str) -> str:
+    """
+    Attaches content from uploaded files to the user_query if available.
+    This tool can be used for queries where additional context from uploaded files might be helpful.
+    """
+    if not ctx.deps.uploaded_files:
+        return user_query
+    
+    uploaded_contents = "\n".join(
+        f"File: {file['name']}\nContent: {file['content']}" for file in ctx.deps.uploaded_files
+    )
+    print(f"In Tool: Attaching {len(ctx.deps.uploaded_files)} uploaded files to the query.")
+    # Append the uploaded file content to the query
+    return f"{user_query}\n\nUploaded Files Context:\n{uploaded_contents}"
