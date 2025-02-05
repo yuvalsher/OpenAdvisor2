@@ -6,6 +6,8 @@ openai
 pydantic_ai 
 python-dotenv
 langchain
+fpdf
+python-bidi
 # bs4
 # markdownify
 # playwright

@@ -15,6 +15,8 @@ langchain = "^0.3.17"
 bs4 = "^0.0.2"
 markdownify = "^0.14.1"
 playwright = "^1.49.1"
+fpdf = "^1.7.2"
+python-bidi = "^0.6.3"
 
 
 [build-system]

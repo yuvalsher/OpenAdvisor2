@@ -1,5 +1,6 @@
 from __future__ import annotations
 import io
+from fpdf import FPDF  # new import for PDF generation
 from typing import Literal, TypedDict
 import asyncio
 import os
@@ -12,6 +13,7 @@ import json
 import logfire
 from supabase import Client
 from openai import AsyncOpenAI
+from bidi.algorithm import get_display
 
 # Import all the message part classes
 from pydantic_ai.messages import (
@@ -79,6 +81,15 @@ def init_css():
         [data-testid="column"] {
             direction: rtl;
         }
+        /* Title alignment */
+        h2, [data-testid="stMarkdownContainer"] h2 {
+            vertical-align: top;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+            text-align: right;
+            display: block;
+        }
+        
         </style>
     """, unsafe_allow_html=True)
 
@@ -187,6 +198,156 @@ def _read_pdf_content(file: UploadedFile) -> str:
         return None
 
 ##############################################################################
+def generate_pdf_from_chat_history(messages) -> bytes:
+    """Generate a PDF file containing the entire chat history.
+    
+    This function uses FPDF to mimic the visual language of the chat.
+    It prints a title at the top and then prints messages with labels:
+      - User messages (questions) are introduced with a bold "שאלה:" label,
+      - Assistant/system messages (answers) are introduced with a bold "תשובה:" label.
+    The text is right-to-left (RTL) aligned.
+    """
+    pdf = FPDF()
+    import os
+    FONT_FILENAME = "DejaVuSans.ttf"
+    FONT_BOLD_FILENAME = "DejaVuSans-Bold.ttf"
+    font_path = os.path.join(os.path.dirname(__file__), FONT_FILENAME)
+    bold_font_path = os.path.join(os.path.dirname(__file__), FONT_BOLD_FILENAME)
+    
+    bold_available = False
+    if os.path.exists(font_path):
+        pdf.add_font('DejaVu', '', font_path, uni=True)
+        if os.path.exists(bold_font_path):
+            pdf.add_font('DejaVu', 'B', bold_font_path, uni=True)
+            bold_available = True
+        font_family = 'DejaVu'
+    else:
+        print(f"Error: {FONT_FILENAME} not found at {font_path}. Hebrew text may not render correctly.")
+        font_family = 'Arial'
+    
+    pdf.add_page()
+    
+    # ------------------------------------------------------------------------
+    # Helper: Sanitize text by removing characters not supported by the font.
+    # ------------------------------------------------------------------------
+    def sanitize_text(text: str) -> str:
+        try:
+            # Attempt to locate the actual font key in a case-insensitive way.
+            actual_font_key = None
+            for key in pdf.fonts.keys():
+                if key.lower() == font_family.lower():
+                    actual_font_key = key
+                    break
+            if actual_font_key is None:
+                raise KeyError(f"Font {font_family} not found in pdf.fonts.")
+    
+            cw = pdf.fonts[actual_font_key]["cw"]
+            max_idx = len(cw)
+            safe_chars = []
+            for ch in text:
+                if ord(ch) < max_idx:
+                    safe_chars.append(ch)
+            return "".join(safe_chars)
+        except Exception:
+            # Fallback: Remove characters with Unicode codepoints > 0xFFFF (commonly problematic emoji)
+            return "".join(ch for ch in text if ord(ch) <= 0xFFFF)
+    
+    # ------------------------------------------------------------------------
+    # Helper: Process multi-line text for RTL.
+    # ------------------------------------------------------------------------
+    def process_rtl_text(text: str) -> str:
+        """
+        Split text into lines, process each one using get_display with the base direction set to RTL,
+        then join the lines in their original order.
+        
+        This ensures that get_display() will not reverse the order of the lines.
+        """
+        lines = text.split("\n")
+        # Here we pass base_dir='R' so that the reordering is done according to RTL,
+        # which prevents get_display() from reversing the line order.
+        processed_lines = [get_display(line) for line in lines]
+        return "\n".join(processed_lines)
+    
+    # ------------------------------------------------------------------------
+    # Add Title at the top.
+    # ------------------------------------------------------------------------
+    title_text = all_config["General"].get("title", "Chat History")
+    if bold_available:
+        pdf.set_font(font_family, 'B', 16)
+    else:
+        pdf.set_font(font_family, '', 16)
+    rtl_title = process_rtl_text(sanitize_text(title_text))
+    pdf.multi_cell(0, 10, txt=rtl_title, align='R')
+    pdf.ln(10)
+    
+    # Set the normal text font for subsequent content.
+    pdf.set_font(font_family, '', 12)
+    
+    if not messages:
+         default_text = process_rtl_text(sanitize_text("אין היסטוריית שיחה"))
+         pdf.multi_cell(0, 10, txt=default_text, align='R')
+    
+    # ------------------------------------------------------------------------
+    # Print each message with a bold label above its content.
+    # ------------------------------------------------------------------------
+    for msg in messages:
+        if hasattr(msg, 'parts'):
+            for part in msg.parts:
+                # Skip tool-related messages.
+                if part.part_kind in ['tool-call', 'tool-return']:
+                    continue
+                
+                if part.part_kind == 'user-prompt':
+                    label = "שאלה:"
+                    if bold_available:
+                        pdf.set_font(font_family, 'B', 12)
+                    else:
+                        pdf.set_font(font_family, '', 12)
+                    label_rtl = process_rtl_text(sanitize_text(label))
+                    pdf.multi_cell(0, 10, txt=label_rtl, align='R')
+                    
+                    pdf.set_font(font_family, '', 12)
+                    content = part.content
+                    content_rtl = process_rtl_text(sanitize_text(content))
+                    pdf.multi_cell(0, 10, txt=content_rtl, align='R')
+                
+                elif part.part_kind in ['system-prompt', 'text']:
+                    label = "תשובה:"
+                    if bold_available:
+                        pdf.set_font(font_family, 'B', 12)
+                    else:
+                        pdf.set_font(font_family, '', 12)
+                    label_rtl = process_rtl_text(sanitize_text(label))
+                    pdf.multi_cell(0, 10, txt=label_rtl, align='R')
+                    
+                    pdf.set_font(font_family, '', 12)
+                    content = part.content
+                    content_rtl = process_rtl_text(sanitize_text(content))
+                    pdf.multi_cell(0, 10, txt=content_rtl, align='R')
+                else:
+                    continue
+                pdf.ln(1)
+            pdf.ln(2)
+    
+    # ------------------------------------------------------------------------
+    # Generate PDF output.
+    # ------------------------------------------------------------------------
+    try:
+        pdf_output = pdf.output(dest="S")
+    except UnicodeEncodeError as e:
+        st.error("Failed to generate PDF due to Unicode encoding issue. Please ensure DejaVuSans.ttf is available for proper Unicode support.")
+        return b""
+    
+    if isinstance(pdf_output, bytes):
+        return pdf_output
+    else:
+        try:
+            pdf_bytes = pdf_output.encode("latin1")
+        except Exception:
+            pdf_bytes = pdf_output.encode("utf-8")
+        return pdf_bytes
+
+##############################################################################
 async def main():
     init_session_state()
     init_css()
@@ -198,73 +359,96 @@ async def main():
     def toggle_clicked():
         st.session_state.clicked = not st.session_state.clicked
 
-    # Header layout with columns
-    col1, col2 = st.columns([4, 1], gap="large")
-    with col1:
+    # Outer layout: center content column (middle of 3 columns)
+    outer_cols = st.columns([1, 4, 1])
+    with outer_cols[1]:
+        # Header row: create three columns: title, file upload toggle, and save button.
         st.header(all_config["General"]["title"])
-    with col2:
-        if st.session_state.clicked:
-            st.button("סגור קבצים", on_click=toggle_clicked)
-        else:
-            st.button("העלה קבצים", on_click=toggle_clicked)
+        st.markdown(all_config['General']['description'])
 
-    # File upload section
+    with outer_cols[2]:
+        button_row = st.columns([1, 1])
+        with button_row[0]:
+            button_text = "סגור חזרה" if st.session_state.clicked else "העלה קובץ"
+            st.button(button_text, on_click=toggle_clicked)
+
+        with button_row[1]:
+            pdf_placeholder = st.empty()
+            initial_pdf = generate_pdf_from_chat_history(st.session_state["messages"])
+            pdf_placeholder.download_button(
+                label="שמור שיחה",
+                data=initial_pdf,
+                file_name="chat_history.pdf",
+                mime="application/pdf",
+                key="initial_pdf_download"
+            )
+
     if st.session_state.clicked:
         uploaded_file = st.file_uploader(
             "העלה קובץ PDF",
             type=["pdf"],
             help="ניתן להעלות קבצים בפורמט PDF בלבד"
         )
-
         if uploaded_file:
-            # Check if file is already processed
             file_already_uploaded = any(
-                f["name"] == uploaded_file.name 
-                for f in st.session_state["uploaded_files"]
+                    f["name"] == uploaded_file.name 
+                    for f in st.session_state["uploaded_files"]
             )
             
             if not file_already_uploaded:
-                pdf_content = _read_pdf_content(uploaded_file)
-                if pdf_content:
-                    st.session_state["uploaded_files"].append({
-                        "name": uploaded_file.name, 
-                        "content": pdf_content
-                    })
-                    st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
-                else:
-                    st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
+                    pdf_content = _read_pdf_content(uploaded_file)
+                    if pdf_content:
+                        st.session_state["uploaded_files"].append({
+                            "name": uploaded_file.name, 
+                            "content": pdf_content
+                        })
+                        st.success(f'הקובץ "{uploaded_file.name}" הועלה בהצלחה')
+                    else:
+                        st.error(f"שגיאה בקריאת הקובץ {uploaded_file.name}")
 
-    # Display currently uploaded files
+    st.write("")  # add some vertical spacing below the header row
+
+    # Display currently uploaded files (inside outer central column)
     if st.session_state["uploaded_files"]:
-        st.write("קבצים שהועלו:")
-        for file in st.session_state["uploaded_files"]:
-            st.write(f"- {file['name']}")
+         st.write("קבצים שהועלו:")
+         for file in st.session_state["uploaded_files"]:
+              st.write(f"- {file['name']}")
 
-    # Chat container
+    # Chat container (inside outer central column)
     messages_container = st.container(border=True, height=600)
-    
     with messages_container:
-        # Display existing messages
-        for msg in st.session_state.messages:
-            if isinstance(msg, (ModelRequest, ModelResponse)):
-                for part in msg.parts:
-                    display_message_part(part)
+         # Display existing messages
+         for msg in st.session_state.messages:
+              if isinstance(msg, (ModelRequest, ModelResponse)):
+                   for part in msg.parts:
+                        display_message_part(part)
 
     # Chat input
     if user_input := st.chat_input(all_config["General"]["Chat_Welcome_Message"]):
-        # Append new request to conversation
-        st.session_state.messages.append(
-            ModelRequest(parts=[UserPromptPart(content=user_input)])
-        )
-        
-        # Display user message
-        with messages_container:
-            with st.chat_message("user"):
-                st.markdown(user_input)
-            
-            # Display assistant response
-            with st.chat_message("assistant"):
-                await run_agent_with_streaming(user_input)
+         # Append new request to conversation
+         st.session_state.messages.append(
+             ModelRequest(parts=[UserPromptPart(content=user_input)])
+         )
+         
+         # Display user message
+         with messages_container:
+             with st.chat_message("user"):
+                 st.markdown(user_input)
+             
+             # Display assistant response
+             with st.chat_message("assistant"):
+                 await run_agent_with_streaming(user_input)
+
+    # Immediately update the download button placeholder with the latest PDF
+    updated_pdf = generate_pdf_from_chat_history(st.session_state["messages"])
+    pdf_placeholder.empty()  # clear the previous download button
+    pdf_placeholder.download_button(
+         label="שמור שיחה",
+         data=updated_pdf,
+         file_name="chat_history.pdf",
+         mime="application/pdf",
+         key="updated_pdf_download"
+    )
 
 ##############################################################################
 if __name__ == "__main__":
