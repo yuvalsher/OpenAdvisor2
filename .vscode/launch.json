@@ -29,8 +29,9 @@
             "justMyCode": false,
             "args": [
                 "run",
-                "${file}"
+                "streamlit_ui.py"
             ],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

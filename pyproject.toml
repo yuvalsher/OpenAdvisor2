@@ -12,6 +12,9 @@ streamlit = "^1.41.1"
 setuptools = "^75.8.0"
 python-dotenv = "^1.0.1"
 langchain = "^0.3.17"
+bs4 = "^0.0.2"
+markdownify = "^0.14.1"
+playwright = "^1.49.1"
 
 
 [build-system]
