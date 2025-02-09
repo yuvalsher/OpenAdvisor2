@@ -6,7 +6,8 @@ openai
 pydantic_ai 
 python-dotenv
 langchain
-fpdf
+Markdown 
+WeasyPrint
 python-bidi
 # bs4
 # markdownify

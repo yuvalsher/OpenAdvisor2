@@ -1,10 +1,10 @@
 from __future__ import annotations
 import io
-from fpdf import FPDF  # new import for PDF generation
 from typing import Literal, TypedDict
 import asyncio
 import os
 from uuid import uuid4
+import atexit
 
 import PyPDF2
 import streamlit as st
@@ -14,6 +14,7 @@ import logfire
 from supabase import Client
 from openai import AsyncOpenAI
 from bidi.algorithm import get_display
+from io import BytesIO
 
 # Import all the message part classes
 from pydantic_ai.messages import (
@@ -28,6 +29,7 @@ from pydantic_ai.messages import (
     RetryPromptPart,
     ModelMessagesTypeAdapter
 )
+
 from PydanticAgent import open_university_expert, PydanticAIDeps
 from config import all_config
 
@@ -89,11 +91,29 @@ def init_css():
             text-align: right;
             display: block;
         }
-        
+        .stChatMessage {
+            padding: 1rem
+        }         
         </style>
     """, unsafe_allow_html=True)
 
-openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+openai_client = None
+
+def get_openai_client():
+    global openai_client
+    if openai_client is None:
+        openai_client = AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    return openai_client
+
+async def cleanup():
+    global openai_client
+    if openai_client:
+        await openai_client.close()
+        openai_client = None
+
+# Register cleanup to run at exit
+atexit.register(lambda: asyncio.run(cleanup()))
+
 supabase: Client = Client(
     os.getenv("SUPABASE_URL"),
     os.getenv("SUPABASE_SERVICE_KEY")
@@ -141,7 +161,7 @@ async def run_agent_with_streaming(user_input: str):
         # Prepare dependencies
         deps = PydanticAIDeps(
             supabase=supabase,
-            openai_client=openai_client,
+            openai_client=get_openai_client(),
             uploaded_files=st.session_state["uploaded_files"]
         )
 
@@ -197,155 +217,139 @@ def _read_pdf_content(file: UploadedFile) -> str:
         st.error(f"Error reading PDF file: {str(e)}")
         return None
 
+
 ##############################################################################
-def generate_pdf_from_chat_history(messages) -> bytes:
-    """Generate a PDF file containing the entire chat history.
-    
-    This function uses FPDF to mimic the visual language of the chat.
-    It prints a title at the top and then prints messages with labels:
-      - User messages (questions) are introduced with a bold "שאלה:" label,
-      - Assistant/system messages (answers) are introduced with a bold "תשובה:" label.
-    The text is right-to-left (RTL) aligned.
+def generate_pdf_from_chat_history(messages: list) -> bytes:
     """
-    pdf = FPDF()
-    import os
-    FONT_FILENAME = "DejaVuSans.ttf"
-    FONT_BOLD_FILENAME = "DejaVuSans-Bold.ttf"
-    font_path = os.path.join(os.path.dirname(__file__), FONT_FILENAME)
-    bold_font_path = os.path.join(os.path.dirname(__file__), FONT_BOLD_FILENAME)
+    Generate a PDF from chat history messages.
+
+    The PDF includes a Hebrew title and then displays each conversational turn
+    with "שאלה:" for user questions and "תשובה:" for assistant answers.
+
+    This implementation:
+      - For ModelRequest (user question): only processes parts with part_kind "user-prompt".
+      - For ModelResponse (assistant answer): filters out internal tool call parts.
     
-    bold_available = False
-    if os.path.exists(font_path):
-        pdf.add_font('DejaVu', '', font_path, uni=True)
-        if os.path.exists(bold_font_path):
-            pdf.add_font('DejaVu', 'B', bold_font_path, uni=True)
-            bold_available = True
-        font_family = 'DejaVu'
-    else:
-        print(f"Error: {FONT_FILENAME} not found at {font_path}. Hebrew text may not render correctly.")
-        font_family = 'Arial'
-    
-    pdf.add_page()
-    
-    # ------------------------------------------------------------------------
-    # Helper: Sanitize text by removing characters not supported by the font.
-    # ------------------------------------------------------------------------
-    def sanitize_text(text: str) -> str:
-        try:
-            # Attempt to locate the actual font key in a case-insensitive way.
-            actual_font_key = None
-            for key in pdf.fonts.keys():
-                if key.lower() == font_family.lower():
-                    actual_font_key = key
-                    break
-            if actual_font_key is None:
-                raise KeyError(f"Font {font_family} not found in pdf.fonts.")
-    
-            cw = pdf.fonts[actual_font_key]["cw"]
-            max_idx = len(cw)
-            safe_chars = []
-            for ch in text:
-                if ord(ch) < max_idx:
-                    safe_chars.append(ch)
-            return "".join(safe_chars)
-        except Exception:
-            # Fallback: Remove characters with Unicode codepoints > 0xFFFF (commonly problematic emoji)
-            return "".join(ch for ch in text if ord(ch) <= 0xFFFF)
-    
-    # ------------------------------------------------------------------------
-    # Helper: Process multi-line text for RTL.
-    # ------------------------------------------------------------------------
-    def process_rtl_text(text: str) -> str:
+    Dependencies:
+      - Markdown: to convert markdown text to HTML.
+      - WeasyPrint: to render the HTML (with embedded CSS) into a PDF.
+    """
+    import markdown  # For converting markdown to HTML
+    from weasyprint import HTML  # For generating PDF from HTML
+
+    # Page title (in Hebrew: "Chat History")
+    title = "היסטוריית שיחה"
+
+    # CSS styles to enforce RTL layout and basic styling.
+    style = """
+    <style>
+      @page { 
+         size: A4; 
+         margin: 1cm;
+      }
+      body { 
+         direction: rtl; 
+         text-align: right; 
+         font-family: "DejaVu Sans", sans-serif; 
+         line-height: 1.5;
+      }
+      h1 { 
+         text-align: center; 
+         margin-bottom: 1em;
+      }
+      .question { 
+         margin: 10px 0; 
+         padding: 10px; 
+         border-left: 4px solid #007bff; 
+         background-color: #f0f8ff; 
+      }
+      .answer { 
+         margin: 10px 0; 
+         padding: 10px; 
+         border-right: 4px solid #28a745; 
+         background-color: #f8f9fa; 
+      }
+      .message-title {
+         font-weight: bold;
+         margin-bottom: 5px;
+      }
+    </style>
+    """
+
+    def get_message_content(part) -> str:
         """
-        Split text into lines, process each one using get_display with the base direction set to RTL,
-        then join the lines in their original order.
-        
-        This ensures that get_display() will not reverse the order of the lines.
+        Retrieve the textual content from a message part.
+
+        This function first attempts to read the 'content' attribute.
+        If that returns a list, we join its items into a string.
+        If not available (or for alternative types like ToolCallPart),
+        we fall back to another attribute (e.g. 'tool_message') or the string representation.
         """
-        lines = text.split("\n")
-        # Here we pass base_dir='R' so that the reordering is done according to RTL,
-        # which prevents get_display() from reversing the line order.
-        processed_lines = [get_display(line) for line in lines]
-        return "\n".join(processed_lines)
-    
-    # ------------------------------------------------------------------------
-    # Add Title at the top.
-    # ------------------------------------------------------------------------
-    title_text = all_config["General"].get("title", "Chat History")
-    if bold_available:
-        pdf.set_font(font_family, 'B', 16)
-    else:
-        pdf.set_font(font_family, '', 16)
-    rtl_title = process_rtl_text(sanitize_text(title_text))
-    pdf.multi_cell(0, 10, txt=rtl_title, align='R')
-    pdf.ln(10)
-    
-    # Set the normal text font for subsequent content.
-    pdf.set_font(font_family, '', 12)
-    
-    if not messages:
-         default_text = process_rtl_text(sanitize_text("אין היסטוריית שיחה"))
-         pdf.multi_cell(0, 10, txt=default_text, align='R')
-    
-    # ------------------------------------------------------------------------
-    # Print each message with a bold label above its content.
-    # ------------------------------------------------------------------------
+        if hasattr(part, "content"):
+            content = part.content
+        elif hasattr(part, "tool_message"):
+            content = part.tool_message
+        else:
+            content = str(part)
+
+        # If the content is a list, join the items into a string.
+        if isinstance(content, list):
+            content = "\n".join(str(item) for item in content)
+        return content
+
+    # Build the conversation HTML by iterating over messages.
+    content_html = ""
     for msg in messages:
-        if hasattr(msg, 'parts'):
-            for part in msg.parts:
-                # Skip tool-related messages.
-                if part.part_kind in ['tool-call', 'tool-return']:
-                    continue
-                
-                if part.part_kind == 'user-prompt':
-                    label = "שאלה:"
-                    if bold_available:
-                        pdf.set_font(font_family, 'B', 12)
-                    else:
-                        pdf.set_font(font_family, '', 12)
-                    label_rtl = process_rtl_text(sanitize_text(label))
-                    pdf.multi_cell(0, 10, txt=label_rtl, align='R')
-                    
-                    pdf.set_font(font_family, '', 12)
-                    content = part.content
-                    content_rtl = process_rtl_text(sanitize_text(content))
-                    pdf.multi_cell(0, 10, txt=content_rtl, align='R')
-                
-                elif part.part_kind in ['system-prompt', 'text']:
-                    label = "תשובה:"
-                    if bold_available:
-                        pdf.set_font(font_family, 'B', 12)
-                    else:
-                        pdf.set_font(font_family, '', 12)
-                    label_rtl = process_rtl_text(sanitize_text(label))
-                    pdf.multi_cell(0, 10, txt=label_rtl, align='R')
-                    
-                    pdf.set_font(font_family, '', 12)
-                    content = part.content
-                    content_rtl = process_rtl_text(sanitize_text(content))
-                    pdf.multi_cell(0, 10, txt=content_rtl, align='R')
-                else:
-                    continue
-                pdf.ln(1)
-            pdf.ln(2)
-    
-    # ------------------------------------------------------------------------
-    # Generate PDF output.
-    # ------------------------------------------------------------------------
-    try:
-        pdf_output = pdf.output(dest="S")
-    except UnicodeEncodeError as e:
-        st.error("Failed to generate PDF due to Unicode encoding issue. Please ensure DejaVuSans.ttf is available for proper Unicode support.")
-        return b""
-    
-    if isinstance(pdf_output, bytes):
-        return pdf_output
-    else:
-        try:
-            pdf_bytes = pdf_output.encode("latin1")
-        except Exception:
-            pdf_bytes = pdf_output.encode("utf-8")
-        return pdf_bytes
+        # Make sure the message has a "parts" attribute.
+        if hasattr(msg, "parts"):
+            # Import your message types. Adjust the import as needed.
+            from pydantic_ai.messages import ModelRequest, ModelResponse
+
+            if isinstance(msg, ModelRequest):
+                for part in msg.parts:
+                    # Only process parts that are actually user prompts.
+                    if getattr(part, "part_kind", "") != "user-prompt":
+                        continue
+                    message_text = get_message_content(part)
+                    md_to_html = markdown.markdown(message_text)
+                    content_html += (
+                        f"<div class='question'>"
+                        f"<div class='message-title'>שאלה:</div>"
+                        f"{md_to_html}"
+                        f"</div>"
+                    )
+            elif isinstance(msg, ModelResponse):
+                for part in msg.parts:
+                    # Skip internal tool call parts.
+                    if getattr(part, "part_kind", "") == "tool-call":
+                        continue
+                    message_text = get_message_content(part)
+                    md_to_html = markdown.markdown(message_text)
+                    content_html += (
+                        f"<div class='answer'>"
+                        f"<div class='message-title'>תשובה:</div>"
+                        f"{md_to_html}"
+                        f"</div>"
+                    )
+
+    # Combine the CSS and body content into a full HTML document.
+    full_html = f"""
+    <html>
+      <head>
+        <meta charset="utf-8">
+        {style}
+      </head>
+      <body>
+        <h1>{title}</h1>
+        {content_html}
+      </body>
+    </html>
+    """
+
+    # Convert the HTML into PDF bytes using WeasyPrint.
+    pdf_bytes = HTML(string=full_html).write_pdf()
+    return pdf_bytes
+
 
 ##############################################################################
 async def main():

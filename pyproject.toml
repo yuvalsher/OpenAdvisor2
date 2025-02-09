@@ -17,6 +17,11 @@ markdownify = "^0.14.1"
 playwright = "^1.49.1"
 fpdf = "^1.7.2"
 python-bidi = "^0.6.3"
+weasyprint = "^64.0"
+reportlab = "^4.3.0"
+pdfkit = "^1.0.0"
+borb = "^2.1.25"
+markdown = "^3.7"
 
 
 [build-system]
