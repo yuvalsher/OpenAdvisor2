@@ -22,6 +22,8 @@ reportlab = "^4.3.0"
 pdfkit = "^1.0.0"
 borb = "^2.1.25"
 markdown = "^3.7"
+pytube = "^15.0.0"
+yt-dlp = "^2025.1.26"
 
 
 [build-system]

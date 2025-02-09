@@ -16,7 +16,7 @@ from supabase import create_client, Client
 from playwright.async_api import async_playwright
 
 from config import all_config, all_crawl_config
-from YouTubeTools import YouTubeTools
+#from YouTubeTools import YouTubeTools
 from utils import load_json_file
 
 debug_mode = False
@@ -526,6 +526,7 @@ async def extract_youtube_links(soup:BeautifulSoup):
 # loop over youtube links, and use the YouTube API to get the video transcript.
 # If the transcript is found, it is added to the pages_data list.
 async def check_videos_for_transcripts(youtube_links):
+    from YouTubeTools import YouTubeTools
     msg = "\nFound the following YouTube links:"
     print(msg)
     msg_log.append(msg)
@@ -743,13 +744,36 @@ def do_all_stats():
         print(f"    {domain}: {other_domains[domain]}")
 
 
-def Save_from_json(data):
-    pass
+##############################################################################
+async def Save_from_json(data):
+    # Create a semaphore to limit concurrency
+    semaphore = asyncio.Semaphore(10)
+    dataset_name = all_config["General"]["dataset_name_pages"]
 
+    @dataclass
+    class SitePage:
+        url: str
+        title: str
+        content: str
+        type:str
+        text_content: str
+        summary: str
+
+    async def process_url(page: SitePage):
+        async with semaphore:
+            await process_and_store_document(page["url"], page["text_content"], dataset_name)
+            print(f"Successfully crawled: {page["title"][::-1]}")
+
+    tasks = []
+    for page in data:
+        task = asyncio.create_task(process_url(page))
+        tasks.append(task)
+
+    await asyncio.gather(*tasks)
+    
 ##############################################################################
 async def main(isFromJson: bool = False):
     await clear_supabase_table(all_config["General"]["dataset_name_pages"])
-
     await clear_supabase_table(all_config["General"]["dataset_name_videos"])
 
     if isFromJson:
@@ -761,4 +785,4 @@ async def main(isFromJson: bool = False):
 ##############################################################################
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(main(True))
