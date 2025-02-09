@@ -17,6 +17,7 @@ from playwright.async_api import async_playwright
 
 from config import all_config, all_crawl_config
 from YouTubeTools import YouTubeTools
+from utils import load_json_file
 
 debug_mode = False
 
@@ -742,12 +743,22 @@ def do_all_stats():
         print(f"    {domain}: {other_domains[domain]}")
 
 
+def Save_from_json(data):
+    pass
+
 ##############################################################################
-async def main():
+async def main(isFromJson: bool = False):
     await clear_supabase_table(all_config["General"]["dataset_name_pages"])
+
     await clear_supabase_table(all_config["General"]["dataset_name_videos"])
-    await start_crawling(["All"])
+
+    if isFromJson:
+        data = load_json_file("crawled_data_All.json", all_config["General"])
+        await Save_from_json(data)
+    else:
+        await start_crawling(["All"])
     
 ##############################################################################
+
 if __name__ == "__main__":
     asyncio.run(main())
