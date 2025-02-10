@@ -139,7 +139,9 @@ async def get_embedding(text: str, openai_client: AsyncOpenAI) -> List[float]:
         return response.data[0].embedding
     except Exception as e:
         print(f"Error getting embedding: {e}")
+        logfire.error('Error in get_embedding.', Exception = e)
         return [0] * 1536  # Return zero vector on error
+
 
 ##############################################################################
 @open_university_expert.tool
@@ -154,7 +156,7 @@ async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_quer
     Returns:
         A formatted string containing the top 5 most relevant chunks of web pages
     """
-    try:
+    try:        
         # Get the embedding for the query
         query_embedding = await get_embedding(user_query, ctx.deps.openai_client)
         
@@ -163,14 +165,16 @@ async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_quer
             'match_site_pages',
             {
                 'query_embedding': query_embedding,
-                'match_count': 5,
+                'match_count': 10,
                 'filter': {'source': all_config["General"]["dataset_name_pages"]}
             }
         ).execute()
         
         if not result.data:
+            logfire.info('Tool retrieve_relevant_web_pages: No relevant documentation found.', query = user_query)
             return "No relevant documentation found."
             
+        logfire.info(f'Tool retrieve_relevant_web_pages: Found relevant documentation.', query = user_query, data = result.data)
         # Format the results
         formatted_chunks = []
         for doc in result.data:
@@ -186,6 +190,7 @@ async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_quer
         
     except Exception as e:
         print(f"Error retrieving documentation: {e}")
+        logfire.error('Error in tool retrieve_relevant_web_pages.', Exception = e, query = user_query)
         return f"Error retrieving documentation: {str(e)}"
 
 ##############################################################################
@@ -208,14 +213,17 @@ async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]
             .execute()
         
         if not result.data:
+            logfire.info('Tool list_documentation_pages: No relevant documentation found.')
             return []
-            
+
         # Extract unique URLs
         urls = sorted(set(doc['url'] for doc in result.data))
+        logfire.info(f'Tool list_documentation_pages: Found {len(urls)} documentation pages.', data = urls)
         return urls
-        
+
     except Exception as e:
         print(f"Error retrieving documentation pages: {e}")
+        logfire.error('Error in tool list_documentation_pages.', Exception = e)
         return []
 
 ##############################################################################
@@ -241,8 +249,10 @@ async def get_full_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> st
             .execute()
         
         if not result.data:
+            logfire.info(f'Tool get_full_page_content: No content found for URL: {url}')
             return f"No content found for URL: {url}"
             
+
         # Format the page with its title and all chunks
         page_title = result.data[0]['title'].split(' - ')[0]  # Get the main title
         formatted_content = [f"# {page_title}\n"]
@@ -252,12 +262,17 @@ async def get_full_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> st
             formatted_content.append(chunk['content'])
             
         # Join everything together
-        return "\n\n".join(formatted_content)
+        final_result = "\n\n".join(formatted_content)
+        logfire.info(f'Tool get_full_page_content: Found content for URL: {url}', data = final_result)
+        return final_result
         
+
     except Exception as e:
         print(f"Error retrieving page content: {e}")
+        logfire.error('Error in tool get_full_page_content.', Exception = e)
         return f"Error retrieving page content: {str(e)}"
     
+
 ##############################################################################
 @open_university_expert.tool
 async def retrieve_relevant_videos(ctx: RunContext[PydanticAIDeps], user_query: str) -> str:
@@ -286,8 +301,10 @@ async def retrieve_relevant_videos(ctx: RunContext[PydanticAIDeps], user_query: 
         ).execute()
         
         if not result.data:
+            logfire.info('Tool retrieve_relevant_videos: No relevant documentation found.')
             return "No relevant documentation found."
             
+
         # Format the results
         formatted_chunks = []
         for doc in result.data:
@@ -299,11 +316,17 @@ async def retrieve_relevant_videos(ctx: RunContext[PydanticAIDeps], user_query: 
             formatted_chunks.append(chunk_text)
             
         # Join all chunks with a separator
-        return "\n\n---\n\n".join(formatted_chunks)
+        final_result = "\n\n---\n\n".join(formatted_chunks)
+        logfire.info('Tool retrieve_relevant_videos: Found relevant documentation.', data = final_result)
+        return final_result
         
+
+
     except Exception as e:
         print(f"Error retrieving documentation: {e}")
+        logfire.error('Error in tool retrieve_relevant_videos.', Exception = e)
         return f"Error retrieving documentation: {str(e)}"
+
 
 ##############################################################################
 @open_university_expert.tool
@@ -316,12 +339,16 @@ async def get_study_program_code_from_name(ctx: RunContext[PydanticAIDeps], stud
 
     if study_program_name not in study_programs:
         print(f"In Tool: Study program '{study_program_name[::-1]}' not found\n")
+        logfire.info(f'Tool get_study_program_code_from_name: Study program {study_program_name} not found')
         return None
     
+
     result = study_programs[study_program_name]
     print(f"In Tool: Getting study program code for '{study_program_name[::-1]}': {result}\n")
+    logfire.info(f'Tool get_study_program_code_from_name: Found study program code for {study_program_name}', data = result)
     return result
     
+
 ##############################################################################
 @dataclass
 class StudyProgram:
@@ -339,9 +366,10 @@ async def get_list_of_study_program_names_and_codes(ctx: RunContext[PydanticAIDe
     result = [StudyProgram(name, code) for name, code in study_programs.items()]
     display_result = [f"    {program.program_name[::-1]}\n - {program.program_code[::-1]}" for program in result]
     print(f"In Tool: Getting list of study program names: \n{display_result}\n")
+    logfire.info(f'Tool get_list_of_study_program_names_and_codes: Found list of study program names and codes', data = display_result)
     return result
 
-
+@open_university_expert.tool
 ##############################################################################
 @open_university_expert.tool
 async def get_answer_on_study_programs(ctx: RunContext[PydanticAIDeps], query_text: str, study_program_code: str) -> str:
@@ -369,6 +397,7 @@ async def get_answer_on_study_programs(ctx: RunContext[PydanticAIDeps], query_te
     )
 
     print(f"In Tool: Getting answer on study program {study_program_code} Returning: '{result[::-1]}'\n")
+    logfire.info(f'Tool get_answer_on_study_programs: {study_program_code}', data = result)
     return result
 
 ##############################################################################
@@ -382,10 +411,13 @@ async def get_course_id_from_name(ctx: RunContext[PydanticAIDeps], course_name: 
 
     if course_name not in course_by_name:
         print(f"In Tool: Course '{course_name[::-1]}' not found")
+        logfire.info(f'Tool get_course_id_from_name: Course {course_name} not found')
         return None
     
+
     result = course_by_name[course_name]['course_id']
     print(f"In Tool: Getting course ID for '{course_name[::-1]}': {result}\n")
+    logfire.info(f'Tool get_course_id_from_name: Found course ID for {course_name}', data = result)
     return result
 
 ##############################################################################
@@ -399,11 +431,15 @@ async def get_course_name_from_id(ctx: RunContext[PydanticAIDeps], course_id: st
 
     if course_id not in course_by_id:
         print(f"In Tool: Course {course_id} not found")
+        logfire.info(f'Tool get_course_name_from_id: Course {course_id} not found')
         return None
     
+
     result = course_by_id[course_id]['course_name']
     print(f"In Tool: Getting course name for {course_id}: '{result[::-1]}'\n")
+    logfire.info(f'Tool get_course_name_from_id: {course_id}', data = result)
     return result
+
 
 ##############################################################################
 @dataclass
@@ -437,11 +473,15 @@ async def get_course_details_from_id(ctx: RunContext[PydanticAIDeps], course_id:
 
     if course_id not in course_by_id:
         print(f"In Tool: Course {course_id} not found")
+        logfire.info(f'Tool get_course_details_from_id: Course {course_id} not found')
         return None
     
+
     result = course_by_id[course_id]
     print(f"In Tool: Getting course details for {course_id}: '{result['course_name'][::-1]}'\n")
+    logfire.info(f'Tool get_course_details_from_id: {course_id}', data = result)
     return result
+
 
 ##############################################################################
 @open_university_expert.tool
@@ -453,14 +493,18 @@ async def get_all_dependencies_courses_from_id(ctx: RunContext[PydanticAIDeps], 
     """
     if course_id not in course_by_id:
         print(f"In Tool: Course {course_id} not found\n")
+        logfire.info(f'Tool get_all_dependencies_courses_from_id: Course {course_id} not found')
         return None
     
+
     deps = []   
     deps.extend(course_by_id[course_id]['condition_courses'])
     deps.extend(course_by_id[course_id]['required_deps_courses'])
     deps.extend(course_by_id[course_id]['recommended_deps_courses'])
     print(f"In Tool: Getting all dependencies courses for {course_id}: {deps}\n")
+    logfire.info(f'Tool get_all_dependencies_courses_from_id: {course_id}', data = deps)
     return deps
+
 
 ##############################################################################
 @open_university_expert.tool
@@ -472,14 +516,18 @@ async def get_course_overview_from_id(ctx: RunContext[PydanticAIDeps], course_id
     """
 
     if course_id not in course_by_id:
-        print(f"In Tool: Course {course_id} not found\n")
+        print(f"In Tool: Course {course_id} not found\n")   
+        logfire.info(f'Tool get_course_overview_from_id: Course {course_id} not found')
         return None
     
+
     all_text = course_by_id[course_id]['text']
     # concatenate all_text from an array of strings to a single string
     result = ' '.join(all_text)
     print(f"In Tool: Getting course overview for {course_id}: '{result[::-1]}'\n")
+    logfire.info(f'Tool get_course_overview_from_id: {course_id}', data = result)
     return result
+
 
 ##############################################################################
 @open_university_expert.tool
@@ -489,11 +537,15 @@ async def attach_uploaded_files(ctx: RunContext[PydanticAIDeps], user_query: str
     This tool can be used for queries where additional context from uploaded files might be helpful.
     """
     if not ctx.deps.uploaded_files:
+        logfire.info(f'Tool attach_uploaded_files: No uploaded files found')
         return user_query
     
+
     uploaded_contents = "\n".join(
         f"File: {file['name']}\nContent: {file['content']}" for file in ctx.deps.uploaded_files
     )
     print(f"In Tool: Attaching {len(ctx.deps.uploaded_files)} uploaded files to the query.")
+    logfire.info(f'Tool attach_uploaded_files: {user_query}', data = uploaded_contents)
     # Append the uploaded file content to the query
     return f"{user_query}\n\nUploaded Files Context:\n{uploaded_contents}"
+

@@ -120,7 +120,8 @@ supabase: Client = Client(
 )
 
 # Configure logfire to suppress warnings (optional)
-logfire.configure(send_to_logfire='never')
+#logfire.configure(send_to_logfire='never')
+logfire.configure()
 
 class ChatMessage(TypedDict):
     """Format of messages sent to the browser/API."""
@@ -191,6 +192,7 @@ async def run_agent_with_streaming(user_input: str):
             st.session_state.messages.append(
                 ModelResponse(parts=[TextPart(content=partial_text)])
             )
+            logfire.info('Agent run completed successfully.', data = partial_text)
 
     except Exception as e:
         error_message = "מצטער, נתקלתי בבעיה בעיבוד הבקשה שלך. אנא נסה שוב."
