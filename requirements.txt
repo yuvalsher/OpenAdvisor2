@@ -9,6 +9,9 @@ langchain
 Markdown 
 WeasyPrint
 python-bidi
+torch 
+transformers
+google-api-python-client
 # bs4
 # markdownify
 # playwright

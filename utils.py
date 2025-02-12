@@ -1,8 +1,13 @@
-##############################################################################
 import json
 import os
+import torch
+from transformers import AutoTokenizer, AutoModel
+from transformers import logging
 
+# Set the logging verbosity to ERROR to suppress warnings
+logging.set_verbosity_error()
 
+##############################################################################
 def flip_by_line(text: str) -> str:
     """Flip the text from Hebrew to English and vice versa"""
     lines = text.split('\n')
@@ -36,3 +41,72 @@ def load_json_file(file_name: str, config: dict):
         print(f"Error loading JSON file {file_name}: {str(e)}")
         raise e
 
+##############################################################################
+def get_hebert_embedding(text, max_length: int = 5000):
+    """
+    Generates an embedding for the given Hebrew text using the HeBERT model.
+
+    Args:
+        text (str): The Hebrew text to be embedded.
+
+    Returns:
+        torch.Tensor: The embedding vector for the input text.
+    """
+    # Load the HeBERT tokenizer and model
+    tokenizer = AutoTokenizer.from_pretrained("avichr/heBERT")
+    model = AutoModel.from_pretrained("avichr/heBERT")
+
+    # Tokenize the input text and convert to PyTorch tensors
+    inputs = tokenizer(text, return_tensors="pt", padding=True, truncation=True, max_length=max_length)
+
+    # Generate the embeddings
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    # Extract the embeddings from the model output
+    # outputs.last_hidden_state contains embeddings for all tokens
+    # We can average them to get a single vector for the entire input text
+    embeddings = outputs.last_hidden_state.mean(dim=1)
+
+    # Convert the tensor to a list for JSON serialization
+    embedding_list = embeddings.squeeze().tolist()
+
+    return embedding_list
+
+##############################################################################
+def get_longhero_embedding(text):
+    """
+    Generates an embedding for the given Hebrew text using the LongHeRo model.
+
+    Args:
+        text (str): The Hebrew text to be embedded.
+
+    Returns:
+        np.ndarray: The embedding vector for the input text as a NumPy array.
+    """
+    # Load the LongHeRo tokenizer and model
+    tokenizer = AutoTokenizer.from_pretrained('HeNLP/LongHeRo')
+    model = AutoModel.from_pretrained('HeNLP/LongHeRo')
+
+    # Tokenize the input text and convert to PyTorch tensors
+    inputs = tokenizer(
+        text,
+        return_tensors="pt",
+        padding=True,
+        truncation=True,
+        max_length=4096  # LongHeRo supports sequences up to 4096 tokens
+    )
+
+    # Generate the embeddings
+    with torch.no_grad():
+        outputs = model(**inputs)
+
+    # Extract the embeddings from the model output
+    # outputs.last_hidden_state contains embeddings for all tokens
+    # We can average them to get a single vector for the entire input text
+    embeddings = outputs.last_hidden_state.mean(dim=1)
+
+    # Convert the tensor to a list of floats
+    embedding_list = embeddings.squeeze().tolist()
+
+    return embedding_list

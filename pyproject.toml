@@ -26,6 +26,15 @@ pytube = "^15.0.0"
 yt-dlp = "^2025.1.26"
 torch = "^2.6.0"
 transformers = "^4.48.3"
+tavily-python = "^0.5.1"
+google-api-python-client = "^2.160.0"
+html2text = "^2024.2.26"
+requests = "^2.32.3"
+selenium = "^4.28.1"
+google-auth = "^2.38.0"
+google-auth-httplib2 = "^0.2.0"
+google-auth-oauthlib = "^1.2.1"
+openai = "^1.61.1"
 
 
 [build-system]

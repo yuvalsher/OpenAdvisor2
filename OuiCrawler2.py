@@ -17,7 +17,7 @@ from playwright.async_api import async_playwright
 
 from config import all_config, all_crawl_config
 #from YouTubeTools import YouTubeTools
-from utils import load_json_file
+from utils import load_json_file, get_hebert_embedding, get_longhero_embedding
 
 debug_mode = False
 
@@ -252,21 +252,21 @@ async def get_title_and_summary(chunk: str, url: str) -> Dict[str, str]:
 
         return {"title": "Error processing title", "summary": "Error processing summary"}
 
-##############################################################################
-async def get_embedding(text: str) -> List[float]:
-    """Get embedding vector from OpenAI."""
-    try:
-        response = await openai_client.embeddings.create(
-            model="text-embedding-3-small",
-            input=text
-        )
-        return response.data[0].embedding
-    except Exception as e:
-        msg = f"Error getting embedding: {e}"
-        print(msg)
-        msg_log.append(msg)
+# ##############################################################################
+# async def get_embedding(text: str) -> List[float]:
+#     """Get embedding vector from OpenAI."""
+#     try:
+#         response = await openai_client.embeddings.create(
+#             model="text-embedding-3-small",
+#             input=text
+#         )
+#         return response.data[0].embedding
+#     except Exception as e:
+#         msg = f"Error getting embedding: {e}"
+#         print(msg)
+#         msg_log.append(msg)
 
-        return [0] * 1536  # Return zero vector on error
+#         return [0] * 1536  # Return zero vector on error
 
 ##############################################################################
 async def process_chunk(chunk: str, chunk_number: int, url: str, dataset_name: str) -> ProcessedChunk:
@@ -275,8 +275,10 @@ async def process_chunk(chunk: str, chunk_number: int, url: str, dataset_name: s
     extracted = await get_title_and_summary(chunk, url)
     
     # Get embedding
-    embedding = await get_embedding(chunk)
-    
+    #embedding = get_hebert_embedding(chunk)
+    embedding = get_longhero_embedding(chunk)
+
+
     # Create metadata
     metadata = {
         "source": dataset_name,

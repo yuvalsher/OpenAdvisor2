@@ -13,16 +13,21 @@ from pydantic_ai.models.openai import OpenAIModel
 from openai import AsyncOpenAI
 from supabase import Client
 from typing import Annotated, List, Dict
+from googleapiclient.discovery import build
 
 from OpenAI_Assistant import OpenAIAssistant
 from config import all_config
-from utils import load_json_file
+from utils import load_json_file, get_hebert_embedding, get_longhero_embedding
+
 load_dotenv()
 
 llm = os.getenv('LLM_MODEL', 'gpt-4o-mini')
 model = OpenAIModel(llm)
-
 logfire.configure(send_to_logfire='if-token-present')
+google_api_key = os.getenv("GOOGLE_API_KEY")
+google_cse_id = os.getenv("GOOGLE_CSE_ID")
+# Build the service for Google Custom Search
+google_search_service = build("customsearch", "v1", developerKey=google_api_key)
 
 @dataclass
 class PydanticAIDeps:
@@ -128,149 +133,152 @@ open_university_expert = Agent(
     retries=2
 )
 
-##############################################################################
-async def get_embedding(text: str, openai_client: AsyncOpenAI) -> List[float]:
-    """Get embedding vector from OpenAI."""
-    try:
-        response = await openai_client.embeddings.create(
-            model="text-embedding-3-small",
-            input=text
-        )
-        return response.data[0].embedding
-    except Exception as e:
-        print(f"Error getting embedding: {e}")
-        logfire.error('Error in get_embedding.', Exception = e)
-        return [0] * 1536  # Return zero vector on error
+# ##############################################################################
+# async def get_embedding(text: str, openai_client: AsyncOpenAI) -> List[float]:
+#     """Get embedding vector from OpenAI."""
+#     try:
+#         response = await openai_client.embeddings.create(
+#             model="text-embedding-3-small",
+#             input=text
+#         )
+#         return response.data[0].embedding
+#     except Exception as e:
+#         print(f"Error getting embedding: {e}")
+#         logfire.error('Error in get_embedding.', Exception = e)
+#         return [0] * 1536  # Return zero vector on error
 
 
-##############################################################################
-@open_university_expert.tool
-async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_query: str) -> str:
-    """
-    Retrieve relevant chunks of web pages based on the query with RAG.
+# ##############################################################################
+# @open_university_expert.tool
+# async def retrieve_relevant_web_pages(ctx: RunContext[PydanticAIDeps], user_query: str) -> str:
+#     """
+#     Retrieve relevant chunks of web pages based on the query with RAG.
     
-    Args:
-        ctx: The context including the Supabase client, the OpenAI client, and the uploaded files
-        user_query: The user's question or query
+#     Args:
+#         ctx: The context including the Supabase client, the OpenAI client, and the uploaded files
+#         user_query: The user's question or query
         
-    Returns:
-        A formatted string containing the top 5 most relevant chunks of web pages
-    """
-    try:        
-        # Get the embedding for the query
-        query_embedding = await get_embedding(user_query, ctx.deps.openai_client)
+#     Returns:
+#         A formatted string containing the top 5 most relevant chunks of web pages
+#     """
+#     try:        
+#         # Get the embedding for the query
+#         #query_embedding = get_hebert_embedding(user_query)
+#         query_embedding = get_longhero_embedding(user_query)
         
-        # Query Supabase for relevant documents
-        result = ctx.deps.supabase.rpc(
-            'match_site_pages',
-            {
-                'query_embedding': query_embedding,
-                'match_count': 10,
-                'filter': {'source': all_config["General"]["dataset_name_pages"]}
-            }
-        ).execute()
-        
-        if not result.data:
-            logfire.info('Tool retrieve_relevant_web_pages: No relevant documentation found.', query = user_query)
-            return "No relevant documentation found."
-            
-        logfire.info(f'Tool retrieve_relevant_web_pages: Found relevant documentation.', query = user_query, data = result.data)
-        # Format the results
-        formatted_chunks = []
-        for doc in result.data:
-            chunk_text = f"""
-# {doc['title']}
 
-{doc['content']}
-"""
-            formatted_chunks.append(chunk_text)
-            
-        # Join all chunks with a separator
-        return "\n\n---\n\n".join(formatted_chunks)
-        
-    except Exception as e:
-        print(f"Error retrieving documentation: {e}")
-        logfire.error('Error in tool retrieve_relevant_web_pages.', Exception = e, query = user_query)
-        return f"Error retrieving documentation: {str(e)}"
 
-##############################################################################
-@open_university_expert.tool
-async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]:
-    """
-    Retrieve a list of all available Pydantic AI documentation pages.
+#         # Query Supabase for relevant documents
+#         result = ctx.deps.supabase.rpc(
+#             'match_site_pages',
+#             {
+#                 'query_embedding': query_embedding,
+#                 'match_count': 10,
+#                 'filter': {'source': all_config["General"]["dataset_name_pages"]}
+#             }
+#         ).execute()
+        
+#         if not result.data:
+#             logfire.info('Tool retrieve_relevant_web_pages: No relevant documentation found.', query = user_query)
+#             return "No relevant documentation found."
+            
+#         logfire.info(f'Tool retrieve_relevant_web_pages: Found relevant documentation.', query = user_query, data = result.data)
+#         # Format the results
+#         formatted_chunks = []
+#         for doc in result.data:
+#             chunk_text = f"""
+# # {doc['title']}
+
+# {doc['content']}
+# """
+#             formatted_chunks.append(chunk_text)
+            
+#         # Join all chunks with a separator
+#         return "\n\n---\n\n".join(formatted_chunks)
+        
+#     except Exception as e:
+#         print(f"Error retrieving documentation: {e}")
+#         logfire.error('Error in tool retrieve_relevant_web_pages.', Exception = e, query = user_query)
+#         return f"Error retrieving documentation: {str(e)}"
+
+# ##############################################################################
+# @open_university_expert.tool
+# async def list_documentation_pages(ctx: RunContext[PydanticAIDeps]) -> List[str]:
+#     """
+#     Retrieve a list of all available Pydantic AI documentation pages.
     
-    Args:
-        ctx: The context including the Supabase
+#     Args:
+#         ctx: The context including the Supabase
 
-    Returns:
-        List[str]: List of unique URLs for all documentation pages
-    """
-    try:
-        # Query Supabase for unique URLs where source is pydantic_ai_docs
-        result = ctx.deps.supabase.from_('site_pages') \
-            .select('url') \
-            .eq('metadata->>source',  all_config["General"]["dataset_name_pages"]) \
-            .execute()
+#     Returns:
+#         List[str]: List of unique URLs for all documentation pages
+#     """
+#     try:
+#         # Query Supabase for unique URLs where source is pydantic_ai_docs
+#         result = ctx.deps.supabase.from_('site_pages') \
+#             .select('url') \
+#             .eq('metadata->>source',  all_config["General"]["dataset_name_pages"]) \
+#             .execute()
         
-        if not result.data:
-            logfire.info('Tool list_documentation_pages: No relevant documentation found.')
-            return []
+#         if not result.data:
+#             logfire.info('Tool list_documentation_pages: No relevant documentation found.')
+#             return []
 
-        # Extract unique URLs
-        urls = sorted(set(doc['url'] for doc in result.data))
-        logfire.info(f'Tool list_documentation_pages: Found {len(urls)} documentation pages.', data = urls)
-        return urls
+#         # Extract unique URLs
+#         urls = sorted(set(doc['url'] for doc in result.data))
+#         logfire.info(f'Tool list_documentation_pages: Found {len(urls)} documentation pages.', data = urls)
+#         return urls
 
-    except Exception as e:
-        print(f"Error retrieving documentation pages: {e}")
-        logfire.error('Error in tool list_documentation_pages.', Exception = e)
-        return []
+#     except Exception as e:
+#         print(f"Error retrieving documentation pages: {e}")
+#         logfire.error('Error in tool list_documentation_pages.', Exception = e)
+#         return []
 
-##############################################################################
-@open_university_expert.tool
-async def get_full_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> str:
-    """
-    Retrieve the full content of a specific documentation page by combining all its chunks.
+# ##############################################################################
+# @open_university_expert.tool
+# async def get_full_page_content(ctx: RunContext[PydanticAIDeps], url: str) -> str:
+#     """
+#     Retrieve the full content of a specific documentation page by combining all its chunks.
     
-    Args:
-        ctx: The context including the Supabase client
-        url: The URL of the page to retrieve
+#     Args:
+#         ctx: The context including the Supabase client
+#         url: The URL of the page to retrieve
         
-    Returns:
-        str: The complete page content with all chunks combined in order
-    """
-    try:
-        # Query Supabase for all chunks of this URL, ordered by chunk_number
-        result = ctx.deps.supabase.from_('site_pages') \
-            .select('title, content, chunk_number') \
-            .eq('url', url) \
-            .eq('metadata->>source',  all_config["General"]["dataset_name_pages"]) \
-            .order('chunk_number') \
-            .execute()
+#     Returns:
+#         str: The complete page content with all chunks combined in order
+#     """
+#     try:
+#         # Query Supabase for all chunks of this URL, ordered by chunk_number
+#         result = ctx.deps.supabase.from_('site_pages') \
+#             .select('title, content, chunk_number') \
+#             .eq('url', url) \
+#             .eq('metadata->>source',  all_config["General"]["dataset_name_pages"]) \
+#             .order('chunk_number') \
+#             .execute()
         
-        if not result.data:
-            logfire.info(f'Tool get_full_page_content: No content found for URL: {url}')
-            return f"No content found for URL: {url}"
+#         if not result.data:
+#             logfire.info(f'Tool get_full_page_content: No content found for URL: {url}')
+#             return f"No content found for URL: {url}"
             
 
-        # Format the page with its title and all chunks
-        page_title = result.data[0]['title'].split(' - ')[0]  # Get the main title
-        formatted_content = [f"# {page_title}\n"]
+#         # Format the page with its title and all chunks
+#         page_title = result.data[0]['title'].split(' - ')[0]  # Get the main title
+#         formatted_content = [f"# {page_title}\n"]
         
-        # Add each chunk's content
-        for chunk in result.data:
-            formatted_content.append(chunk['content'])
+#         # Add each chunk's content
+#         for chunk in result.data:
+#             formatted_content.append(chunk['content'])
             
-        # Join everything together
-        final_result = "\n\n".join(formatted_content)
-        logfire.info(f'Tool get_full_page_content: Found content for URL: {url}', data = final_result)
-        return final_result
+#         # Join everything together
+#         final_result = "\n\n".join(formatted_content)
+#         logfire.info(f'Tool get_full_page_content: Found content for URL: {url}', data = final_result)
+#         return final_result
         
 
-    except Exception as e:
-        print(f"Error retrieving page content: {e}")
-        logfire.error('Error in tool get_full_page_content.', Exception = e)
-        return f"Error retrieving page content: {str(e)}"
+#     except Exception as e:
+#         print(f"Error retrieving page content: {e}")
+#         logfire.error('Error in tool get_full_page_content.', Exception = e)
+#         return f"Error retrieving page content: {str(e)}"
     
 
 ##############################################################################
@@ -288,8 +296,10 @@ async def retrieve_relevant_videos(ctx: RunContext[PydanticAIDeps], user_query: 
     """
     try:
         # Get the embedding for the query
-        query_embedding = await get_embedding(user_query, ctx.deps.openai_client)
+        #query_embedding = await get_embedding(user_query, ctx.deps.openai_client)
+        query_embedding = get_longhero_embedding(user_query)
         
+
         # Query Supabase for relevant documents
         result = ctx.deps.supabase.rpc(
             'match_site_pages',
@@ -369,7 +379,6 @@ async def get_list_of_study_program_names_and_codes(ctx: RunContext[PydanticAIDe
     logfire.info(f'Tool get_list_of_study_program_names_and_codes: Found list of study program names and codes', data = display_result)
     return result
 
-@open_university_expert.tool
 ##############################################################################
 @open_university_expert.tool
 async def get_answer_on_study_programs(ctx: RunContext[PydanticAIDeps], query_text: str, study_program_code: str) -> str:
@@ -549,3 +558,48 @@ async def attach_uploaded_files(ctx: RunContext[PydanticAIDeps], user_query: str
     # Append the uploaded file content to the query
     return f"{user_query}\n\nUploaded Files Context:\n{uploaded_contents}"
 
+
+##############################################################################
+@open_university_expert.tool
+async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> str:
+    """Perform a web search using Google Custom Search API to find relevant information.
+    
+    Args:
+        query: The search query to look up
+    """
+    try:
+        # Check if the Google Custom Search Engine ID is configured correctly.
+        logfire.info(f"In Tool: Google Custom Search Engine ID: {google_cse_id}")
+        # if google_cse_id == "your_google_cse_id_here":
+        #     error_msg = "Google Custom Search Engine ID is not configured properly."
+        #     print(f"In Tool: {error_msg}")
+        #     logfire.error('Tool web_search: Invalid Google CSE ID provided.', query=query, error=error_msg)
+        #     return error_msg
+
+        # Run the synchronous request in an executor to avoid blocking
+        loop = asyncio.get_event_loop()
+        response = await loop.run_in_executor(
+            None,
+            lambda: google_search_service.cse().list(q=query, cx=google_cse_id, num=5).execute()
+        )
+
+        if not response or not response.get('items'):
+            info_msg = f"In Tool: No relevant results found for query: '{query}'"
+            print(info_msg)
+            logfire.info('Tool web_search: No results found', query=query)
+            return "No relevant results found."
+
+        result = "\n".join(item.get('snippet', '') for item in response.get('items', []))
+        print(f"In Tool: Web search results for '{query}': {result[:100]}...")
+        logfire.info('Tool web_search: Found results', query=query, result=result)
+        return result
+
+    except Exception as e:
+        # Enhanced error handling for cases like HttpError 400 indicating invalid arguments.
+        if hasattr(e, 'resp') and getattr(e.resp, 'status', None) == 400:
+            error_details = "Request contains an invalid argument."
+        else:
+            error_details = str(e)
+        print(f"Error performing web search: {error_details}")
+        logfire.error('Error in tool web_search', Exception=e)
+        return f"Error performing web search: {error_details}"
