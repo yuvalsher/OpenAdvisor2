@@ -1,6 +1,11 @@
 [tool.poetry]
 name = "openadvisor2-1"
+name = "openadvisor2-1"
 version = "0.1.0"
+description = "Academic advisor chatbot"
+authors = ["yuvalsher <yuval.sherman@gmail.com>"]
+readme = "README.md"
+packages = [{include = "openadvisor2"}]
 description = "Academic advisor chatbot"
 authors = ["yuvalsher <yuval.sherman@gmail.com>"]
 readme = "README.md"
@@ -10,9 +15,21 @@ packages = [{include = "openadvisor2"}]
 python = "^3.12"
 streamlit = "^1.41.1"
 setuptools = "^75.8.0"
+python = "^3.12"
+streamlit = "^1.41.1"
+setuptools = "^75.8.0"
 python-dotenv = "^1.0.1"
 langchain = "^0.3.17"
+langchain = "^0.3.17"
 bs4 = "^0.0.2"
+markdownify = "^0.14.1"
+playwright = "^1.49.1"
+fpdf = "^1.7.2"
+python-bidi = "^0.6.3"
+weasyprint = "^64.0"
+reportlab = "^4.3.0"
+pdfkit = "^1.0.0"
+borb = "^2.1.25"
 markdownify = "^0.14.1"
 playwright = "^1.49.1"
 fpdf = "^1.7.2"
@@ -38,5 +55,7 @@ openai = "^1.61.1"
 
 
 [build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
