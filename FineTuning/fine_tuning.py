@@ -19,6 +19,8 @@ import numpy as np
 from collections import defaultdict
 from openai import OpenAI
 
+from utils import escape_content, unesacape_content, extract_html_body
+
 openai_client = OpenAI()
 
 # List of URLs
@@ -189,57 +191,6 @@ def save_files_from_urls():
     print("All URLs processed.")
 
 
-
-##############################################################################
-def extract_html_body(full_html: str):
-    error_404 = """<html><head>
-		<!-- Error 404 .-->
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
-		<title>האוניברסיטה הפתוחה</title>
-
-		</head><html><head>
-		<!-- Error 404 .-->
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
-		<title>האוניברסיטה הפתוחה</title>
-
-		</head>"""
-    book_page = """<html itemscope="" itemtype="http://schema.org/Book" class=" supports csstransforms3d" lang="en"><head>"""
-
-    start_markers = [
-        "<!--end header-->",
-        "<div id=\"content\">",
-        "<!-- end menu cellular -->",
-        "<div id=\"www_widelayout\">",
-        "<div class=\"main-content maincontentplaceholder\">",
-        "<!--start content -->",
-        "<!-- BEGIN ZONES CONTAINER -->",
-        "<!--תוכן-->"
-    ]
-    end_markers = [
-        "<!--footer-->",
-        "<!-- footer -->",
-        "<!--end content -->",
-        "<!-- END ZONES CONTAINER -->",
-        "<!--END תוכן-->"
-    ]
-
-    if full_html.startswith(error_404):
-        return None
-    if full_html.startswith(book_page):
-        return None
-    
-    lhtml = full_html.lower()
-    start_locs = list(map(lambda marker: lhtml.find(marker), start_markers))
-    start_loc = max(start_locs)
-    end_locs = list(map(lambda marker: lhtml.find(marker), end_markers))
-    end_loc = max(end_locs)
-    if start_loc == -1 or end_loc == -1 or start_loc > end_loc:
-        return None
-    
-    extracted_content = full_html[start_loc:end_loc].strip()
-    return extracted_content
-
-
 system_instructions = """
 Convert the following HTML content into a concise markdown document.
 Ignore the following html elements:
@@ -252,18 +203,6 @@ Ignore the following html elements:
     - audio
     - other non-text elements
 """
-
-##############################################################################
-# Function to escape special characters
-def escape_content(content):
-    return content.replace('\\', '\\\\').replace('"', '\\"').replace('\n', '\\n')
-    
-##############################################################################
-def unesacape_content(content):
-    content = content.replace('\\n', '\n')
-    content = content.replace('\\"', '"')
-    content = content.replace('\\\\', '\\')
-    return content
 
 ##############################################################################
 def create_fine_tuning_file():

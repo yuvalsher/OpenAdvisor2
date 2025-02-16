@@ -17,7 +17,7 @@ from googleapiclient.discovery import build
 
 from OpenAI_Assistant import OpenAIAssistant
 from config import all_config
-from utils import load_json_file, get_hebert_embedding, get_longhero_embedding
+from utils import get_html_from_url, get_md_from_html, load_json_file, get_hebert_embedding, get_longhero_embedding
 
 load_dotenv()
 
@@ -561,21 +561,17 @@ async def attach_uploaded_files(ctx: RunContext[PydanticAIDeps], user_query: str
 
 ##############################################################################
 @open_university_expert.tool
-async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> str:
+async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> List[str]:
     """Perform a web search using Google Custom Search API to find relevant information.
     
     Args:
         query: The search query to look up
+
+    Returns:
+        List[str]: A list of markdown documents with the cleaned up contents of search results.
+
     """
     try:
-        # Check if the Google Custom Search Engine ID is configured correctly.
-        logfire.info(f"In Tool: Google Custom Search Engine ID: {google_cse_id}")
-        # if google_cse_id == "your_google_cse_id_here":
-        #     error_msg = "Google Custom Search Engine ID is not configured properly."
-        #     print(f"In Tool: {error_msg}")
-        #     logfire.error('Tool web_search: Invalid Google CSE ID provided.', query=query, error=error_msg)
-        #     return error_msg
-
         # Run the synchronous request in an executor to avoid blocking
         loop = asyncio.get_event_loop()
         response = await loop.run_in_executor(
@@ -589,10 +585,18 @@ async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> str:
             logfire.info('Tool web_search: No results found', query=query)
             return "No relevant results found."
 
-        result = "\n".join(item.get('snippet', '') for item in response.get('items', []))
-        print(f"In Tool: Web search results for '{query}': {result[:100]}...")
-        logfire.info('Tool web_search: Found results', query=query, result=result)
-        return result
+        md_list = []
+        for item in response.get('items', []):
+            url = item.get('link', '')
+            html = await get_html_from_url(url)
+            #openai_client = AsyncOpenAI()
+            md = await get_md_from_html(html, ctx.deps.openai_client)
+            md_list.append(md)
+
+        #result = "\n".join(item.get('snippet', '') for item in response.get('items', []))
+        #print(f"In Tool: Web search results for '{query}': {result[:100]}...")
+        logfire.info('Tool web_search: Found results', query=query, result=md_list)
+        return md_list
 
     except Exception as e:
         # Enhanced error handling for cases like HttpError 400 indicating invalid arguments.
@@ -600,6 +604,5 @@ async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> str:
             error_details = "Request contains an invalid argument."
         else:
             error_details = str(e)
-        print(f"Error performing web search: {error_details}")
         logfire.error('Error in tool web_search', Exception=e)
         return f"Error performing web search: {error_details}"
