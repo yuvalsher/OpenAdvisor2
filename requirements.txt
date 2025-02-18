@@ -12,7 +12,7 @@ python-bidi
 torch 
 transformers
 google-api-python-client
-playwright
+# playwright
 # bs4
 # markdownify
 # playwright

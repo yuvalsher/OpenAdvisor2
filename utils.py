@@ -6,7 +6,6 @@ import requests
 import torch
 from transformers import AutoTokenizer, AutoModel
 from transformers import logging
-from playwright.async_api import async_playwright
 
 # Set the logging verbosity to ERROR to suppress warnings
 logging.set_verbosity_error()
@@ -248,6 +247,7 @@ async def get_page_content(url: str) -> str:
         return html_body
 
     # If we got here, this is a dynamic page and we need to use Playwright
+    from playwright.async_api import async_playwright
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, timeout=30000)
         page = await browser.new_page()
