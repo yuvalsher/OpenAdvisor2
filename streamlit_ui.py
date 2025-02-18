@@ -121,7 +121,7 @@ supabase: Client = Client(
 
 # Configure logfire to suppress warnings (optional)
 #logfire.configure(send_to_logfire='never')
-logfire.configure()
+logfire.configure(token=os.getenv("LOGFIRE_WRITE_TOKEN"))
 
 class ChatMessage(TypedDict):
     """Format of messages sent to the browser/API."""
