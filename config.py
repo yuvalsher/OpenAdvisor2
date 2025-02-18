@@ -81,11 +81,13 @@ all_crawl_config = {
             'www.openu.ac.il/library/new_in_the_library',
             'www.openu.ac.il/tafnit',
             'www.openu.ac.il/hasifa',
+            'www.openu.ac.il/Lists/MediaServer_Images',
         ],
         "disallowed_pages": [
-            'https://academic.openu.ac.il/degrees/Pages/archive.aspx',
+            'https://academic.openu.ac.il/degrees/pages/archive.aspx',
             'https://www.openu.ac.il/staff/pages/results.aspx',
             'https://www.openu.ac.il/about/pages/procedures.aspx',
+            'https://www.openu.ac.il/pages/gall.aspx'
         ]
     },
     "OUI": {

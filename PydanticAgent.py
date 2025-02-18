@@ -17,7 +17,7 @@ from googleapiclient.discovery import build
 
 from OpenAI_Assistant import OpenAIAssistant
 from config import all_config
-from utils import get_html_from_url, get_md_from_html, load_json_file, get_hebert_embedding, get_longhero_embedding
+from utils import extract_html_body, get_html_from_url, get_md_from_html, load_json_file, get_hebert_embedding, get_longhero_embedding
 
 load_dotenv()
 
@@ -586,15 +586,18 @@ async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> List[str]:
             return "No relevant results found."
 
         md_list = []
-        for item in response.get('items', []):
-            url = item.get('link', '')
-            html = await get_html_from_url(url)
-            #openai_client = AsyncOpenAI()
-            md = await get_md_from_html(html, ctx.deps.openai_client)
-            md_list.append(md)
+        semaphore = asyncio.Semaphore(10)
+    
+        async with semaphore:
+            for item in response.get('items', []):
+                url = item.get('link', '')
+                md = get_page_content(url, ctx.deps.supabase)
+#                html = await get_html_from_url(url)
+#                html_body = extract_html_body(html)
+#                md = await get_md_from_html(html_body, ctx.deps.openai_client)
+                logfire.info('Tool web_search: Found a result', query=query, result=md)
+                md_list.append(md)
 
-        #result = "\n".join(item.get('snippet', '') for item in response.get('items', []))
-        #print(f"In Tool: Web search results for '{query}': {result[:100]}...")
         logfire.info('Tool web_search: Found results', query=query, result=md_list)
         return md_list
 
@@ -606,3 +609,27 @@ async def web_search(ctx: RunContext[PydanticAIDeps], query: str) -> List[str]:
             error_details = str(e)
         logfire.error('Error in tool web_search', Exception=e)
         return f"Error performing web search: {error_details}"
+
+##############################################################################
+def get_page_content(url: str, supabasde_client: Client) -> str:
+    # Query the 'site_pages' table
+    try:
+        response = (
+            supabasde_client
+            .table("site_pages")
+            .select("chunk_number, content")
+            .eq("url", url)
+            .order("chunk_number")
+            .execute()
+        )
+
+        # Extract the 'data' fields and concatenate them
+        content_list = [item["content"] for item in response.data]
+        concatenated_content = "".join(content_list)
+
+        return concatenated_content
+        
+    except Exception as e:
+        print(f"Error fetching data from Supabase: {e}")
+        return None
+

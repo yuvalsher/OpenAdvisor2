@@ -17,7 +17,7 @@ from playwright.async_api import async_playwright
 
 from config import all_config, all_crawl_config
 #from YouTubeTools import YouTubeTools
-from utils import load_json_file, get_hebert_embedding, get_longhero_embedding
+from utils import get_md_from_html, get_page_content, load_json_file, get_hebert_embedding, get_longhero_embedding, extract_html_body
 
 debug_mode = False
 
@@ -130,55 +130,6 @@ chunk_styles = [
 ]
 
 ##############################################################################
-def extract_html_body(full_html: str):
-    error_404 = """<html><head>
-		<!-- Error 404 .-->
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
-		<title>האוניברסיטה הפתוחה</title>
-
-		</head><html><head>
-		<!-- Error 404 .-->
-		<meta http-equiv="Content-Type" content="text/html; charset=windows-1255">
-		<title>האוניברסיטה הפתוחה</title>
-
-		</head>"""
-    book_page = """<html itemscope="" itemtype="http://schema.org/Book" class=" supports csstransforms3d" lang="en"><head>"""
-
-    start_markers = [
-        "<!--end header-->",
-        "<div id=\"content\">",
-        "<!-- end menu cellular -->",
-        "<div id=\"www_widelayout\">",
-        "<div class=\"main-content maincontentplaceholder\">",
-        "<!--start content -->",
-        "<!-- BEGIN ZONES CONTAINER -->",
-        "<!--תוכן-->"
-    ]
-    end_markers = [
-        "<!--footer-->",
-        "<!-- footer -->",
-        "<!--end content -->",
-        "<!-- END ZONES CONTAINER -->",
-        "<!--END תוכן-->"
-    ]
-
-    if full_html.startswith(error_404):
-        return None
-    if full_html.startswith(book_page):
-        return None
-    
-    lhtml = full_html.lower()
-    start_locs = list(map(lambda marker: lhtml.find(marker), start_markers))
-    start_loc = max(start_locs)
-    end_locs = list(map(lambda marker: lhtml.find(marker), end_markers))
-    end_loc = max(end_locs)
-    if start_loc == -1 or end_loc == -1 or start_loc > end_loc:
-        return None
-    
-    extracted_content = full_html[start_loc:end_loc].strip()
-    return extracted_content
-
-##############################################################################
 def chunk_text(text: str, chunk_size: int = 5000) -> List[str]:
     """Split text into chunks, respecting code blocks and paragraphs."""
     chunks = []
@@ -236,17 +187,23 @@ async def get_title_and_summary(chunk: str, url: str) -> Dict[str, str]:
     Keep both title and summary concise but informative."""
     
     try:
-        response = await openai_client.chat.completions.create(
-            model=os.getenv("LLM_MODEL", "gpt-4o-mini"),
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": f"URL: {url}\n\nContent:\n{chunk[:1000]}..."}  # Send first 1000 chars for context
-            ],
-            response_format={ "type": "json_object" }
-        )
-        return json.loads(response.choices[0].message.content)
+        for attempt in range(3):
+            response = await openai_client.chat.completions.create(
+                model=os.getenv("LLM_MODEL", "gpt-4o-mini"),
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": f"URL: {url}\n\nContent:\n{chunk[:1000]}..."}  # Send first 1000 chars for context
+                ],
+                response_format={ "type": "json_object" }
+            )
+            parsed_response = json.loads(response.choices[0].message.content)
+            if "title" in parsed_response and "summary" in parsed_response:
+                break
+        else:
+            parsed_response = {"title": "Error processing title", "summary": "Error processing summary"}
+        return parsed_response
     except Exception as e:
-        msg = f"Error getting title and summary: {e}"
+        msg = f"Error getting title and summary for {url}: {e}"
         print(msg)
         msg_log.append(msg)
 
@@ -358,7 +315,7 @@ async def process_and_store_document(url: str, markdown: str, dataset_name: str)
 def is_skip_page(url: str):
     skip_file_types = ['.jpeg', '.jpg', '.png', '.gif', '.bmp', '.tiff', '.ico', '.svg', '.webp',
                        '.xlsx', '.pptx', '.zip', '.rar', '.7z', '.tar', '.gz', '.bz2', '.xz', '.exe', 
-                       '.dll', '.so', '.lib', '.a', '.dylib']
+                       '.dll', '.so', '.lib', '.a', '.dylib', 'mp4', 'doc', 'xls', 'ppt']
     for skip_file_type in skip_file_types:
         if url.lower().endswith(skip_file_type):
             return True
@@ -366,7 +323,7 @@ def is_skip_page(url: str):
     # Check if the URL points to a PDF file
     if url.lower().endswith('.pdf'):
         pdf_files.append(url)
-        msg = f"Skipping PDF file: {url}"
+        msg = f"Skipping PDF file: {url}" 
         print(msg)
         msg_log.append(msg)
         return True
@@ -395,59 +352,6 @@ def is_skip_page(url: str):
     return False
 
 ##############################################################################
-async def get_page_content(url: str) -> str:
-    html_content = ""
-
-    # First try to get the page using aiohttp
-    try:
-        async with aiohttp.ClientSession() as session:
-            try:
-                async with session.get(url) as response:
-                    html_content = await response.text()
-            except aiohttp.ClientError as e:
-                print(f"Connection error for {url}: {str(e)}")
-                return None
-    except Exception as e:
-        print(f"Error accessing {url}: {str(e)}")
-        return None
-        
-    html_body = extract_html_body(html_content)
-    if html_body:
-        # That was easy!
-        return html_body
-
-    # If we got here, this is a dynamic page and we need to use Playwright
-    async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True, timeout=30000)
-        page = await browser.new_page()
-        try:
-            # Navigate and wait for network to be idle
-            response = await page.goto(url, wait_until='networkidle')
-            if response.status != 200:
-                return None
-            
-            # Wait for content to load (adjust selector as needed)
-            await page.wait_for_selector('body')
-
-            # Get the rendered HTML
-            html_content = await page.content()
-            html_body = extract_html_body(html_content)
-            if not html_body:
-                irregular_pages.append(url)
-                return None
-
-            return html_body
-        except Exception as e:
-            msg = f"Error crawling {url}: {str(e)}"
-            print(msg)
-            msg_log.append(msg)
-            return None
-            
-        finally:
-            await browser.close()
-
-
-##############################################################################
 async def crawl_page(url: str, todo_links: List[str]) -> bool:
     global pages_data
     global pages_dict
@@ -459,11 +363,23 @@ async def crawl_page(url: str, todo_links: List[str]) -> bool:
     # Mark the URL as visited
     visited_urls.add(url)
 
-    html_body = await get_page_content(url)
+    try:
+        html_body = await get_page_content(url)
+    except Exception as e:
+        msg = f"Error crawling {url}: {str(e)}"
+        print(msg)
+        msg_log.append(msg)
+        return None
+
     if not html_body:
+        irregular_pages.append(url)
         return False
             
-    md_text = md(html_body)
+#    md_text = md(html_body)
+    md_text = await get_md_from_html(html_body, openai_client)
+    if not md_text:
+        return
+
     dataset_name = all_config["General"]["dataset_name_pages"]
     await process_and_store_document(url, md_text, dataset_name)
 
@@ -591,6 +507,10 @@ async def start_crawling(faculties):
         # Start crawling from the initial URLs
         todo_links = crawl_config['start_urls'].copy()
         await crawl_parallel(todo_links)
+
+        end_time = datetime.now()
+        print(f"Done scrawling at: {end_time}, total time: {end_time - start_time}")
+        msg_log.append(f"Done scrawling at: {end_time}, total time: {end_time - start_time}")
 
         await check_videos_for_transcripts(youtube_links)
 
@@ -756,7 +676,7 @@ async def Save_from_json(data):
     class SitePage:
         url: str
         title: str
-        content: str
+        context: str
         type:str
         text_content: str
         summary: str
@@ -787,4 +707,5 @@ async def main(isFromJson: bool = False):
 ##############################################################################
 
 if __name__ == "__main__":
-    asyncio.run(main(True))
+    asyncio.run(start_crawling(["All"]))
+    #asyncio.run(main(False))

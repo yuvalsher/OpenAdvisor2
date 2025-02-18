@@ -1,10 +1,12 @@
 import json
 import os
+import aiohttp
 from openai import AsyncOpenAI, OpenAI
 import requests
 import torch
 from transformers import AutoTokenizer, AutoModel
 from transformers import logging
+from playwright.async_api import async_playwright
 
 # Set the logging verbosity to ERROR to suppress warnings
 logging.set_verbosity_error()
@@ -200,12 +202,8 @@ Ignore the following html elements:
 """
 
 ##############################################################################
-async def get_md_from_html(html: str, openai_client: AsyncOpenAI) -> str:
-    html_content = extract_html_body(html)
-    if not html_content:
-        return None
-    
-    escaped_html = escape_content(html_content)
+async def get_md_from_html(html_body: str, openai_client: AsyncOpenAI) -> str:
+    escaped_html = escape_content(html_body)
     system = escape_content(system_instructions)
 
     try:
@@ -223,3 +221,54 @@ async def get_md_from_html(html: str, openai_client: AsyncOpenAI) -> str:
     md = completion.choices[0].message.content
     md = unesacape_content(md)
     return md
+
+##############################################################################
+# Exceptions must be caught by caller.
+async def get_page_content(url: str) -> str:
+    html_content = ""
+
+    # First try to get the page using aiohttp
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.get(url) as response:
+                html_content = await response.text()
+        except aiohttp.ClientError as e:
+            print(f"Connection error for {url}: {str(e)}")
+            return None
+        except Exception as e:
+            if e.reason == 'character maps to <undefined>':
+                # Probably a book. Don't bother with an error.
+                return None
+            print(f"Error thrown getting {url}: {str(e)}")
+            return None
+        
+    html_body = extract_html_body(html_content)
+    if html_body:
+        # That was easy!
+        return html_body
+
+    # If we got here, this is a dynamic page and we need to use Playwright
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True, timeout=30000)
+        page = await browser.new_page()
+        try: 
+            # Navigate and wait for network to be idle
+            response = await page.goto(url, wait_until='networkidle')
+            if response.status != 200:
+                return None
+            
+            # Wait for content to load (adjust selector as needed)
+            await page.wait_for_selector('body')
+
+            # Get the rendered HTML
+            html_content = await page.content()
+            html_body = extract_html_body(html_content)
+            if not html_body:
+                return None
+
+            return html_body
+            
+        finally:
+            await browser.close()
+
+
