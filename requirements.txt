@@ -12,6 +12,9 @@ python-bidi
 torch 
 transformers
 google-api-python-client
+PydanticAgent 
+OpenAI_Assistant 
+playwright
 # bs4
 # markdownify
 # playwright
